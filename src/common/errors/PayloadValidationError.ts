@@ -1,10 +1,13 @@
 import { ZodError } from "zod";
 import { AppError, AppErrorDTO } from "./AppError";
 
-export type PayloadError = { type: string; errors: ZodError };
+export type PayloadError = { type: "Params" | "Query" | "Body"; errors: ZodError };
 
 export class PayloadValidationError extends AppError {
-  constructor(public message: string, private errors: PayloadError[]) {
+  constructor(
+    public message: string,
+    private errors: PayloadError[],
+  ) {
     super(message, 400);
   }
 

@@ -1,9 +1,6 @@
 import { RequestHandler } from "express";
 import { ZodSchema } from "zod";
-import {
-  PayloadError,
-  PayloadValidationError,
-} from "./errors/PayloadValidationError";
+import { PayloadError, PayloadValidationError } from "./errors/PayloadValidationError";
 
 type PayloadSchema<TParams, TQuery, TBody> = Partial<{
   params: ZodSchema<TParams>;
@@ -15,9 +12,9 @@ export const validator =
   <
     Params extends Record<string, unknown>,
     Query extends Record<string, unknown>,
-    Body extends unknown
+    Body extends unknown,
   >(
-    schema: PayloadSchema<Params, Query, Body>
+    schema: PayloadSchema<Params, Query, Body>,
   ): RequestHandler<Params, any, Body, Query> =>
   (req, _, next) => {
     const errors: PayloadError[] = [];
