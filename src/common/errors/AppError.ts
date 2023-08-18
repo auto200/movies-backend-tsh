@@ -1,13 +1,15 @@
+import { StatusCodes } from "http-status-codes";
+
 export type AppErrorDTO = {
   status: "error";
-  statusCode: number;
+  statusCode: StatusCodes;
   message: string;
 };
 
 export class AppError extends Error {
   constructor(
     public message: string,
-    public statusCode: number = 500,
+    public statusCode: StatusCodes = StatusCodes.INTERNAL_SERVER_ERROR,
   ) {
     super(message);
   }

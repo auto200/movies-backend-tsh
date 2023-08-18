@@ -1,3 +1,5 @@
+import { StatusCodes } from "http-status-codes";
+
 import { ZodError } from "zod";
 import { AppError, AppErrorDTO } from "./AppError";
 
@@ -8,12 +10,12 @@ export class PayloadValidationError extends AppError {
     public message: string,
     private errors: PayloadError[],
   ) {
-    super(message, 400);
+    super(message, StatusCodes.BAD_REQUEST);
   }
 
   public toJSON(): AppErrorDTO & { errors: PayloadError[] } {
     return {
-      ...super.toJSON.call(this),
+      ...super.toJSON(),
       errors: this.errors,
     };
   }
