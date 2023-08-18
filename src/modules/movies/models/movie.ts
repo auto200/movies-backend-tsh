@@ -14,7 +14,7 @@ export const MovieSchema = z.object({
 
 export type Movie = z.infer<typeof MovieSchema>;
 
-export const AddMovieDTOSchema = MovieSchema.pick({
+export const AddMovieRequestDTOSchema = MovieSchema.pick({
   genres: true,
   title: true,
   year: true,
@@ -25,4 +25,4 @@ export const AddMovieDTOSchema = MovieSchema.pick({
   posterUrl: true,
 });
 
-export type AddMovieDTO = z.infer<typeof AddMovieDTOSchema>;
+export type AddMovieRequestDTO = z.infer<typeof AddMovieRequestDTOSchema>;

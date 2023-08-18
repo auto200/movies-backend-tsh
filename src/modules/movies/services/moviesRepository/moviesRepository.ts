@@ -1,12 +1,13 @@
 import { DbConnection } from "@config/database/connectJSONDb";
 
-import { AddMovieDTO, Movie } from "../../models/movie";
+import { AddMovieRequestDTO, Movie } from "../../models/movie";
+import { Sampler, sample } from "@common/utils";
 
 export type MoviesRepository = {
   findByTitle(title: string): Promise<Movie | null>;
   getGenres(): Promise<string[]>;
-  getMovie(): Promise<Movie | null>;
-  addMovie(movieToAdd: AddMovieDTO): Promise<void>;
+  getRandomMovie(sampler?: Sampler): Promise<Movie | null>;
+  addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
 };
 
 export const MoviesRepository = (db: DbConnection): MoviesRepository => {
@@ -16,14 +17,14 @@ export const MoviesRepository = (db: DbConnection): MoviesRepository => {
     return movie ?? null;
   };
 
-  const getMovie = async () => db.data.movies[0] ?? null;
+  const getRandomMovie = async (sampler: Sampler = sample) => sampler(db.data.movies) ?? null;
 
   const getGenres = async () => db.data.genres;
 
-  const addMovie = async (movieToAdd: AddMovieDTO) => {
+  const addMovie = async (movieToAdd: AddMovieRequestDTO) => {
     db.data.movies.push({ ...movieToAdd, id: db.data.movies.length + 1 });
     await db.write();
   };
 
-  return { findByTitle, getMovie, getGenres, addMovie };
+  return { findByTitle, getRandomMovie, getGenres, addMovie };
 };

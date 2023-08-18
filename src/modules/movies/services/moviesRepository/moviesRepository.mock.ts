@@ -1,6 +1,7 @@
 import { DatabaseSchema } from "@config/database/connectJSONDb";
 
 import { MoviesRepository } from "./moviesRepository";
+import { sample } from "@common/utils";
 
 export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesRepository => {
   const db = initialData;
@@ -11,6 +12,6 @@ export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesR
     },
     findByTitle: async (title: string) => db.movies.find((movie) => movie.title === title) ?? null,
     getGenres: async () => db.genres,
-    getMovie: async () => db.movies[0] ?? null,
+    getRandomMovie: async (sampler = sample) => sampler(db.movies) ?? null,
   };
 };

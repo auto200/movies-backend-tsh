@@ -1,8 +1,9 @@
 import { describe, test, expect } from "vitest";
 
+import { Sampler } from "@common/utils";
 import { DatabaseSchema } from "@config/database/connectJSONDb";
 
-import { AddMovieDTO } from "../../models/movie";
+import { AddMovieRequestDTO } from "../../models/movie";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 
@@ -22,7 +23,7 @@ describe("MoviesService", () => {
     };
     const moviesService = createMockMovieService(initialData);
 
-    const movie: AddMovieDTO = {
+    const movie: AddMovieRequestDTO = {
       year: 1988,
       runtime: 92,
       title: "Beetlejuice",
@@ -38,7 +39,7 @@ describe("MoviesService", () => {
   });
 
   test("adding remake of a movie should not throw", () => {
-    const movie: AddMovieDTO = {
+    const movie: AddMovieRequestDTO = {
       year: 1988,
       runtime: 92,
       title: "Beetlejuice",
@@ -65,7 +66,7 @@ describe("MoviesService", () => {
     const initialData: DatabaseSchema = { genres: ["action", "horror"], movies: [] };
     const moviesService = createMockMovieService(initialData);
 
-    const movie: AddMovieDTO = {
+    const movie: AddMovieRequestDTO = {
       year: 1988,
       runtime: 92,
       title: "Beetlejuice",
@@ -81,7 +82,7 @@ describe("MoviesService", () => {
   });
 
   test("adding movie duplicate should throw", () => {
-    const movie: AddMovieDTO = {
+    const movie: AddMovieRequestDTO = {
       year: 1988,
       runtime: 92,
       title: "Beetlejuice",
@@ -100,5 +101,46 @@ describe("MoviesService", () => {
     const moviesService = createMockMovieService(initialData);
 
     expect(moviesService.addMovie(movie)).rejects.toThrowError(DuplicateMovieError);
+  });
+
+  test("get random movie", () => {
+    const initialData: DatabaseSchema = {
+      genres: ["Comedy", "Fantasy"],
+      movies: [
+        {
+          id: 1,
+          year: 1988,
+          runtime: 92,
+          title: "Beetlejuice",
+          genres: ["Comedy", "Fantasy"],
+          director: "Tim Burton",
+          actors: "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
+          plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
+          posterUrl:
+            "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
+        },
+        {
+          id: 3,
+          year: 1994,
+          runtime: 142,
+          title: "The Shawshank Redemption",
+          genres: ["Crime", "Drama"],
+          director: "Frank Darabont",
+          actors: "Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler",
+          plot: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+          posterUrl:
+            "https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_SX300.jpg",
+        },
+      ],
+    };
+
+    const moviesService = createMockMovieService(initialData);
+
+    const SAMPLE_INDEX = 1;
+    const mockSampler: Sampler = (arr) => arr[SAMPLE_INDEX];
+
+    const expected = [initialData.movies[SAMPLE_INDEX]];
+
+    expect(moviesService.getRandomMovie(mockSampler)).resolves.toEqual(expected);
   });
 });

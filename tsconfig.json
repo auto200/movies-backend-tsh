@@ -28,6 +28,9 @@
       ],
       "@modules/*": [
         "./src/modules/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
       ]
     },
   }

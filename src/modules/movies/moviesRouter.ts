@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { validator } from "@common/payloadValidation";
-import { AddMovieDTOSchema } from "./models/movie";
+import { AddMovieRequestDTOSchema } from "./models/movie";
 import { RootService } from "@config/rootService";
 
 const validators = {
-  addMovie: validator({ body: AddMovieDTOSchema }),
+  addMovie: validator({ body: AddMovieRequestDTOSchema }),
 };
 
 export const createMoviesRouter = ({ moviesService }: RootService): Router => {
@@ -21,10 +21,12 @@ export const createMoviesRouter = ({ moviesService }: RootService): Router => {
       .catch(next);
   });
 
-  // router.get<unknown, Movie | null>("/", async (_req, res) => {
-  //   console.log("lol");
-  //   res.json(await moviesService.getMovie());
-  // });
+  router.get("/", async (_req, res, next) => {
+    moviesService
+      .getRandomMovie()
+      .then((movie) => res.json(movie))
+      .catch(next);
+  });
 
   return router;
 };
