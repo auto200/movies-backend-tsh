@@ -2,14 +2,16 @@ import express, { Express } from "express";
 import helmet from "helmet";
 
 import { errorHandlerMiddleware } from "@common/middlewares/errorHandlerMiddleware";
-import { createTestingRouter } from "@modules/testing/testingRouter";
+import { createMoviesRouter } from "@modules/movies/moviesRouter";
+import { RootService } from "@config/rootService";
 
-export const initApp = (): Express => {
+export const initApp = (rootService: RootService): Express => {
   const app = express();
 
+  app.use(express.json());
   app.use(helmet());
 
-  app.use("/", createTestingRouter());
+  app.use("/movies", createMoviesRouter(rootService));
 
   app.use(errorHandlerMiddleware);
 

@@ -1,9 +1,16 @@
 import "dotenv/config";
+
 import { appConfig } from "@config/appConfig";
+import { createRootService } from "@config/rootService";
+import { connectJSONDb } from "@config/database/connectJSONDb";
+
 import { initApp } from "./app";
 
-const app = initApp();
-
-app.listen(appConfig.PORT, () => {
-  console.log("listening on port 3000");
-});
+connectJSONDb()
+  .then(createRootService)
+  .then(initApp)
+  .then((app) =>
+    app.listen(appConfig.PORT, () => {
+      console.log("listening on port 3000");
+    }),
+  );
