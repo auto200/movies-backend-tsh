@@ -11,7 +11,7 @@ export const initApp = (rootService: RootService): Express => {
   app.use(express.json());
   app.use(helmet());
 
-  app.use("/movies", createMoviesRouter(rootService));
+  app.use("/v1/movies", createMoviesRouter(rootService));
 
   app.use(errorHandlerMiddleware);
 

@@ -1,7 +1,7 @@
-import { MoviesRepository } from "./moviesRepository";
-import { AddMovieDTO, Movie } from "../models/movie";
-import { InvalidGenreError } from "../errors/invalidGenreError";
-import { DuplicateMovieError } from "../errors/duplicateMovieError";
+import { MoviesRepository } from ".././moviesRepository";
+import { AddMovieDTO, Movie } from "../../models/movie";
+import { InvalidGenreError } from "../../errors/invalidGenreError";
+import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieDTO): Promise<void>;

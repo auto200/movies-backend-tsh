@@ -1,7 +1,7 @@
 import { dbConfig } from "./dbConfig";
 import { JSONDbDriver } from "./JSONDbDriver";
 
-type DatabaseSchema = {
+export type DatabaseSchema = {
   genres: string[];
   movies: Array<{
     id: number;
