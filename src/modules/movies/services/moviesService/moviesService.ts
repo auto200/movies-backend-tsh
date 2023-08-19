@@ -1,8 +1,9 @@
-import { MoviesRepository } from ".././moviesRepository";
+import { Sampler, isNumberInTolerance, sample, toArray } from "@common/utils";
+
+import { MoviesRepository } from "../moviesRepository";
 import { AddMovieRequestDTO, GetMovieFilters, Movie } from "../../models/movie";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
-import { Sampler, isNumberInTolerance, sample } from "@common/utils";
 import { MoviesRatingService } from "../moviesRatingService";
 
 export type MoviesService = {
@@ -85,19 +86,17 @@ export const MoviesService = (
     getMoviesWithFilters: async (filters, runtimeVariation = DEFAULT_RUNTIME_VARIATION) => {
       const filterNames = Object.keys(filters);
 
-      if (filterNames.length === 1 && typeof filters.duration === "number") {
+      if (filterNames.length === 1 && filters.duration) {
         return await getMoviesByDuration(filters.duration, runtimeVariation);
       }
 
       if (filterNames.length === 1 && filters.genres) {
-        return await getMoviesByGenres(
-          Array.isArray(filters.genres) ? filters.genres : [filters.genres],
-        );
+        return await getMoviesByGenres(toArray(filters.genres) as string[]);
       }
 
       if (filterNames.length === 2 && filters.genres && filters.duration) {
         return await getMoviesByGenresAndDuration(
-          Array.isArray(filters.genres) ? filters.genres : [filters.genres],
+          toArray(filters.genres) as string[],
           filters.duration,
           DEFAULT_RUNTIME_VARIATION,
         );

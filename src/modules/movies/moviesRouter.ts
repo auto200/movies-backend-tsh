@@ -10,14 +10,15 @@ const validators = {
   }),
 };
 
+// NOTE: currently movie genres has to exactly match genres from database,
+// including capitalization
+
 export const createMoviesRouter = ({ moviesService }: RootService): Router => {
   const router = Router();
 
   router.post("/", validators.addMovie, (req, res, next) => {
     const movieToAdd = req.body;
 
-    // NOTE: currently movie genres has to exactly match genres from database,
-    // including capitalization
     moviesService
       .addMovie(movieToAdd)
       .then(() => res.send("Success"))

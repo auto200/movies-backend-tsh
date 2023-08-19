@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { isNumberInTolerance } from ".";
+import { isNumberInTolerance, toArray } from ".";
 
 test("number in tolerance", () => {
   const value1 = 80;
@@ -16,4 +16,9 @@ test("number in tolerance", () => {
   const middlePoint3 = 100;
   const tolerance3 = 10;
   expect(isNumberInTolerance(value3, middlePoint3, tolerance3)).toBeFalsy();
+});
+
+test("to array", () => {
+  expect(toArray(1)).toEqual([1]);
+  expect(toArray([1])).toEqual([1]);
 });
