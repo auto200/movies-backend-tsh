@@ -9,10 +9,10 @@ import { MoviesRatingService } from "../moviesRatingService";
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
   getRandomMovie(sampler?: Sampler): Promise<Movie[]>;
-  getMoviesWithFilters(filters: GetMovieFilters, runtimeVariation?: number): Promise<Movie[]>;
+  getMoviesWithFilters(filters: GetMovieFilters, durationVariation?: number): Promise<Movie[]>;
 };
 
-const DEFAULT_RUNTIME_VARIATION = 10;
+const DEFAULT_DURATION_VARIATION = 10;
 
 export const MoviesService = (
   moviesRepository: MoviesRepository,
@@ -36,8 +36,8 @@ export const MoviesService = (
     }
   };
 
-  const filterMoviesByDuration = (movies: Movie[], duration: number, runtimeVariation: number) =>
-    movies.filter((movie) => isNumberInTolerance(duration, movie.runtime, runtimeVariation));
+  const filterMoviesByDuration = (movies: Movie[], duration: number, durationVariation: number) =>
+    movies.filter((movie) => isNumberInTolerance(duration, movie.runtime, durationVariation));
 
   const filterMoviesByGenres = (movies: Movie[], genres: string[]) =>
     movies.filter((movie) => movie.genres.find((movieGenre) => genres.includes(movieGenre)));
@@ -82,12 +82,13 @@ export const MoviesService = (
 
       return randomMovie ? [randomMovie] : [];
     },
-
-    getMoviesWithFilters: async (filters, runtimeVariation = DEFAULT_RUNTIME_VARIATION) => {
+    // NOTE: since our database does not support filtering natively we have to do it
+    // on our own, if the logic grows, it could be extracted to separate service
+    getMoviesWithFilters: async (filters, durationVariation = DEFAULT_DURATION_VARIATION) => {
       const filterNames = Object.keys(filters);
 
       if (filterNames.length === 1 && filters.duration) {
-        return await getMoviesByDuration(filters.duration, runtimeVariation);
+        return await getMoviesByDuration(filters.duration, durationVariation);
       }
 
       if (filterNames.length === 1 && filters.genres) {
@@ -98,7 +99,7 @@ export const MoviesService = (
         return await getMoviesByGenresAndDuration(
           toArray(filters.genres) as string[],
           filters.duration,
-          DEFAULT_RUNTIME_VARIATION,
+          DEFAULT_DURATION_VARIATION,
         );
       }
 
