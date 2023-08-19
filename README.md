@@ -12,6 +12,14 @@ endpoints:
 ```bash
 pnpm i
 pnpm dev
+
+pnpm test
 ```
 
 😄
+
+### Thoughts
+
+- setting up file as a database was little bit painful, solution heavily inspired by [lowdb](https://github.com/typicode/lowdb)
+- database communication layer designed in mind to be replaced with some more robust solution than file based db
+- naming difference between `duration` filter name and `runtime` movie property, not sure where we should map one to another. Decided to just keep it constant
