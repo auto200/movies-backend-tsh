@@ -1,5 +1,5 @@
 import { MoviesRepository } from ".././moviesRepository";
-import { AddMovieRequestDTO, Movie } from "../../models/movie";
+import { AddMovieRequestDTO, GetMovieFilters, Movie } from "../../models/movie";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 import { Sampler, sample } from "@common/utils";
@@ -7,7 +7,10 @@ import { Sampler, sample } from "@common/utils";
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
   getRandomMovie(sampler?: Sampler): Promise<Movie[]>;
+  getMoviesWithFilters(filters: GetMovieFilters, runtimeVariation?: number): Promise<Movie[]>;
 };
+
+const DEFAULT_RUNTIME_VARIATION = 10;
 
 export const MoviesService = (moviesRepository: MoviesRepository): MoviesService => {
   const assertValidGenres = async (movie: AddMovieRequestDTO) => {
@@ -39,8 +42,21 @@ export const MoviesService = (moviesRepository: MoviesRepository): MoviesService
     return movie ? [movie] : [];
   };
 
+  const getMoviesWithFilters = async (
+    filters: GetMovieFilters,
+    runtimeVariation = DEFAULT_RUNTIME_VARIATION,
+  ) => {
+    const filterNames = Object.keys(filters);
+    if (filterNames.length === 1 && typeof filters.duration === "number") {
+      return await moviesRepository.getMoviesByDuration(filters.duration, runtimeVariation);
+    }
+
+    return [];
+  };
+
   return {
     addMovie,
     getRandomMovie,
+    getMoviesWithFilters,
   };
 };

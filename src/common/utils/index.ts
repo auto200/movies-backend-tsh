@@ -7,3 +7,7 @@ export function sample<T>(arr: Array<T>): T | undefined {
 }
 
 export type Sampler = typeof sample;
+
+export const isNumberInTolerance = (number: number, middlePoint: number, tolerance: number) => {
+  return Math.abs(middlePoint - number) <= tolerance ? true : false;
+};

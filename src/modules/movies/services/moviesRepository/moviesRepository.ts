@@ -1,13 +1,14 @@
 import { DbConnection } from "@config/database/connectJSONDb";
 
 import { AddMovieRequestDTO, Movie } from "../../models/movie";
-import { Sampler, sample } from "@common/utils";
+import { Sampler, isNumberInTolerance, sample } from "@common/utils";
 
 export type MoviesRepository = {
   findByTitle(title: string): Promise<Movie | null>;
   getGenres(): Promise<string[]>;
   getRandomMovie(sampler?: Sampler): Promise<Movie | null>;
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
+  getMoviesByDuration(runtime: number, variation: number): Promise<Movie[]>;
 };
 
 export const MoviesRepository = (db: DbConnection): MoviesRepository => {
@@ -26,5 +27,13 @@ export const MoviesRepository = (db: DbConnection): MoviesRepository => {
     await db.write();
   };
 
-  return { findByTitle, getRandomMovie, getGenres, addMovie };
+  const getMoviesByDuration = async (runtime: number, variation: number) => {
+    const movies = db.data.movies.filter((movie) =>
+      isNumberInTolerance(runtime, movie.runtime, variation),
+    );
+
+    return movies;
+  };
+
+  return { findByTitle, getRandomMovie, getGenres, addMovie, getMoviesByDuration };
 };
