@@ -47,8 +47,15 @@ export const MoviesService = (moviesRepository: MoviesRepository): MoviesService
     runtimeVariation = DEFAULT_RUNTIME_VARIATION,
   ) => {
     const filterNames = Object.keys(filters);
+
     if (filterNames.length === 1 && typeof filters.duration === "number") {
       return await moviesRepository.getMoviesByDuration(filters.duration, runtimeVariation);
+    }
+
+    if (filterNames.length === 1 && filters.genres) {
+      return await moviesRepository.getMoviesByGenres(
+        Array.isArray(filters.genres) ? filters.genres : [filters.genres],
+      );
     }
 
     return [];

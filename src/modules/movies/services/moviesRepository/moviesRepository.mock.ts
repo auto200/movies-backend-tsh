@@ -15,5 +15,7 @@ export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesR
     getRandomMovie: async (sampler = sample) => sampler(db.movies) ?? null,
     getMoviesByDuration: async (runtime, variation) =>
       db.movies.filter((movie) => isNumberInTolerance(runtime, movie.runtime, variation)),
+    getMoviesByGenres: async (genres) =>
+      db.movies.filter((movie) => movie.genres.find((movieGenre) => genres.includes(movieGenre))),
   };
 };

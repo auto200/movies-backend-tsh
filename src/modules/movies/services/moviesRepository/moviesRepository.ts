@@ -9,6 +9,7 @@ export type MoviesRepository = {
   getRandomMovie(sampler?: Sampler): Promise<Movie | null>;
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
   getMoviesByDuration(runtime: number, variation: number): Promise<Movie[]>;
+  getMoviesByGenres(genres: string[]): Promise<Movie[]>;
 };
 
 export const MoviesRepository = (db: DbConnection): MoviesRepository => {
@@ -35,5 +36,18 @@ export const MoviesRepository = (db: DbConnection): MoviesRepository => {
     return movies;
   };
 
-  return { findByTitle, getRandomMovie, getGenres, addMovie, getMoviesByDuration };
+  const getMoviesByGenres = async (genres: string[]) => {
+    return db.data.movies.filter((movie) =>
+      movie.genres.find((movieGenre) => genres.includes(movieGenre)),
+    );
+  };
+
+  return {
+    findByTitle,
+    getRandomMovie,
+    getGenres,
+    addMovie,
+    getMoviesByDuration,
+    getMoviesByGenres,
+  };
 };

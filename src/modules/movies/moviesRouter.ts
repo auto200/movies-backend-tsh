@@ -29,7 +29,7 @@ export const createMoviesRouter = ({ moviesService }: RootService): Router => {
 
     if (Object.keys(filters)) {
       return moviesService
-        .getMoviesWithFilters(req.query)
+        .getMoviesWithFilters(filters)
         .then((movies) => res.json(movies))
         .catch(next);
     }
