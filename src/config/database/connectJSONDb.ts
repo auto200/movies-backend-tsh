@@ -20,7 +20,7 @@ export type DbConnection = JSONDbDriver<DatabaseSchema>;
 
 export async function connectJSONDb(): Promise<DbConnection> {
   const defaultData: DatabaseSchema = { genres: [], movies: [] };
-  const db = new JSONDbDriver(dbConfig.dbJSONFilePath, defaultData);
+  const db = new JSONDbDriver(dbConfig.DB_JSON_FILE_PATH, defaultData);
 
   await db.load();
 
