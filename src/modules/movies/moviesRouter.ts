@@ -27,7 +27,7 @@ export const createMoviesRouter = ({ moviesService }: RootService): Router => {
   router.get("/", validators.getMovie, async (req, res, next) => {
     const filters = req.query;
 
-    if (Object.keys(filters)) {
+    if (Object.keys(filters).length) {
       return moviesService
         .getMoviesWithFilters(filters)
         .then((movies) => res.json(movies))
