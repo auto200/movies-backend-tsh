@@ -5,7 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "test": "vitest",
-    "dev": "ts-node-dev --respawn -r tsconfig-paths/register --transpile-only ./src/index.ts"
+    "dev": "ts-node-dev --respawn -r tsconfig-paths/register --transpile-only ./src/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
