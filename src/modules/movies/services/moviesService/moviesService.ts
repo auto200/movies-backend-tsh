@@ -92,12 +92,12 @@ export const MoviesService = (
       }
 
       if (filterNames.length === 1 && filters.genres) {
-        return await getMoviesByGenres(toArray(filters.genres) as string[]);
+        return await getMoviesByGenres(toArray(filters.genres));
       }
 
       if (filterNames.length === 2 && filters.genres && filters.duration) {
         return await getMoviesByGenresAndDuration(
-          toArray(filters.genres) as string[],
+          toArray(filters.genres),
           filters.duration,
           DEFAULT_DURATION_VARIATION,
         );

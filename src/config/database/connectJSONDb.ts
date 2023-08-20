@@ -10,9 +10,9 @@ export type DatabaseSchema = {
     year: number;
     runtime: number;
     director: string;
-    actors?: string | undefined;
-    plot?: string | undefined;
-    posterUrl?: string | undefined;
+    actors?: string;
+    plot?: string;
+    posterUrl?: string;
   }>;
 };
 

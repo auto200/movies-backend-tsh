@@ -10,6 +10,6 @@ export function isNumberInTolerance(number: number, middlePoint: number, toleran
   return Math.abs(middlePoint - number) <= tolerance ? true : false;
 }
 
-export function toArray<T>(val: T): T[] {
+export function toArray<T>(val: T | T[]): T[] {
   return Array.isArray(val) ? val : [val];
 }
