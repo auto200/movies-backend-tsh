@@ -4,7 +4,7 @@ import { MoviesRepository } from "../moviesRepository";
 import { AddMovieRequestDTO, GetMovieFilters, Movie } from "../../models/movie";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
-import { MoviesRatingService } from "../moviesRatingService";
+import { MoviesRelevanceService } from "../moviesRelevanceService";
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
@@ -16,7 +16,7 @@ const DEFAULT_DURATION_VARIATION = 10;
 
 export const MoviesService = (
   moviesRepository: MoviesRepository,
-  moviesRatingService: MoviesRatingService,
+  moviesRelevanceService: MoviesRelevanceService,
 ): MoviesService => {
   const assertValidGenres = async (movie: AddMovieRequestDTO) => {
     const validGenres = await moviesRepository.getGenres();
@@ -51,7 +51,7 @@ export const MoviesService = (
     const allMovies = await moviesRepository.getAllMovies();
     const filteredMovies = filterMoviesByGenres(allMovies, genres);
 
-    return moviesRatingService.sortMoviesByGenresRelevance(filteredMovies, genres);
+    return moviesRelevanceService.sortMoviesByGenresRelevance(filteredMovies, genres);
   };
 
   const getMoviesByGenresAndDuration = async (

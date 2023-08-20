@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { MoviesRatingService } from "./moviesRatingService";
+import { MoviesRelevanceService } from "./moviesRelevanceService";
 import { Movie } from "@modules/movies/models/movie";
 
-describe("movies rating service", () => {
-  const moviesRatingService = MoviesRatingService();
+describe("movies relevance service", () => {
+  const moviesRelevanceService = MoviesRelevanceService();
 
   test("movie genre relevance rating", () => {
     const movie: Movie = {
@@ -19,11 +19,11 @@ describe("movies rating service", () => {
         "https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_SX300.jpg",
     };
 
-    expect(moviesRatingService.getMovieRelevanceByGenres(movie, [])).toBe(0);
+    expect(moviesRelevanceService.getMovieRelevanceByGenres(movie, [])).toBe(0);
 
-    expect(moviesRatingService.getMovieRelevanceByGenres(movie, ["Crime"])).toBe(1);
+    expect(moviesRelevanceService.getMovieRelevanceByGenres(movie, ["Crime"])).toBe(1);
 
-    expect(moviesRatingService.getMovieRelevanceByGenres(movie, ["Crime", "Drama"])).toBe(2);
+    expect(moviesRelevanceService.getMovieRelevanceByGenres(movie, ["Crime", "Drama"])).toBe(2);
   });
 
   test("sorting by genre rating", () => {
@@ -51,7 +51,7 @@ describe("movies rating service", () => {
       },
     ];
 
-    expect(moviesRatingService.sortMoviesByGenresRelevance(movies, ["Crime", "Drama"])).toEqual(
+    expect(moviesRelevanceService.sortMoviesByGenresRelevance(movies, ["Crime", "Drama"])).toEqual(
       expected,
     );
   });

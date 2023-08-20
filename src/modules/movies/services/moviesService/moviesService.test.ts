@@ -9,12 +9,12 @@ import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 
 import { MoviesService } from "./moviesService";
 import { createMockMoviesRepository } from "../moviesRepository/moviesRepository.mock";
-import { MoviesRatingService } from "../moviesRatingService";
+import { MoviesRelevanceService } from "../moviesRelevanceService";
 
 const createMockMovieService = (initialData: DatabaseSchema) => {
   const mockMoviesRepository = createMockMoviesRepository(initialData);
-  const moviesRatingService = MoviesRatingService();
-  return MoviesService(mockMoviesRepository, moviesRatingService);
+  const moviesRelevanceService = MoviesRelevanceService();
+  return MoviesService(mockMoviesRepository, moviesRelevanceService);
 };
 
 describe("MoviesService", () => {

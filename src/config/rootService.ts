@@ -1,4 +1,4 @@
-import { MoviesRatingService, MoviesRepository, MoviesService } from "@modules/movies";
+import { MoviesRelevanceService, MoviesRepository, MoviesService } from "@modules/movies";
 import { DbConnection } from "./database/connectJSONDb";
 
 export type RootService = {
@@ -7,8 +7,8 @@ export type RootService = {
 
 export function createRootService(db: DbConnection): RootService {
   const moviesRepository = MoviesRepository(db);
-  const moviesRatingService = MoviesRatingService();
-  const moviesService = MoviesService(moviesRepository, moviesRatingService);
+  const moviesRelevanceService = MoviesRelevanceService();
+  const moviesService = MoviesService(moviesRepository, moviesRelevanceService);
 
   return { moviesService };
 }

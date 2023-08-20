@@ -1,11 +1,11 @@
 import { Movie } from "../../models/movie";
 
-export type MoviesRatingService = {
+export type MoviesRelevanceService = {
   getMovieRelevanceByGenres(movie: Movie, relevantGenres: string[]): number;
   sortMoviesByGenresRelevance(movies: Movie[], relevantGenres: string[]): Movie[];
 };
 
-export const MoviesRatingService = (): MoviesRatingService => {
+export const MoviesRelevanceService = (): MoviesRelevanceService => {
   const getMovieRelevanceByGenres = (movie: Movie, relevantGenres: string[]) => {
     let rating = 0;
 
