@@ -25,14 +25,17 @@ export const createMoviesRouter = ({ moviesService }: RootService): Router => {
       .catch(next);
   });
 
-  router.get("/", validators.getMovie, async (req, res, next) => {
+  router.get("/", validators.getMovie, (req, res, next) => {
     const filters = req.query;
 
-    if (Object.keys(filters).length) {
-      return moviesService
+    const filtersActive = Object.keys(filters).length > 0;
+    if (filtersActive) {
+      moviesService
         .getMoviesWithFilters(filters)
         .then((movies) => res.json(movies))
         .catch(next);
+
+      return;
     }
 
     moviesService

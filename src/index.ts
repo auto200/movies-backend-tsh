@@ -11,6 +11,6 @@ connectJSONDb()
   .then(initApp)
   .then((app) =>
     app.listen(appConfig.PORT, () => {
-      console.log("listening on port 3000");
+      console.log(`listening on port ${appConfig.PORT}`);
     }),
   );

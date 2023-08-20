@@ -18,9 +18,9 @@ export const MoviesService = (
   moviesRepository: MoviesRepository,
   moviesRelevanceService: MoviesRelevanceService,
 ): MoviesService => {
-  const assertValidGenres = async (movie: AddMovieRequestDTO) => {
+  const assertValidGenres = async (genres: string[]) => {
     const validGenres = await moviesRepository.getGenres();
-    const areValid = movie.genres.every((genre) => validGenres.includes(genre));
+    const areValid = genres.every((genre) => validGenres.includes(genre));
 
     if (!areValid) {
       throw new InvalidGenreError(`Invalid genre. Available genres are: ${validGenres.join(", ")}`);
@@ -71,7 +71,7 @@ export const MoviesService = (
 
   return {
     addMovie: async (movieToAdd) => {
-      await assertValidGenres(movieToAdd);
+      await assertValidGenres(movieToAdd.genres);
       await assertNoDuplicates(movieToAdd);
       await moviesRepository.addMovie(movieToAdd);
     },
@@ -92,7 +92,10 @@ export const MoviesService = (
       }
 
       if (filterNames.length === 1 && filters.genres) {
-        return await getMoviesByGenres(toArray(filters.genres));
+        const genres = toArray(filters.genres);
+
+        await assertValidGenres(genres);
+        return await getMoviesByGenres(genres);
       }
 
       if (filterNames.length === 2 && filters.genres && filters.duration) {
