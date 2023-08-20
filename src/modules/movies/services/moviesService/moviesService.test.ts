@@ -188,7 +188,7 @@ describe("MoviesService", () => {
 
   test("get movies with genres filter", () => {
     const initialData: DatabaseSchema = {
-      genres: ["Comedy", "Fantasy"],
+      genres: ["Comedy", "Fantasy", "Drama"],
       movies: [
         {
           id: 1,
@@ -224,6 +224,19 @@ describe("MoviesService", () => {
 
     const expected2 = [initialData.movies[1]];
     expect(moviesService.getMoviesWithFilters({ genres: ["Drama"] })).resolves.toEqual(expected2);
+  });
+
+  test("get movies with genres filter should throw if provided invalid genre", () => {
+    const initialData: DatabaseSchema = {
+      genres: ["Comedy", "Fantasy"],
+      movies: [],
+    };
+
+    const moviesService = createMockMovieService(initialData);
+
+    expect(moviesService.getMoviesWithFilters({ genres: ["Drama"] })).rejects.toThrowError(
+      InvalidGenreError,
+    );
   });
 
   test("get movies with genres and duration filters", () => {
