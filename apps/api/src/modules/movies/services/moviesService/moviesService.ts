@@ -1,15 +1,18 @@
 import { Sampler, isNumberInTolerance, sample, toArray } from "@common/utils";
 
 import { MoviesRepository } from "../moviesRepository";
-import { AddMovieRequestDTO, GetMovieFilters, Movie } from "../../models/movie";
+import { AddMovieRequestDTO, GetMovieFiltersDTO, MovieDTO } from "../../models";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 import { MoviesRelevanceService } from "../moviesRelevanceService";
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
-  getRandomMovie(sampler?: Sampler): Promise<Movie[]>;
-  getMoviesWithFilters(filters: GetMovieFilters, durationVariation?: number): Promise<Movie[]>;
+  getRandomMovie(sampler?: Sampler): Promise<MovieDTO[]>;
+  getMoviesWithFilters(
+    filters: GetMovieFiltersDTO,
+    durationVariation?: number,
+  ): Promise<MovieDTO[]>;
 };
 
 const DEFAULT_DURATION_VARIATION = 10;
@@ -36,10 +39,13 @@ export const MoviesService = (
     }
   };
 
-  const filterMoviesByDuration = (movies: Movie[], duration: number, durationVariation: number) =>
-    movies.filter((movie) => isNumberInTolerance(duration, movie.runtime, durationVariation));
+  const filterMoviesByDuration = (
+    movies: MovieDTO[],
+    duration: number,
+    durationVariation: number,
+  ) => movies.filter((movie) => isNumberInTolerance(duration, movie.runtime, durationVariation));
 
-  const filterMoviesByGenres = (movies: Movie[], genres: string[]) =>
+  const filterMoviesByGenres = (movies: MovieDTO[], genres: string[]) =>
     movies.filter((movie) => movie.genres.find((movieGenre) => genres.includes(movieGenre)));
 
   const getMoviesByDuration = async (duration: number, durationVariation: number) => {
