@@ -36,3 +36,6 @@ export const getMovieFiltersSchema = z.object({
 });
 
 export type GetMovieFiltersDTO = z.infer<typeof getMovieFiltersSchema>;
+
+export const getGenresResponseDTOSchema = z.array(z.string());
+export type GetGenresResponseDTO = z.infer<typeof getGenresResponseDTOSchema>;
