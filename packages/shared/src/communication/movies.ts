@@ -14,6 +14,9 @@ export const movieSchema = z.object({
 
 export type MovieDTO = z.infer<typeof movieSchema>;
 
+export const getMoviesDTOSchema = z.array(movieSchema);
+export type GetMoviesDTO = z.infer<typeof getMoviesDTOSchema>;
+
 export const addMovieRequestDTOSchema = movieSchema.pick({
   genres: true,
   title: true,

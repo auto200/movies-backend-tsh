@@ -3,4 +3,4 @@ export {
   GetMovieFiltersDTO,
   MovieDTO,
   getMovieFiltersSchema,
-} from "shared/communication";
+} from "@movies/shared/communication";

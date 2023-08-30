@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validator } from "@common/payloadValidation";
 import { RootService } from "@config/rootService";
-import { addMovieRequestDTOSchema, getMovieFiltersSchema } from "shared/communication";
+import { addMovieRequestDTOSchema, getMovieFiltersSchema } from "@movies/shared/communication";
 
 const validators = {
   addMovie: validator({ body: addMovieRequestDTOSchema }),
