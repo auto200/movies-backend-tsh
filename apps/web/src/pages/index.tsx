@@ -64,7 +64,16 @@ export default function Page() {
           <h1>
             {movie.title} - {movie.year}
           </h1>
-          <img src={movie.posterUrl} />
+          <object
+            data={movie.posterUrl}
+            type="image/jpg"
+            style={{ width: 250 }}
+          >
+            <img
+              style={{ width: 250 }}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png"
+            />
+          </object>
           <p>
             <b>{movie.director}</b> - {movie.genres.join(", ")}
           </p>

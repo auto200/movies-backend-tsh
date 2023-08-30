@@ -16,12 +16,14 @@ export function HttpService(fetcher: typeof fetch = fetch) {
     const { responseSchema, responseType = "json", query } = params;
     const response = await fetcher(attachQueryToUrl(url, query), params);
 
+    // TODO: better error formatting
     if (!response.ok) {
       throw new Error("fetch response status status not ok", {
         cause: response,
       });
     }
     const data = await response[responseType]();
+    // TODO: better error formatting
     return responseSchema.parse(data);
   }
 
