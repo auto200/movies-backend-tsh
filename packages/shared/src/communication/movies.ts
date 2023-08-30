@@ -12,7 +12,10 @@ export const movieSchema = z.object({
   posterUrl: z.string().url().optional(),
 });
 
-export type Movie = z.infer<typeof movieSchema>;
+export type MovieDTO = z.infer<typeof movieSchema>;
+
+export const getMoviesDTOSchema = z.array(movieSchema);
+export type GetMoviesDTO = z.infer<typeof getMoviesDTOSchema>;
 
 export const addMovieRequestDTOSchema = movieSchema.pick({
   genres: true,
@@ -27,9 +30,9 @@ export const addMovieRequestDTOSchema = movieSchema.pick({
 
 export type AddMovieRequestDTO = z.infer<typeof addMovieRequestDTOSchema>;
 
-export const getMovieWithQueryFiltersSchema = z.object({
+export const getMovieFiltersSchema = z.object({
   duration: z.coerce.number().positive().optional(),
   genres: z.union([z.string(), z.array(z.string())]).optional(),
 });
 
-export type GetMovieFilters = z.infer<typeof getMovieWithQueryFiltersSchema>;
+export type GetMovieFiltersDTO = z.infer<typeof getMovieFiltersSchema>;

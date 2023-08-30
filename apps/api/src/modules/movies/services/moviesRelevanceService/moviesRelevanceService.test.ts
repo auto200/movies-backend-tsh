@@ -1,12 +1,12 @@
 import { describe, expect, test } from "vitest";
 import { MoviesRelevanceService } from "./moviesRelevanceService";
-import { Movie } from "@modules/movies/models/movie";
+import { MovieDTO } from "../../models";
 
 describe("movies relevance service", () => {
   const moviesRelevanceService = MoviesRelevanceService();
 
   test("movie genre relevance rating", () => {
-    const movie: Movie = {
+    const movie: MovieDTO = {
       id: 3,
       year: 1994,
       runtime: 100,
@@ -37,7 +37,7 @@ describe("movies relevance service", () => {
       {
         genres: ["Horror", "Action"],
       },
-    ] as Movie[];
+    ] as MovieDTO[];
 
     const expected = [
       {

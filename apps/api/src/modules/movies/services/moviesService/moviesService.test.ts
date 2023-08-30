@@ -3,7 +3,7 @@ import { describe, test, expect } from "vitest";
 import { Sampler } from "@common/utils";
 import { DatabaseSchema } from "@config/database/connectJSONDb";
 
-import { AddMovieRequestDTO, Movie } from "../../models/movie";
+import { AddMovieRequestDTO, MovieDTO } from "../../models";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 
@@ -282,12 +282,12 @@ describe("MoviesService", () => {
       moviesService.getMoviesWithFilters({ genres: ["Drama"], duration: 90 }),
     ).resolves.toEqual(expected2);
 
-    const expected3 = [] as Movie[];
+    const expected3 = [] as MovieDTO[];
     expect(
       moviesService.getMoviesWithFilters({ genres: ["Comedy"], duration: 90 }),
     ).resolves.toEqual(expected3);
 
-    const expected4 = [] as Movie[];
+    const expected4 = [] as MovieDTO[];
     expect(
       moviesService.getMoviesWithFilters({ genres: ["Drama"], duration: 60 }),
     ).resolves.toEqual(expected4);
