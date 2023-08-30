@@ -26,7 +26,7 @@ export function HttpService(fetcher: typeof fetch = fetch) {
   }
 
   function attachQueryToUrl(url: string, query?: QueryParams): string {
-    if (!query) return url;
+    if (!query || !Object.keys(query)) return url;
 
     const searchParams = new URLSearchParams();
     for (const [key, value] of Object.entries(query)) {

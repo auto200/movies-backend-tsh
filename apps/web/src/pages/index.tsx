@@ -3,18 +3,32 @@ import { useMovies } from "modules/movies/api/queries/useMovies";
 import { useGenres } from "modules/movies/api/queries/useGenres";
 
 export default function Page() {
-  const [activeGenreFilters, setActiveGenreFilters] = useState<string[]>([]);
-  const { data: movies } = useMovies({ genres: activeGenreFilters });
+  const [genreFilters, setGenreFilters] = useState<string[]>([]);
+  const [durationFilter, setDurationFilter] = useState<number | undefined>();
+
+  const { data: movies } = useMovies({
+    genres: genreFilters,
+    duration: durationFilter,
+  });
   const { data: movieGenres } = useGenres();
 
   const handleGenderFilterChange = (genre: string) => {
-    if (activeGenreFilters.includes(genre)) {
-      return setActiveGenreFilters(
-        activeGenreFilters.filter((g) => g !== genre)
-      );
+    if (genreFilters.includes(genre)) {
+      return setGenreFilters(genreFilters.filter((g) => g !== genre));
     }
 
-    setActiveGenreFilters([...activeGenreFilters, genre]);
+    setGenreFilters([...genreFilters, genre]);
+  };
+
+  const handleDurationFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const val = Number.parseInt(e.target.value);
+    if (Number.isNaN(val)) {
+      return setDurationFilter(undefined);
+    }
+
+    setDurationFilter(val);
   };
 
   return (
@@ -26,7 +40,7 @@ export default function Page() {
             key={genre}
             onClick={() => handleGenderFilterChange(genre)}
             style={{
-              ...(activeGenreFilters.includes(genre) && {
+              ...(genreFilters.includes(genre) && {
                 backgroundColor: "green",
                 color: "white",
               }),
@@ -35,6 +49,15 @@ export default function Page() {
             {genre}
           </button>
         ))}
+      </div>
+      <div>
+        <p>Duration:</p>
+        <input
+          type="number"
+          value={durationFilter ?? ""}
+          onChange={handleDurationFilterChange}
+          min={0}
+        />
       </div>
       {movies?.map((movie) => (
         <React.Fragment key={movie.id}>
