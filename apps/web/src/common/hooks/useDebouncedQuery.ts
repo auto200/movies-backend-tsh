@@ -23,10 +23,11 @@ export function useDebouncedQuery<
   config: Config = { debounceMs: 500, omitDebounceOnCacheHit: true }
 ): UseQueryResult<TData, TError> {
   const debouncedOptions = useDebounce(options, config.debounceMs);
+  const qc = useQueryClient().getQueryCache();
 
   const isCached =
     config.omitDebounceOnCacheHit && options.queryKey
-      ? !!useQueryClient().getQueryCache().find(options.queryKey)
+      ? !!qc.find(options.queryKey)
       : false;
 
   return useQuery(isCached ? options : debouncedOptions);
