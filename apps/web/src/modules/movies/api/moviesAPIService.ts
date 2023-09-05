@@ -9,7 +9,7 @@ export function MoviesAPI(http: HttpService) {
   const baseUrl = "http://localhost:3001/v1/movies";
 
   return {
-    getRandomMovie: ({ genres, duration }: GetMovieFiltersDTO) =>
+    getMovies: ({ genres, duration }: GetMovieFiltersDTO) =>
       http.get(baseUrl, {
         responseSchema: getMoviesDTOSchema,
         query: { ...(genres && { genres }), ...(duration && { duration }) },

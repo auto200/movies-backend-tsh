@@ -13,6 +13,12 @@ type Config = {
 };
 
 // NOTE: type definitions are just a copy paste of `useQuery` type definition
+/**
+ *
+ * @param options UseQueryOptions, MUST BE MEMOIZED to avoid infinite loop
+ * @param config
+ * @returns
+ */
 export function useDebouncedQuery<
   TQueryFnData = unknown,
   TError = unknown,
