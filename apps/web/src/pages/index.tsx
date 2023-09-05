@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useMovies, useGenres } from "modules/movies/api/queries";
 
 export default function Page() {
   const [genreFilters, setGenreFilters] = useState<string[]>([]);
   const [durationFilter, setDurationFilter] = useState<number | undefined>();
 
-  const { data: movies } = useMovies({
-    genres: genreFilters,
-    duration: durationFilter,
-  });
+  const { data: movies } = useMovies(
+    useMemo(
+      () => ({
+        genres: genreFilters,
+        duration: durationFilter,
+      }),
+      [genreFilters, durationFilter]
+    )
+  );
   const { data: movieGenres } = useGenres();
 
   const handleGenderFilterChange = (genre: string) => {
