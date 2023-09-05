@@ -1,4 +1,4 @@
-import { DatabaseSchema } from "@config/database/connectJSONDb";
+import { DatabaseSchema } from "@/config/database/connectJSONDb";
 
 import { MoviesRepository } from "./moviesRepository";
 

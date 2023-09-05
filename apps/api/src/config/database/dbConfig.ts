@@ -1,4 +1,4 @@
-import { validateEnv } from "@config/validateEnv";
+import { validateEnv } from "@/config/validateEnv";
 import { z } from "zod";
 
 const dbConfigSchema = z.object({

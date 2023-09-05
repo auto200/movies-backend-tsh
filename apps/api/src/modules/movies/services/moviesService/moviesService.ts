@@ -1,11 +1,12 @@
-import { Sampler, isNumberInTolerance, sample, toArray } from "@common/utils";
+import { GetGenresResponseDTO } from "@movies/shared/communication";
+
+import { Sampler, isNumberInTolerance, sample, toArray } from "@/common/utils";
 
 import { MoviesRepository } from "../moviesRepository";
 import { AddMovieRequestDTO, GetMovieFiltersDTO, MovieDTO } from "../../models";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 import { MoviesRelevanceService } from "../moviesRelevanceService";
-import { GetGenresResponseDTO } from "@movies/shared/communication";
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;

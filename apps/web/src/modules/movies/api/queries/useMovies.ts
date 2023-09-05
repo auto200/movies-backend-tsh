@@ -1,7 +1,10 @@
-import { moviesAPI } from "../moviesAPIService";
-import { GetMovieFiltersDTO } from "@movies/shared/communication";
-import { useDebouncedQuery } from "common/hooks/useDebouncedQuery";
 import { useMemo } from "react";
+
+import { GetMovieFiltersDTO } from "@movies/shared/communication";
+
+import { useDebouncedQuery } from "@/common/hooks/useDebouncedQuery";
+
+import { moviesAPI } from "../moviesAPIService";
 
 export function useMovies(filters: GetMovieFiltersDTO) {
   return useDebouncedQuery(

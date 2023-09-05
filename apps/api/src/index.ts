@@ -1,8 +1,8 @@
 import "dotenv/config";
 
-import { appConfig } from "@config/appConfig";
-import { createRootService } from "@config/rootService";
-import { connectJSONDb } from "@config/database/connectJSONDb";
+import { appConfig } from "@/config/appConfig";
+import { createRootService } from "@/config/rootService";
+import { connectJSONDb } from "@/config/database/connectJSONDb";
 
 import { initApp } from "./app";
 

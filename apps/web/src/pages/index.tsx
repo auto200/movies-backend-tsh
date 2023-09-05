@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { useMovies, useGenres } from "modules/movies/api/queries";
+
+import { useMovies, useGenres } from "@/modules/movies/api/queries";
 
 export default function Page() {
   const [genreFilters, setGenreFilters] = useState<string[]>([]);

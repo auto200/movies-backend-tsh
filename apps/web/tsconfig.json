@@ -8,8 +8,8 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "@providers/*": [
-        "providers/*"
+      "@/*": [
+        "./*"
       ]
     }
   },

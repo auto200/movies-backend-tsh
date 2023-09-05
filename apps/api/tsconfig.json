@@ -19,19 +19,11 @@
     "noFallthroughCasesInSwitch": true, /* Enable error reporting for fallthrough cases in switch statements. */
     "noUncheckedIndexedAccess": true, /* Add 'undefined' to a type when accessed using an index. */
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+    "baseUrl": "./src",
     "paths": {
-      "@common/*": [
-        "./src/common/*"
+      "@/*": [
+        "./*"
       ],
-      "@config/*": [
-        "./src/config/*"
-      ],
-      "@modules/*": [
-        "./src/modules/*"
-      ],
-      "@utils/*": [
-        "./src/utils/*"
-      ]
     },
   }
 }

@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 
-import { Sampler } from "@common/utils";
-import { DatabaseSchema } from "@config/database/connectJSONDb";
+import { Sampler } from "@/common/utils";
+import { DatabaseSchema } from "@/config/database/connectJSONDb";
 
 import { AddMovieRequestDTO, MovieDTO } from "../../models";
 import { InvalidGenreError } from "../../errors/invalidGenreError";

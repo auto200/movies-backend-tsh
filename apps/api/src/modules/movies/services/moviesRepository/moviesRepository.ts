@@ -1,4 +1,4 @@
-import { DbConnection } from "@config/database/connectJSONDb";
+import { DbConnection } from "@/config/database/connectJSONDb";
 
 import { AddMovieRequestDTO, MovieDTO } from "../../models";
 
