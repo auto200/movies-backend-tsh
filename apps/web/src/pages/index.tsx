@@ -1,20 +1,61 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useMovies, useGenres } from "@/modules/movies/api/queries";
 import { Filters } from "@/modules/movies/components";
-import { FilterFormData } from "@/modules/movies/types";
+import { FilterFormData, filterFormSchema } from "@/modules/movies/schema";
+
+const filterFormDefaultValues: FilterFormData = {};
 
 export default function Page() {
-  const [filters, setFilters] = useState<FilterFormData>({});
+  const formMethods = useForm<FilterFormData>({
+    resolver: zodResolver(filterFormSchema),
+    defaultValues: filterFormDefaultValues,
+  });
 
-  const { data: movies } = useMovies(filters);
+  const { data: movies } = useMovies(formMethods.getValues());
   const { data: movieGenres } = useGenres();
+
+  const router = useRouter();
+
+  const handleSubmit = async (data: FilterFormData) => {
+    const { duration, ...restParams } = { ...router.query, ...data };
+    // remove duration from query if it's undefined
+    await router.replace({
+      query: { ...restParams, ...(duration && { duration }) },
+    });
+  };
+
+  // synchronize form state with query params on page enter
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const genres = searchParams.getAll("genres");
+    const duration = searchParams.get("duration");
+
+    if (genres) formMethods.setValue("genres", genres);
+    if (duration) formMethods.setValue("duration", Number.parseInt(duration));
+  }, []);
+
+  useEffect(() => {
+    const { unsubscribe } = formMethods.watch(() =>
+      formMethods.handleSubmit(handleSubmit)()
+    );
+    return () => unsubscribe();
+  }, [formMethods.watch]);
 
   return (
     <div>
-      {movieGenres && (
-        <Filters movieGenres={movieGenres} onSubmit={setFilters} />
-      )}
+      <FormProvider {...formMethods}>
+        {movieGenres && (
+          <Filters
+            movieGenres={movieGenres}
+            onReset={() => formMethods.reset()}
+          />
+        )}
+      </FormProvider>
+
       {movies?.map((movie) => (
         <div key={movie.id}>
           <h1>

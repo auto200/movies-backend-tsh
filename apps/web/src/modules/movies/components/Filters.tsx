@@ -1,57 +1,24 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormContext } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 
-import { FilterFormData, filterFormSchema } from "../types";
+import { FilterFormData } from "../schema";
 
 type FiltersProps = {
   movieGenres: string[];
-  onSubmit: (data: FilterFormData) => void;
+  onReset: () => void;
 };
-const filterFormDefaultValues: FilterFormData = {};
 
-export function Filters({ movieGenres, onSubmit }: FiltersProps) {
-  const router = useRouter();
-  const params = useSearchParams();
-
+export function Filters({ movieGenres, onReset }: FiltersProps) {
   const {
     register,
-    handleSubmit: submitForm,
     control,
-    setValue,
-    getValues,
-  } = useForm<FilterFormData>({
-    resolver: zodResolver(filterFormSchema),
-    defaultValues: filterFormDefaultValues,
-  });
-
-  const handleSubmit = (data: FilterFormData) => {
-    const { duration, ...restParams } = { ...router.query, ...getValues() };
-    // remove duration from query if it's undefined
-    router.replace({
-      query: { ...restParams, ...(duration && { duration }) },
-    });
-
-    onSubmit(data);
-  };
-
-  useEffect(() => {
-    const genres = params.getAll("genres");
-    const duration = params.get("duration");
-
-    if (genres) setValue("genres", genres);
-    if (duration) setValue("duration", Number.parseInt(duration));
-
-    submitForm(onSubmit)();
-  }, []);
+    formState: { isDirty },
+  } = useFormContext<FilterFormData>();
 
   return (
     <>
-      <form onSubmit={submitForm(handleSubmit)}>
-        Filters: Genres:
+      <form>
+        Genres:
         <div>
           <select
             multiple
@@ -76,7 +43,9 @@ export function Filters({ movieGenres, onSubmit }: FiltersProps) {
             })}
           />
         </div>
-        <button type="submit">Apply</button>
+        <button onClick={onReset} disabled={!isDirty}>
+          reset
+        </button>
       </form>
       <DevTool control={control} />
     </>
