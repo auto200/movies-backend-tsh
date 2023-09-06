@@ -9,15 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "3.3.1",
     "@movies/shared": "workspace:*",
     "@tanstack/react-query": "4.33.0",
     "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "7.46.1",
     "usehooks-ts": "2.9.1",
     "zod": "3.22.1"
   },
   "devDependencies": {
+    "@hookform/devtools": "4.3.1",
     "@next/eslint-plugin-next": "13.4.19",
     "@types/node": "17.0.12",
     "@types/react": "18.0.22",
