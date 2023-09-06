@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useMovies, useGenres } from "@/modules/movies/api/queries";
+import { useMovies, useFiltersMetadata } from "@/modules/movies/api/queries";
 import { Filters } from "@/modules/movies/components";
 import { FilterFormData, filterFormSchema } from "@/modules/movies/schema";
 
@@ -16,7 +16,7 @@ export default function Page() {
   });
 
   const { data: movies } = useMovies(formMethods.getValues());
-  const { data: movieGenres } = useGenres();
+  const { data: filtersMetadata } = useFiltersMetadata();
 
   const router = useRouter();
 
@@ -48,11 +48,8 @@ export default function Page() {
   return (
     <div>
       <FormProvider {...formMethods}>
-        {movieGenres && (
-          <Filters
-            movieGenres={movieGenres}
-            onReset={() => formMethods.reset()}
-          />
+        {filtersMetadata && (
+          <Filters data={filtersMetadata} onReset={() => formMethods.reset()} />
         )}
       </FormProvider>
 

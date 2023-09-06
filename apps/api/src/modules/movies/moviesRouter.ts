@@ -44,10 +44,10 @@ export const createMoviesRouter = ({ moviesService }: RootService): Router => {
       .catch(next);
   });
 
-  router.get("/genres", (_, res, next) => {
+  router.get("/filters-metadata", (_, res, next) => {
     moviesService
-      .getGenres()
-      .then((genres) => res.json(genres))
+      .getFiltersMetadata()
+      .then((filtersMetadata) => res.json(filtersMetadata))
       .catch(next);
   });
 

@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { moviesAPI } from "../moviesAPIService";
 
-export function useGenres() {
+export function useFiltersMetadata() {
   return useQuery({
-    queryKey: ["movie-genres"],
-    queryFn: moviesAPI.getGenres,
+    queryKey: ["filters-metadata"],
+    queryFn: moviesAPI.getFiltersMetadata,
   });
 }

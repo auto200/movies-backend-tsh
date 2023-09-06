@@ -1,19 +1,37 @@
 import { useFormContext } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
-import { FilterFormData } from "../schema";
+import { FilterFormData, FiltersMetadata } from "../schema";
+import { useMemo } from "react";
 
 type FiltersProps = {
-  movieGenres: string[];
+  data: FiltersMetadata;
   onReset: () => void;
 };
 
-export function Filters({ movieGenres, onReset }: FiltersProps) {
+// NOTE: not really robust solution, values could be rounded - not needed for now
+const minMaxToTimeOptions = (times: FiltersMetadata["times"]) => {
+  const timeOptions: number[] = [];
+
+  for (let i = times.min; i <= times.max; i += 10) {
+    console.log("xd");
+    timeOptions.push(i);
+  }
+
+  return timeOptions;
+};
+
+export function Filters({ data, onReset }: FiltersProps) {
   const {
     register,
     control,
     formState: { isDirty },
   } = useFormContext<FilterFormData>();
+
+  const timeOptions = useMemo(
+    () => minMaxToTimeOptions(data.times),
+    [data.times]
+  );
 
   return (
     <>
@@ -25,7 +43,7 @@ export function Filters({ movieGenres, onReset }: FiltersProps) {
             {...register("genres")}
             style={{ width: 150, height: 200 }}
           >
-            {movieGenres.map((genre) => (
+            {data.genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}
               </option>
@@ -34,14 +52,22 @@ export function Filters({ movieGenres, onReset }: FiltersProps) {
         </div>
         <div>
           <p>Duration:</p>
-          <input
+          <select {...register("duration")}>
+            <option value="">-</option>
+            {timeOptions.map((time) => (
+              <option key={time} value={time}>
+                {time}
+              </option>
+            ))}
+          </select>
+          {/* <input
             type="number"
             min={0}
             {...register("duration", {
               setValueAs: (v) =>
                 v === "" ? undefined : Number.parseInt(v, 10),
             })}
-          />
+          /> */}
         </div>
         <button onClick={onReset} disabled={!isDirty}>
           reset

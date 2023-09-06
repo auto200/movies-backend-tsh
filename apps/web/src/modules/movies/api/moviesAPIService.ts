@@ -1,6 +1,6 @@
 import {
   GetMovieFiltersDTO,
-  getGenresResponseDTOSchema,
+  getFiltersMetadataResponseDTOSchema,
   getMoviesDTOSchema,
 } from "@movies/shared/communication";
 
@@ -15,9 +15,9 @@ export function MoviesAPI(http: HttpService) {
         responseSchema: getMoviesDTOSchema,
         query: { ...(genres && { genres }), ...(duration && { duration }) },
       }),
-    getGenres: () =>
-      http.get(`${baseUrl}/genres`, {
-        responseSchema: getGenresResponseDTOSchema,
+    getFiltersMetadata: () =>
+      http.get(`${baseUrl}/filters-metadata`, {
+        responseSchema: getFiltersMetadataResponseDTOSchema,
       }),
   };
 }

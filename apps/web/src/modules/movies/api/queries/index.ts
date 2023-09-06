@@ -1,2 +1,2 @@
-export * from "./useGenres";
 export * from "./useMovies";
+export * from "./useFiltersMetadata";

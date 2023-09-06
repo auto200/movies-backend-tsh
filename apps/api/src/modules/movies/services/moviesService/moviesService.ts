@@ -1,9 +1,12 @@
-import { GetGenresResponseDTO } from "@movies/shared/communication";
-
 import { Sampler, isNumberInTolerance, sample, toArray } from "@/common/utils";
 
 import { MoviesRepository } from "../moviesRepository";
-import { AddMovieRequestDTO, GetMovieFiltersDTO, MovieDTO } from "../../models";
+import {
+  AddMovieRequestDTO,
+  GetMovieFiltersDTO,
+  MovieDTO,
+  GetFiltersMetadataResponseDTO,
+} from "../../models";
 import { InvalidGenreError } from "../../errors/invalidGenreError";
 import { DuplicateMovieError } from "../../errors/duplicateMovieError";
 import { MoviesRelevanceService } from "../moviesRelevanceService";
@@ -15,7 +18,7 @@ export type MoviesService = {
     filters: GetMovieFiltersDTO,
     durationVariation?: number,
   ): Promise<MovieDTO[]>;
-  getGenres(): Promise<GetGenresResponseDTO>;
+  getFiltersMetadata(): Promise<GetFiltersMetadataResponseDTO>;
 };
 
 const DEFAULT_DURATION_VARIATION = 10;
@@ -24,10 +27,8 @@ export const MoviesService = (
   moviesRepository: MoviesRepository,
   moviesRelevanceService: MoviesRelevanceService,
 ): MoviesService => {
-  const getGenres = async () => await moviesRepository.getGenres();
-
   const assertValidGenres = async (genres: string[]) => {
-    const validGenres = await getGenres();
+    const validGenres = await moviesRepository.getGenres();
     const areValid = genres.every((genre) => validGenres.includes(genre));
 
     if (!areValid) {
@@ -80,8 +81,24 @@ export const MoviesService = (
     return durationFilteredMovies;
   };
 
+  const getMinMaxMovieTimes = (movies: MovieDTO[]) => {
+    const times = movies.map(({ runtime }) => runtime);
+
+    return {
+      min: Math.min(...times),
+      max: Math.max(...times),
+    };
+  };
+
   return {
-    getGenres,
+    getFiltersMetadata: async () => {
+      const [genres, movies] = await Promise.all([
+        moviesRepository.getGenres(),
+        moviesRepository.getAllMovies(),
+      ]);
+
+      return { genres, times: getMinMaxMovieTimes(movies) };
+    },
 
     addMovie: async (movieToAdd) => {
       await assertValidGenres(movieToAdd.genres);

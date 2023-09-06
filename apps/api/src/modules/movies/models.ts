@@ -3,4 +3,5 @@ export {
   GetMovieFiltersDTO,
   MovieDTO,
   getMovieFiltersSchema,
+  GetFiltersMetadataResponseDTO,
 } from "@movies/shared/communication";
