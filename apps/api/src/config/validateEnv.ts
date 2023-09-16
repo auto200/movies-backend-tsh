@@ -1,4 +1,4 @@
-import { z, ZodObject, ZodRawShape } from "zod";
+import { z, ZodObject, ZodRawShape } from 'zod';
 
 export function validateEnv<T extends ZodObject<ZodRawShape>>(schema: T): z.infer<T> {
   const result = schema.safeParse(process.env);

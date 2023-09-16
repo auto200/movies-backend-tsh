@@ -5,6 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn -r tsconfig-paths/register --transpile-only ./src/index.ts",
+    "format": "prettier src/**/*.ts --list-different",
+    "format:fix": "pnpm format --write",
     "test:watch": "vitest",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"

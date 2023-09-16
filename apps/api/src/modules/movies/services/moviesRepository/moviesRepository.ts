@@ -1,6 +1,6 @@
-import { DbConnection } from "@/config/database/connectJSONDb";
+import { DbConnection } from '@/config/database/connectJSONDb';
 
-import { AddMovieRequestDTO, MovieDTO } from "../../models";
+import { AddMovieRequestDTO, MovieDTO } from '../../models';
 
 export type MoviesRepository = {
   findByTitle(title: string): Promise<MovieDTO | null>;

@@ -1,6 +1,6 @@
-import { DatabaseSchema } from "@/config/database/connectJSONDb";
+import { DatabaseSchema } from '@/config/database/connectJSONDb';
 
-import { MoviesRepository } from "./moviesRepository";
+import { MoviesRepository } from './moviesRepository';
 
 export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesRepository => {
   const db = initialData;

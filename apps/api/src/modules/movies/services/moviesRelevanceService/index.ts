@@ -1,1 +1,1 @@
-export * from "./moviesRelevanceService";
+export * from './moviesRelevanceService';

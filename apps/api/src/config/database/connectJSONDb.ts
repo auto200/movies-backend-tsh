@@ -1,5 +1,5 @@
-import { dbConfig } from "./dbConfig";
-import { JSONDbDriver } from "./JSONDbDriver";
+import { dbConfig } from './dbConfig';
+import { JSONDbDriver } from './JSONDbDriver';
 
 export type DatabaseSchema = {
   genres: string[];

@@ -1,14 +1,14 @@
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes } from 'http-status-codes';
 
-import { ZodError } from "zod";
-import { AppError, AppErrorDTO } from "./AppError";
+import { ZodError } from 'zod';
+import { AppError, AppErrorDTO } from './AppError';
 
-export type PayloadError = { type: "Params" | "Query" | "Body"; errors: ZodError };
+export type PayloadError = { type: 'Params' | 'Query' | 'Body'; errors: ZodError };
 
 export class PayloadValidationError extends AppError {
   constructor(
     public message: string,
-    private errors: PayloadError[],
+    private errors: PayloadError[]
   ) {
     super(message, StatusCodes.BAD_REQUEST);
   }

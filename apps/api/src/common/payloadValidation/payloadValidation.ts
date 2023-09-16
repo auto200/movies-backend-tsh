@@ -1,6 +1,6 @@
-import { RequestHandler } from "express";
-import { ZodSchema } from "zod";
-import { PayloadError, PayloadValidationError } from ".././errors/PayloadValidationError";
+import { RequestHandler } from 'express';
+import { ZodSchema } from 'zod';
+import { PayloadError, PayloadValidationError } from '.././errors/PayloadValidationError';
 
 type PayloadSchema<TParams, TQuery, TBody> = Partial<{
   params: ZodSchema<TParams>;
@@ -14,7 +14,7 @@ export const validator =
     Query extends Record<string, unknown>,
     Body extends unknown,
   >(
-    schema: PayloadSchema<Params, Query, Body>,
+    schema: PayloadSchema<Params, Query, Body>
   ): RequestHandler<Params, any, Body, Query> =>
   (req, _, next) => {
     const errors: PayloadError[] = [];
@@ -24,7 +24,7 @@ export const validator =
       if (parsed.success) {
         req.params = parsed.data;
       } else {
-        errors.push({ type: "Params", errors: parsed.error });
+        errors.push({ type: 'Params', errors: parsed.error });
       }
     }
 
@@ -33,7 +33,7 @@ export const validator =
       if (parsed.success) {
         req.query = parsed.data;
       } else {
-        errors.push({ type: "Query", errors: parsed.error });
+        errors.push({ type: 'Query', errors: parsed.error });
       }
     }
 
@@ -42,12 +42,12 @@ export const validator =
       if (parsed.success) {
         req.body = parsed.data;
       } else {
-        errors.push({ type: "Body", errors: parsed.error });
+        errors.push({ type: 'Body', errors: parsed.error });
       }
     }
 
     if (errors.length > 0) {
-      return next(new PayloadValidationError("Invalid payload", errors));
+      return next(new PayloadValidationError('Invalid payload', errors));
     }
 
     next();

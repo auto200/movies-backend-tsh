@@ -1,7 +1,7 @@
-import { expect, test } from "vitest";
-import { isNumberInTolerance, toArray } from ".";
+import { expect, test } from 'vitest';
+import { isNumberInTolerance, toArray } from '.';
 
-test("number in tolerance", () => {
+test('number in tolerance', () => {
   const value1 = 80;
   const middlePoint1 = 100;
   const tolerance1 = 20;
@@ -18,7 +18,7 @@ test("number in tolerance", () => {
   expect(isNumberInTolerance(value3, middlePoint3, tolerance3)).toBeFalsy();
 });
 
-test("to array", () => {
+test('to array', () => {
   expect(toArray(1)).toEqual([1]);
   expect(toArray([1])).toEqual([1]);
 });

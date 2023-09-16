@@ -1,24 +1,24 @@
-import fsPromises from "node:fs/promises";
+import fsPromises from 'node:fs/promises';
 
 export class JSONDbDriver<DbSchema = unknown> {
   public data: DbSchema;
 
   constructor(
     private filePath: string,
-    defaultData: DbSchema,
+    defaultData: DbSchema
   ) {
     this.data = defaultData;
   }
 
   async load(): Promise<void> {
     try {
-      const parsedData = JSON.parse(await fsPromises.readFile(this.filePath, "utf-8"));
+      const parsedData = JSON.parse(await fsPromises.readFile(this.filePath, 'utf-8'));
 
       if (parsedData) {
         this.data = parsedData as DbSchema;
       }
     } catch (e) {
-      if ((e as NodeJS.ErrnoException).code === "ENOENT") {
+      if ((e as NodeJS.ErrnoException).code === 'ENOENT') {
         return;
       }
       throw e;

@@ -1,22 +1,22 @@
-import { Sampler, isNumberInTolerance, sample, toArray } from "@/common/utils";
+import { Sampler, isNumberInTolerance, sample, toArray } from '@/common/utils';
 
-import { MoviesRepository } from "../moviesRepository";
+import { MoviesRepository } from '../moviesRepository';
 import {
   AddMovieRequestDTO,
   GetMovieFiltersDTO,
   MovieDTO,
   GetFiltersMetadataResponseDTO,
-} from "../../models";
-import { InvalidGenreError } from "../../errors/invalidGenreError";
-import { DuplicateMovieError } from "../../errors/duplicateMovieError";
-import { MoviesRelevanceService } from "../moviesRelevanceService";
+} from '../../models';
+import { InvalidGenreError } from '../../errors/invalidGenreError';
+import { DuplicateMovieError } from '../../errors/duplicateMovieError';
+import { MoviesRelevanceService } from '../moviesRelevanceService';
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
   getRandomMovie(sampler?: Sampler): Promise<MovieDTO[]>;
   getMoviesWithFilters(
     filters: GetMovieFiltersDTO,
-    durationVariation?: number,
+    durationVariation?: number
   ): Promise<MovieDTO[]>;
   getFiltersMetadata(): Promise<GetFiltersMetadataResponseDTO>;
 };
@@ -25,14 +25,14 @@ const DEFAULT_DURATION_VARIATION = 10;
 
 export const MoviesService = (
   moviesRepository: MoviesRepository,
-  moviesRelevanceService: MoviesRelevanceService,
+  moviesRelevanceService: MoviesRelevanceService
 ): MoviesService => {
   const assertValidGenres = async (genres: string[]) => {
     const validGenres = await moviesRepository.getGenres();
     const areValid = genres.every((genre) => validGenres.includes(genre));
 
     if (!areValid) {
-      throw new InvalidGenreError(`Invalid genre. Available genres are: ${validGenres.join(", ")}`);
+      throw new InvalidGenreError(`Invalid genre. Available genres are: ${validGenres.join(', ')}`);
     }
   };
 
@@ -41,14 +41,14 @@ export const MoviesService = (
     if (!movieFromDb) return;
 
     if (movie.director === movieFromDb.director && movie.year === movieFromDb.year) {
-      throw new DuplicateMovieError("This movie is already in our database");
+      throw new DuplicateMovieError('This movie is already in our database');
     }
   };
 
   const filterMoviesByDuration = (
     movies: MovieDTO[],
     duration: number,
-    durationVariation: number,
+    durationVariation: number
   ) => movies.filter((movie) => isNumberInTolerance(duration, movie.runtime, durationVariation));
 
   const filterMoviesByGenres = (movies: MovieDTO[], genres: string[]) =>
@@ -69,13 +69,13 @@ export const MoviesService = (
   const getMoviesByGenresAndDuration = async (
     genres: string[],
     duration: number,
-    durationVariation: number,
+    durationVariation: number
   ) => {
     const genreFilteredMovies = await getMoviesByGenres(genres);
     const durationFilteredMovies = filterMoviesByDuration(
       genreFilteredMovies,
       duration,
-      durationVariation,
+      durationVariation
     );
 
     return durationFilteredMovies;
@@ -132,7 +132,7 @@ export const MoviesService = (
         return await getMoviesByGenresAndDuration(
           toArray(filters.genres),
           filters.duration,
-          DEFAULT_DURATION_VARIATION,
+          DEFAULT_DURATION_VARIATION
         );
       }
 

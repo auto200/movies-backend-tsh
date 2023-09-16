@@ -1,2 +1,2 @@
-export * from "./services";
-export * from "./moviesRouter";
+export * from './services';
+export * from './moviesRouter';

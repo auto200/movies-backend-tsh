@@ -1,4 +1,4 @@
-import { MovieDTO } from "../../models";
+import { MovieDTO } from '../../models';
 
 export type MoviesRelevanceService = {
   getMovieRelevanceByGenres(movie: MovieDTO, relevantGenres: string[]): number;
@@ -22,7 +22,7 @@ export const MoviesRelevanceService = (): MoviesRelevanceService => {
       return [...movies].sort(
         (a, b) =>
           getMovieRelevanceByGenres(b, relevantGenres) -
-          getMovieRelevanceByGenres(a, relevantGenres),
+          getMovieRelevanceByGenres(a, relevantGenres)
       );
     },
   };
