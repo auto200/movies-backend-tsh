@@ -26,7 +26,7 @@
     "@types/node": "17.0.12",
     "@types/react": "18.0.22",
     "@types/react-dom": "18.0.7",
-    "tsconfig": "workspace:*",
+    "@movies/tsconfig": "workspace:*",
     "typescript": "5.1.6"
   }
 }

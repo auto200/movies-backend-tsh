@@ -15,7 +15,5 @@
     "resolveJsonModule": true,
     "strict": false,
     "target": "es6"
-  },
-  "include": ["src", "next-env.d.ts"],
-  "exclude": ["node_modules"]
+  }
 }

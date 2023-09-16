@@ -1,0 +1,51 @@
+/** @type {import("eslint").Linter.Config} */
+const config = {
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+  ],
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint"],
+  rules: {
+    // global
+    eqeqeq: "error",
+    "no-console": "warn",
+    // ts
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
+    "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+    // import
+    "import/newline-after-import": "warn",
+    "import/no-cycle": "warn",
+    "import/no-default-export": "warn",
+    "import/no-extraneous-dependencies": "warn",
+    "import/first": "warn",
+    "import/no-duplicates": ["warn", { "prefer-inline": true }],
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always",
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
+        },
+      },
+    ],
+  },
+  settings: {
+    "import/resolver": "typescript",
+  },
+};
+
+module.exports = config;
