@@ -8,10 +8,10 @@ runs:
       with:
       version: 8
 
-  - uses: actions/setup-node@v3
-    with:
-      node-version: 18
-      cache: "pnpm"
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: "pnpm"
 
-  - name: install
-    run: pnpm i
+    - name: install
+      run: pnpm i
