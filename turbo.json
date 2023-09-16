@@ -12,9 +12,17 @@
       "persistent": true
     },
     "test": {},
-    "format": {},
-    "format:fix": {},
-    "typecheck": {},
-    "lint": {}
+    "format": {
+      "cache": false
+    },
+    "format:fix": {
+      "cache": false
+    },
+    "typecheck": {
+      "cache": false
+    },
+    "lint": {
+      "cache": false
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const movieSchema = z.object({
   id: z.number().positive(),
@@ -41,6 +41,4 @@ export const getFiltersMetadataResponseDTOSchema = z.object({
   genres: z.array(z.string()),
   times: z.object({ min: z.number().positive(), max: z.number().positive() }),
 });
-export type GetFiltersMetadataResponseDTO = z.infer<
-  typeof getFiltersMetadataResponseDTOSchema
->;
+export type GetFiltersMetadataResponseDTO = z.infer<typeof getFiltersMetadataResponseDTOSchema>;
