@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import { ZodSchema } from 'zod';
+
 import { PayloadError, PayloadValidationError } from '.././errors/PayloadValidationError';
 
 type PayloadSchema<TParams, TQuery, TBody> = Partial<{
@@ -7,16 +8,15 @@ type PayloadSchema<TParams, TQuery, TBody> = Partial<{
   query: ZodSchema<TQuery>;
   body: ZodSchema<TBody>;
 }>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ResBody = any;
 
-export const validator =
-  <
-    Params extends Record<string, unknown>,
-    Query extends Record<string, unknown>,
-    Body extends unknown,
-  >(
-    schema: PayloadSchema<Params, Query, Body>
-  ): RequestHandler<Params, any, Body, Query> =>
-  (req, _, next) => {
+export function validator<
+  Params extends Record<string, unknown>,
+  Query extends Record<string, unknown>,
+  Body,
+>(schema: PayloadSchema<Params, Query, Body>): RequestHandler<Params, ResBody, Body, Query> {
+  return (req, _, next) => {
     const errors: PayloadError[] = [];
 
     if (schema.params) {
@@ -52,3 +52,4 @@ export const validator =
 
     next();
   };
+}

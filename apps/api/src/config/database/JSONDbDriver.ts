@@ -12,7 +12,7 @@ export class JSONDbDriver<DbSchema = unknown> {
 
   async load(): Promise<void> {
     try {
-      const parsedData = JSON.parse(await fsPromises.readFile(this.filePath, 'utf-8'));
+      const parsedData: unknown = JSON.parse(await fsPromises.readFile(this.filePath, 'utf-8'));
 
       if (parsedData) {
         this.data = parsedData as DbSchema;

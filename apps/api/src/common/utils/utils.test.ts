@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+
 import { isNumberInTolerance, toArray } from '.';
 
 test('number in tolerance', () => {

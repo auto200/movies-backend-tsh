@@ -1,7 +1,8 @@
-import { Router } from 'express';
-import { validator } from '@/common/payloadValidation';
-import { RootService } from '@/config/rootService';
 import { addMovieRequestDTOSchema, getMovieFiltersSchema } from '@movies/shared/communication';
+import { Router } from 'express';
+
+import { validator } from '@/common/payloadValidation';
+import { type RootService } from '@/config/rootService';
 
 const validators = {
   addMovie: validator({ body: addMovieRequestDTOSchema }),
@@ -10,8 +11,7 @@ const validators = {
   }),
 };
 
-// NOTE: currently movie genres has to exactly match genres from database,
-// including capitalization
+// NOTE: currently movie genres has to exactly match genres from database, including capitalization
 
 export const createMoviesRouter = ({ moviesService }: RootService): Router => {
   const router = Router();

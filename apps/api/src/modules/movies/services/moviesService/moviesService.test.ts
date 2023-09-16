@@ -1,15 +1,16 @@
+/*eslint-disable @typescript-eslint/no-floating-promises */
 import { describe, test, expect } from 'vitest';
+
+import { DuplicateMovieError } from '../../errors/duplicateMovieError';
+import { InvalidGenreError } from '../../errors/invalidGenreError';
+import { AddMovieRequestDTO, MovieDTO } from '../../models';
+import { MoviesRelevanceService } from '../moviesRelevanceService';
+import { createMockMoviesRepository } from '../moviesRepository/moviesRepository.mock';
+
+import { MoviesService } from './moviesService';
 
 import { Sampler } from '@/common/utils';
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
-
-import { AddMovieRequestDTO, MovieDTO } from '../../models';
-import { InvalidGenreError } from '../../errors/invalidGenreError';
-import { DuplicateMovieError } from '../../errors/duplicateMovieError';
-
-import { MoviesService } from './moviesService';
-import { createMockMoviesRepository } from '../moviesRepository/moviesRepository.mock';
-import { MoviesRelevanceService } from '../moviesRelevanceService';
 
 const createMockMovieService = (initialData: DatabaseSchema) => {
   const mockMoviesRepository = createMockMoviesRepository(initialData);

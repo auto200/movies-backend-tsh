@@ -1,15 +1,15 @@
-import { Sampler, isNumberInTolerance, sample, toArray } from '@/common/utils';
-
-import { MoviesRepository } from '../moviesRepository';
+import { DuplicateMovieError } from '../../errors/duplicateMovieError';
+import { InvalidGenreError } from '../../errors/invalidGenreError';
 import {
   AddMovieRequestDTO,
   GetMovieFiltersDTO,
   MovieDTO,
   GetFiltersMetadataResponseDTO,
 } from '../../models';
-import { InvalidGenreError } from '../../errors/invalidGenreError';
-import { DuplicateMovieError } from '../../errors/duplicateMovieError';
 import { MoviesRelevanceService } from '../moviesRelevanceService';
+import { MoviesRepository } from '../moviesRepository';
+
+import { Sampler, isNumberInTolerance, sample, toArray } from '@/common/utils';
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;

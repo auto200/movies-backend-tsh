@@ -1,6 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { MoviesRelevanceService } from './moviesRelevanceService';
+
 import { MovieDTO } from '../../models';
+
+import { MoviesRelevanceService } from './moviesRelevanceService';
 
 describe('movies relevance service', () => {
   const moviesRelevanceService = MoviesRelevanceService();

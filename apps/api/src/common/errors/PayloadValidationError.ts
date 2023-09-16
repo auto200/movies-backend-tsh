@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
-
 import { ZodError } from 'zod';
+
 import { AppError, AppErrorDTO } from './AppError';
 
 export type PayloadError = { type: 'Params' | 'Query' | 'Body'; errors: ZodError };

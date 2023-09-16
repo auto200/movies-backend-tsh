@@ -1,51 +1,53 @@
 /** @type {import("eslint").Linter.Config} */
-const config = {
+module.exports = {
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'prettier',
   ],
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   rules: {
     // global
-    eqeqeq: "error",
-    "no-console": "warn",
+    eqeqeq: 'error',
+    'no-console': 'warn',
     // ts
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
       {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-        caughtErrorsIgnorePattern: "^_",
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
       },
     ],
-    "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+    '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
+    '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'warn',
     // import
-    "import/newline-after-import": "warn",
-    "import/no-cycle": "warn",
-    "import/no-default-export": "warn",
-    "import/no-extraneous-dependencies": "warn",
-    "import/first": "warn",
-    "import/no-duplicates": ["warn", { "prefer-inline": true }],
-    "import/order": [
-      "warn",
+    'import/newline-after-import': 'warn',
+    'import/no-cycle': 'warn',
+    'import/no-default-export': 'warn',
+    'import/no-extraneous-dependencies': 'warn',
+    'import/first': 'warn',
+    'import/no-duplicates': ['warn', { 'prefer-inline': true }],
+    'import/order': [
+      'warn',
       {
-        "newlines-between": "always",
+        'newlines-between': 'always',
         alphabetize: {
-          order: "asc",
+          order: 'asc',
           caseInsensitive: true,
         },
       },
     ],
   },
   settings: {
-    "import/resolver": "typescript",
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };
-
-module.exports = config;
