@@ -6,12 +6,12 @@
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "turbo run format",
+    "format:fix": "turbo run format:fix"
   },
   "devDependencies": {
     "eslint": "8.47.0",
     "prettier": "3.0.2",
-    "tsconfig": "workspace:*",
     "turbo": "1.10.13"
   },
   "packageManager": "pnpm@8.6.10",

@@ -11,7 +11,16 @@
       ]
     }
   },
+  "scripts": {
+    "format": "prettier src/**/*.ts --list-different",
+    "format:fix": "pnpm format --write",
+    "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
+    "lint:fix": "pnpm lint --fix"
+  },
   "devDependencies": {
+    "@movies/tsconfig": "workspace:*",
+    "@movies/eslint-config": "workspace:*",
+    "@types/node": "18.11.9",
     "typescript": "5.1.6"
   },
   "dependencies": {

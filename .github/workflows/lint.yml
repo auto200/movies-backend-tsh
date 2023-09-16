@@ -1,0 +1,19 @@
+name: linting and formatting
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  run-quality-checks:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/prepare
+
+      - name: formatting
+        run: pnpm format

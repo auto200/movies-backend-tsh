@@ -1,7 +1,7 @@
 export {
-  AddMovieRequestDTO,
-  GetMovieFiltersDTO,
-  MovieDTO,
+  type AddMovieRequestDTO,
+  type GetMovieFiltersDTO,
+  type MovieDTO,
   getMovieFiltersSchema,
-  GetFiltersMetadataResponseDTO,
+  type GetFiltersMetadataResponseDTO,
 } from "@movies/shared/communication";
