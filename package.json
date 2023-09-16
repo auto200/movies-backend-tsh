@@ -6,7 +6,8 @@
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "turbo run format",
+    "format:fix": "turbo run format:fix"
   },
   "devDependencies": {
     "eslint": "8.47.0",

@@ -12,6 +12,8 @@
     }
   },
   "scripts": {
+    "format": "prettier src/**/*.ts --list-different",
+    "format:fix": "pnpm format --write",
     "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
     "lint:fix": "pnpm lint --fix"
   },
