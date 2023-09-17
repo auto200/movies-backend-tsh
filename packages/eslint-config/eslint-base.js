@@ -37,19 +37,17 @@ module.exports = {
     'import/order': [
       'warn',
       {
+        alphabetize: { order: 'asc', caseInsensitive: true },
         'newlines-between': 'always',
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
-        groups: [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          ["sibling", "index"],
-        ],
         groups: ['builtin', 'external', 'internal', 'parent', ['sibling', 'index']],
+        pathGroups: [
+          {
+            group: 'internal',
+            pattern: '@movies/**',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: [],
       },
     ],
   },

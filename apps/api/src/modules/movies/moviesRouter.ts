@@ -1,5 +1,6 @@
-import { addMovieRequestDTOSchema, getMovieFiltersSchema } from '@movies/shared/communication';
 import { Router } from 'express';
+
+import { addMovieRequestDTOSchema, getMovieFiltersSchema } from '@movies/shared/communication';
 
 import { validator } from '@/common/payloadValidation';
 import { type RootService } from '@/config/rootService';
