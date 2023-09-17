@@ -1,6 +1,9 @@
-import { DbConnection } from "@/config/database/connectJSONDb";
+/* eslint-disable @typescript-eslint/require-await */
 
-import { AddMovieRequestDTO, MovieDTO } from "../../models";
+import { DbConnection } from '@/config/database/connectJSONDb';
+
+import { AddMovieRequestDTO, MovieDTO } from '../../models';
+
 
 export type MoviesRepository = {
   findByTitle(title: string): Promise<MovieDTO | null>;

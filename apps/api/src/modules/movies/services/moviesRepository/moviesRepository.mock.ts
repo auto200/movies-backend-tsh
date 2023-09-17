@@ -1,6 +1,8 @@
-import { DatabaseSchema } from "@/config/database/connectJSONDb";
+/* eslint-disable @typescript-eslint/require-await */
+import { DatabaseSchema } from '@/config/database/connectJSONDb';
 
-import { MoviesRepository } from "./moviesRepository";
+import { MoviesRepository } from './moviesRepository';
+
 
 export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesRepository => {
   const db = initialData;

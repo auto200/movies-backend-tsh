@@ -1,5 +1,6 @@
-import { MoviesRelevanceService, MoviesRepository, MoviesService } from "@/modules/movies";
-import { DbConnection } from "./database/connectJSONDb";
+import { MoviesRelevanceService, MoviesRepository, MoviesService } from '@/modules/movies';
+
+import { DbConnection } from './database/connectJSONDb';
 
 export type RootService = {
   moviesService: MoviesService;

@@ -7,6 +7,10 @@
     "dev": "ts-node-dev --respawn -r tsconfig-paths/register --transpile-only ./src/index.ts",
     "test:watch": "vitest",
     "test": "vitest run",
+    "format": "prettier src/**/*.ts --list-different",
+    "format:fix": "pnpm format --write",
+    "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
+    "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],
@@ -25,6 +29,7 @@
     "zod": "3.22.1"
   },
   "devDependencies": {
+    "@movies/eslint-config": "workspace:*",
     "@movies/tsconfig": "workspace:*",
     "@types/cors": "2.8.13",
     "@types/express": "4.17.17",

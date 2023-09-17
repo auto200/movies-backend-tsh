@@ -1,9 +1,9 @@
-import { dbConfig } from "./dbConfig";
-import { JSONDbDriver } from "./JSONDbDriver";
+import { dbConfig } from './dbConfig';
+import { JSONDbDriver } from './JSONDbDriver';
 
 export type DatabaseSchema = {
   genres: string[];
-  movies: Array<{
+  movies: {
     id: number;
     genres: string[];
     title: string;
@@ -13,7 +13,7 @@ export type DatabaseSchema = {
     actors?: string;
     plot?: string;
     posterUrl?: string;
-  }>;
+  }[];
 };
 
 export type DbConnection = JSONDbDriver<DatabaseSchema>;

@@ -17,3 +17,6 @@ jobs:
 
       - name: formatting
         run: pnpm format
+
+      - name: linting
+        run: pnpm lint

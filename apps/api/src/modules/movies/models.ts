@@ -4,4 +4,4 @@ export {
   type MovieDTO,
   getMovieFiltersSchema,
   type GetFiltersMetadataResponseDTO,
-} from "@movies/shared/communication";
+} from '@movies/shared/communication';

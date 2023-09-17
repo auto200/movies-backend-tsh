@@ -1,1 +1,1 @@
-export * from "./payloadValidation";
+export * from './payloadValidation';
