@@ -12,4 +12,5 @@
             "severity": "warn"
         }
     ],
+    "rewrap.wrappingColumn": 100
 }

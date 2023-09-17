@@ -1,10 +1,10 @@
 import 'dotenv/config';
 
-import { initApp } from './app';
-
 import { appConfig } from '@/config/appConfig';
 import { connectJSONDb } from '@/config/database/connectJSONDb';
 import { createRootService } from '@/config/rootService';
+
+import { initApp } from './app';
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 connectJSONDb()

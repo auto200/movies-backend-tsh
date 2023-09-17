@@ -1,3 +1,5 @@
+import { Sampler, isNumberInTolerance, sample, toArray } from '@/common/utils';
+
 import { DuplicateMovieError } from '../../errors/duplicateMovieError';
 import { InvalidGenreError } from '../../errors/invalidGenreError';
 import {
@@ -9,7 +11,6 @@ import {
 import { MoviesRelevanceService } from '../moviesRelevanceService';
 import { MoviesRepository } from '../moviesRepository';
 
-import { Sampler, isNumberInTolerance, sample, toArray } from '@/common/utils';
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
