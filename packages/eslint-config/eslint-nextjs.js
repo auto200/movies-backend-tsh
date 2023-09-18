@@ -2,6 +2,7 @@
 module.exports = {
   extends: ['next/core-web-vitals', './eslint-base.js'],
   rules: {
+    'react/jsx-sort-props': ['warn', { shorthandFirst: true, reservedFirst: ['key'] }],
     'import/order': [
       'warn',
       {

@@ -62,7 +62,7 @@ export function Filters({ data, onReset }: FiltersProps) {
             })}
           /> */}
         </div>
-        <button onClick={onReset} disabled={!isDirty}>
+        <button disabled={!isDirty} onClick={onReset}>
           reset
         </button>
       </form>
