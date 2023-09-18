@@ -1,10 +1,6 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  extends: ['./eslint-base.js'],
-  env: {
-    browser: true,
-    node: true,
-  },
+  extends: ['next/core-web-vitals', './eslint-base.js'],
   rules: {
     'import/order': [
       'warn',

@@ -11,7 +11,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: 'src/pages/**',
+      files: ['src/pages/**', './next.config.mjs'],
       rules: {
         'import/no-default-export': 'off',
       },

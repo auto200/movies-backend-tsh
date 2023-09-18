@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
@@ -21,13 +21,16 @@ export default function Page() {
 
   const router = useRouter();
 
-  const handleSubmit = async (data: FilterFormData) => {
-    const { duration, ...restParams } = { ...router.query, ...data };
-    // remove duration from query if it's undefined
-    await router.replace({
-      query: { ...restParams, ...(duration && { duration }) },
-    });
-  };
+  const handleSubmit = useCallback(
+    async (data: FilterFormData) => {
+      const { duration, ...restParams } = { ...router.query, ...data };
+      // remove duration from query if it's undefined
+      await router.replace({
+        query: { ...restParams, ...(duration && { duration }) },
+      });
+    },
+    [router]
+  );
 
   // synchronize form state with query params on page enter
   useEffect(() => {
@@ -37,7 +40,7 @@ export default function Page() {
 
     if (genres) formMethods.setValue('genres', genres);
     if (duration) formMethods.setValue('duration', Number.parseInt(duration));
-  }, []);
+  }, [formMethods]);
 
   useEffect(() => {
     const { unsubscribe } = formMethods.watch(() => {
@@ -45,8 +48,9 @@ export default function Page() {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       formMethods.handleSubmit(handleSubmit)();
     });
+
     return () => unsubscribe();
-  }, [formMethods.watch]);
+  }, [formMethods, handleSubmit]);
 
   return (
     <div>
@@ -60,9 +64,11 @@ export default function Page() {
             {movie.title} - {movie.year}
           </h1>
           <object data={movie.posterUrl} type="image/jpg" style={{ width: 250 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               style={{ width: 250 }}
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png"
+              alt="poster not found"
             />
           </object>
           <p>
