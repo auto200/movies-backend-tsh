@@ -1,11 +1,6 @@
 {
   "extends": "@movies/tsconfig/nextjs.json",
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "baseUrl": "./src",
     "paths": {
       "@/*": [
