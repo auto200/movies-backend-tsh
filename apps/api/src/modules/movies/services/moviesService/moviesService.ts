@@ -11,7 +11,6 @@ import {
 import { MoviesRelevanceService } from '../moviesRelevanceService';
 import { MoviesRepository } from '../moviesRepository';
 
-
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
   getRandomMovie(sampler?: Sampler): Promise<MovieDTO[]>;

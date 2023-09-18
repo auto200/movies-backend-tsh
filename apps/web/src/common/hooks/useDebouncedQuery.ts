@@ -4,8 +4,8 @@ import {
   UseQueryResult,
   useQuery,
   useQueryClient,
-} from "@tanstack/react-query";
-import { useDebounce } from "usehooks-ts";
+} from '@tanstack/react-query';
+import { useDebounce } from 'usehooks-ts';
 
 type Config = {
   debounceMs: number;
@@ -32,9 +32,7 @@ export function useDebouncedQuery<
   const qc = useQueryClient().getQueryCache();
 
   const isCached =
-    config.omitDebounceOnCacheHit && options.queryKey
-      ? !!qc.find(options.queryKey)
-      : false;
+    config.omitDebounceOnCacheHit && options.queryKey ? !!qc.find(options.queryKey) : false;
 
   return useQuery(isCached ? options : debouncedOptions);
 }
