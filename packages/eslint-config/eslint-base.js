@@ -35,6 +35,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'warn',
     'import/first': 'warn',
     'import/no-duplicates': ['warn', { 'prefer-inline': true }],
+    // NOTE: an alternative would be to use https://github.com/trivago/prettier-plugin-sort-imports
     'import/order': [
       'warn',
       {
