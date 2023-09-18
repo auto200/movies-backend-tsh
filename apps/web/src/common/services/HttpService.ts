@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 type QueryParams = Record<string, string | number | Array<string | number>>;
 
 export type RequestParams<Schema extends z.ZodTypeAny> = RequestInit & {
-  responseType?: "json" | "text";
+  responseType?: 'json' | 'text';
   responseSchema: Schema;
   query?: QueryParams;
 };
@@ -13,17 +13,19 @@ export function HttpService(fetcher: typeof fetch = fetch) {
     url: string,
     params: RequestParams<ResponseSchema>
   ): Promise<z.infer<ResponseSchema>> {
-    const { responseSchema, responseType = "json", query } = params;
+    const { responseSchema, responseType = 'json', query } = params;
     const response = await fetcher(attachQueryToUrl(url, query), params);
 
     // TODO: better error formatting
     if (!response.ok) {
-      throw new Error("fetch response status status not ok", {
+      throw new Error('fetch response status status not ok', {
         cause: response,
       });
     }
-    const data = await response[responseType]();
+    const data: unknown = await response[responseType]();
     // TODO: better error formatting
+    // we infer the type from schema,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return responseSchema.parse(data);
   }
 
@@ -50,7 +52,7 @@ export function HttpService(fetcher: typeof fetch = fetch) {
       url: string,
       params: RequestParams<ResponseSchema>
     ): Promise<z.infer<ResponseSchema>> =>
-      request<ResponseSchema>(url, { ...params, method: "GET" }),
+      request<ResponseSchema>(url, { ...params, method: 'GET' }),
   };
 }
 export type HttpService = ReturnType<typeof HttpService>;

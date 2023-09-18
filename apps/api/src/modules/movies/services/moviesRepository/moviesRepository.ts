@@ -4,7 +4,6 @@ import { DbConnection } from '@/config/database/connectJSONDb';
 
 import { AddMovieRequestDTO, MovieDTO } from '../../models';
 
-
 export type MoviesRepository = {
   findByTitle(title: string): Promise<MovieDTO | null>;
   getGenres(): Promise<string[]>;

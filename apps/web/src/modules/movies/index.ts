@@ -1,1 +1,1 @@
-export * from "./api/moviesAPIService";
+export * from './api/moviesAPIService';

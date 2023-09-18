@@ -12,7 +12,6 @@ import { createMockMoviesRepository } from '../moviesRepository/moviesRepository
 
 import { MoviesService } from './moviesService';
 
-
 const createMockMovieService = (initialData: DatabaseSchema) => {
   const mockMoviesRepository = createMockMoviesRepository(initialData);
   const moviesRelevanceService = MoviesRelevanceService();
