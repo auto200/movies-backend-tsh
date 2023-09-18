@@ -23,9 +23,9 @@ const minMaxToTimeOptions = (times: FiltersMetadata['times']) => {
 
 export function Filters({ data, onReset }: FiltersProps) {
   const {
-    register,
     control,
     formState: { isDirty },
+    register,
   } = useFormContext<FilterFormData>();
 
   const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);

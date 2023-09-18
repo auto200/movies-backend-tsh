@@ -13,7 +13,7 @@ export function HttpService(fetcher: typeof fetch = fetch) {
     url: string,
     params: RequestParams<ResponseSchema>
   ): Promise<z.infer<ResponseSchema>> {
-    const { responseSchema, responseType = 'json', query } = params;
+    const { query, responseSchema, responseType = 'json' } = params;
     const response = await fetcher(attachQueryToUrl(url, query), params);
 
     // TODO: better error formatting

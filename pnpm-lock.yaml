@@ -159,6 +159,9 @@ importers:
       eslint-plugin-import:
         specifier: 2.28.1
         version: 2.28.1(@typescript-eslint/parser@6.7.0)(eslint-import-resolver-typescript@3.6.0)(eslint@8.47.0)
+      eslint-plugin-sort-destructure-keys:
+        specifier: 1.5.0
+        version: 1.5.0(eslint@8.47.0)
       eslint-plugin-sort-keys-fix:
         specifier: 1.1.2
         version: 1.1.2
@@ -3128,6 +3131,19 @@ packages:
       string.prototype.matchall: 4.0.10
     dev: false
 
+  /eslint-plugin-sort-destructure-keys@1.5.0(eslint@8.47.0):
+    resolution:
+      {
+        integrity: sha512-xGLyqHtbFXZNXQSvAiQ4ISBYokrbUywEhmaA50fKtSKgceCv5y3zjoNuZwcnajdM6q29Nxj+oXC9KcqfMsAPrg==,
+      }
+    engines: { node: '>=6.0.0' }
+    peerDependencies:
+      eslint: 3 - 8
+    dependencies:
+      eslint: 8.47.0
+      natural-compare-lite: 1.4.0
+    dev: false
+
   /eslint-plugin-sort-keys-fix@1.1.2:
     resolution:
       {
@@ -4771,6 +4787,13 @@ packages:
       }
     engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
     hasBin: true
+
+  /natural-compare-lite@1.4.0:
+    resolution:
+      {
+        integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==,
+      }
+    dev: false
 
   /natural-compare@1.4.0:
     resolution:

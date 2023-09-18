@@ -14,7 +14,7 @@ export function MoviesAPI(http: HttpService) {
       http.get(`${baseUrl}/filters-metadata`, {
         responseSchema: getFiltersMetadataResponseDTOSchema,
       }),
-    getMovies: ({ genres, duration }: GetMovieFiltersDTO) =>
+    getMovies: ({ duration, genres }: GetMovieFiltersDTO) =>
       http.get(baseUrl, {
         query: { ...(genres && { genres }), ...(duration && { duration }) },
         responseSchema: getMoviesDTOSchema,

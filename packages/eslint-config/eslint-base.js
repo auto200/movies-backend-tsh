@@ -10,12 +10,14 @@ module.exports = {
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'sort-keys-fix'],
+  plugins: ['@typescript-eslint', 'sort-keys-fix', 'sort-destructure-keys'],
   rules: {
     // global
     eqeqeq: 'warn',
     'no-console': 'warn',
+    // other plugins
     'sort-keys-fix/sort-keys-fix': 'warn',
+    'sort-destructure-keys/sort-destructure-keys': 'warn',
     // ts
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
