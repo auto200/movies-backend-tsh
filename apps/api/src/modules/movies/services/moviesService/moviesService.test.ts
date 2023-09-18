@@ -27,15 +27,15 @@ describe('MoviesService', () => {
     const moviesService = createMockMovieService(initialData);
 
     const movie: AddMovieRequestDTO = {
-      year: 1988,
-      runtime: 92,
-      title: 'Beetlejuice',
-      genres: ['Comedy', 'Fantasy'],
-      director: 'Tim Burton',
       actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+      director: 'Tim Burton',
+      genres: ['Comedy', 'Fantasy'],
       plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
       posterUrl:
         'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+      runtime: 92,
+      title: 'Beetlejuice',
+      year: 1988,
     };
 
     expect(moviesService.addMovie(movie)).resolves.toBeUndefined();
@@ -43,15 +43,15 @@ describe('MoviesService', () => {
 
   test('adding remake of a movie should not throw', () => {
     const movie: AddMovieRequestDTO = {
-      year: 1988,
-      runtime: 92,
-      title: 'Beetlejuice',
-      genres: ['Comedy', 'Fantasy'],
-      director: 'Tim Burton',
       actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+      director: 'Tim Burton',
+      genres: ['Comedy', 'Fantasy'],
       plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
       posterUrl:
         'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+      runtime: 92,
+      title: 'Beetlejuice',
+      year: 1988,
     };
 
     const initialData: DatabaseSchema = {
@@ -70,15 +70,15 @@ describe('MoviesService', () => {
     const moviesService = createMockMovieService(initialData);
 
     const movie: AddMovieRequestDTO = {
-      year: 1988,
-      runtime: 92,
-      title: 'Beetlejuice',
-      genres: ['Comedy', 'Fantasy'],
-      director: 'Tim Burton',
       actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+      director: 'Tim Burton',
+      genres: ['Comedy', 'Fantasy'],
       plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
       posterUrl:
         'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+      runtime: 92,
+      title: 'Beetlejuice',
+      year: 1988,
     };
 
     expect(moviesService.addMovie(movie)).rejects.toThrowError(InvalidGenreError);
@@ -86,15 +86,15 @@ describe('MoviesService', () => {
 
   test('adding movie duplicate should throw', () => {
     const movie: AddMovieRequestDTO = {
-      year: 1988,
-      runtime: 92,
-      title: 'Beetlejuice',
-      genres: ['Comedy', 'Fantasy'],
-      director: 'Tim Burton',
       actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+      director: 'Tim Burton',
+      genres: ['Comedy', 'Fantasy'],
       plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
       posterUrl:
         'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+      runtime: 92,
+      title: 'Beetlejuice',
+      year: 1988,
     };
 
     const initialData: DatabaseSchema = {
@@ -111,28 +111,28 @@ describe('MoviesService', () => {
       genres: ['Comedy', 'Fantasy'],
       movies: [
         {
-          id: 1,
-          year: 1988,
-          runtime: 92,
-          title: 'Beetlejuice',
-          genres: ['Comedy', 'Fantasy'],
-          director: 'Tim Burton',
           actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+          director: 'Tim Burton',
+          genres: ['Comedy', 'Fantasy'],
+          id: 1,
           plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+          runtime: 92,
+          title: 'Beetlejuice',
+          year: 1988,
         },
         {
-          id: 3,
-          year: 1994,
-          runtime: 142,
-          title: 'The Shawshank Redemption',
-          genres: ['Crime', 'Drama'],
-          director: 'Frank Darabont',
           actors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
+          director: 'Frank Darabont',
+          genres: ['Crime', 'Drama'],
+          id: 3,
           plot: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_SX300.jpg',
+          runtime: 142,
+          title: 'The Shawshank Redemption',
+          year: 1994,
         },
       ],
     };
@@ -152,28 +152,28 @@ describe('MoviesService', () => {
       genres: ['Comedy', 'Fantasy'],
       movies: [
         {
-          id: 1,
-          year: 1988,
-          runtime: 50,
-          title: 'Beetlejuice',
-          genres: ['Comedy', 'Fantasy'],
-          director: 'Tim Burton',
           actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+          director: 'Tim Burton',
+          genres: ['Comedy', 'Fantasy'],
+          id: 1,
           plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+          runtime: 50,
+          title: 'Beetlejuice',
+          year: 1988,
         },
         {
-          id: 3,
-          year: 1994,
-          runtime: 100,
-          title: 'The Shawshank Redemption',
-          genres: ['Crime', 'Drama'],
-          director: 'Frank Darabont',
           actors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
+          director: 'Frank Darabont',
+          genres: ['Crime', 'Drama'],
+          id: 3,
           plot: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_SX300.jpg',
+          runtime: 100,
+          title: 'The Shawshank Redemption',
+          year: 1994,
         },
       ],
     };
@@ -192,28 +192,28 @@ describe('MoviesService', () => {
       genres: ['Comedy', 'Fantasy', 'Drama'],
       movies: [
         {
-          id: 1,
-          year: 1988,
-          runtime: 50,
-          title: 'Beetlejuice',
-          genres: ['Comedy', 'Fantasy'],
-          director: 'Tim Burton',
           actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+          director: 'Tim Burton',
+          genres: ['Comedy', 'Fantasy'],
+          id: 1,
           plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+          runtime: 50,
+          title: 'Beetlejuice',
+          year: 1988,
         },
         {
-          id: 3,
-          year: 1994,
-          runtime: 100,
-          title: 'The Shawshank Redemption',
-          genres: ['Crime', 'Drama'],
-          director: 'Frank Darabont',
           actors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
+          director: 'Frank Darabont',
+          genres: ['Crime', 'Drama'],
+          id: 3,
           plot: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_SX300.jpg',
+          runtime: 100,
+          title: 'The Shawshank Redemption',
+          year: 1994,
         },
       ],
     };
@@ -245,28 +245,28 @@ describe('MoviesService', () => {
       genres: ['Comedy', 'Fantasy'],
       movies: [
         {
-          id: 1,
-          year: 1988,
-          runtime: 50,
-          title: 'Beetlejuice',
-          genres: ['Comedy', 'Fantasy'],
-          director: 'Tim Burton',
           actors: 'Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page',
+          director: 'Tim Burton',
+          genres: ['Comedy', 'Fantasy'],
+          id: 1,
           plot: 'A couple of recently deceased ghosts contract the services of a "bio-exorcist" in order to remove the obnoxious new owners of their house.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg',
+          runtime: 50,
+          title: 'Beetlejuice',
+          year: 1988,
         },
         {
-          id: 3,
-          year: 1994,
-          runtime: 100,
-          title: 'The Shawshank Redemption',
-          genres: ['Crime', 'Drama'],
-          director: 'Frank Darabont',
           actors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
+          director: 'Frank Darabont',
+          genres: ['Crime', 'Drama'],
+          id: 3,
           plot: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
           posterUrl:
             'https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_SX300.jpg',
+          runtime: 100,
+          title: 'The Shawshank Redemption',
+          year: 1994,
         },
       ],
     };
@@ -275,22 +275,22 @@ describe('MoviesService', () => {
 
     const expected1 = [initialData.movies[0]];
     expect(
-      moviesService.getMoviesWithFilters({ genres: ['Comedy'], duration: 60 })
+      moviesService.getMoviesWithFilters({ duration: 60, genres: ['Comedy'] })
     ).resolves.toEqual(expected1);
 
     const expected2 = [initialData.movies[1]];
     expect(
-      moviesService.getMoviesWithFilters({ genres: ['Drama'], duration: 90 })
+      moviesService.getMoviesWithFilters({ duration: 90, genres: ['Drama'] })
     ).resolves.toEqual(expected2);
 
     const expected3 = [] as MovieDTO[];
     expect(
-      moviesService.getMoviesWithFilters({ genres: ['Comedy'], duration: 90 })
+      moviesService.getMoviesWithFilters({ duration: 90, genres: ['Comedy'] })
     ).resolves.toEqual(expected3);
 
     const expected4 = [] as MovieDTO[];
     expect(
-      moviesService.getMoviesWithFilters({ genres: ['Drama'], duration: 60 })
+      moviesService.getMoviesWithFilters({ duration: 60, genres: ['Drama'] })
     ).resolves.toEqual(expected4);
   });
 });

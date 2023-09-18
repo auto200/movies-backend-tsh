@@ -10,11 +10,12 @@ module.exports = {
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'sort-keys-fix'],
   rules: {
     // global
-    eqeqeq: 'error',
+    eqeqeq: 'warn',
     'no-console': 'warn',
+    'sort-keys-fix/sort-keys-fix': 'warn',
     // ts
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
@@ -27,7 +28,7 @@ module.exports = {
     ],
     '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'warn',
-    '@typescript-eslint/array-type': 'off',
+    '@typescript-eslint/array-type': ['warn', { default: 'array-simple' }],
     // import
     'import/newline-after-import': 'warn',
     'import/no-cycle': 'warn',

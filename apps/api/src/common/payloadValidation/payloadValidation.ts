@@ -24,7 +24,7 @@ export function validator<
       if (parsed.success) {
         req.params = parsed.data;
       } else {
-        errors.push({ type: 'Params', errors: parsed.error });
+        errors.push({ errors: parsed.error, type: 'Params' });
       }
     }
 
@@ -33,7 +33,7 @@ export function validator<
       if (parsed.success) {
         req.query = parsed.data;
       } else {
-        errors.push({ type: 'Query', errors: parsed.error });
+        errors.push({ errors: parsed.error, type: 'Query' });
       }
     }
 
@@ -42,7 +42,7 @@ export function validator<
       if (parsed.success) {
         req.body = parsed.data;
       } else {
-        errors.push({ type: 'Body', errors: parsed.error });
+        errors.push({ errors: parsed.error, type: 'Body' });
       }
     }
 

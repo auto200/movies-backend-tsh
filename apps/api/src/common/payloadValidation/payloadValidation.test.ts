@@ -6,9 +6,9 @@ import { validator } from './payloadValidation';
 
 describe('payload validation', () => {
   const emptyRequest = {
-    query: {},
-    params: {},
     body: undefined,
+    params: {},
+    query: {},
   } as Request;
   const mockResponse = {} as Response;
 
@@ -33,7 +33,7 @@ describe('payload validation', () => {
   test('should strip excess keys from request', () => {
     const mockNext = vi.fn();
     const validate = validator({ body: z.object({ foo: z.string() }) });
-    const request = { ...emptyRequest, body: { foo: '', bar: 123 } } as Request;
+    const request = { ...emptyRequest, body: { bar: 123, foo: '' } } as Request;
 
     validate(request, mockResponse, mockNext);
     expect(mockNext).toBeCalledTimes(1);

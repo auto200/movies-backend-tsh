@@ -16,8 +16,8 @@ export class AppError extends Error {
 
   public toJSON(): AppErrorDTO {
     return {
-      status: 'error',
       message: this.message,
+      status: 'error',
       statusCode: this.statusCode,
     };
   }

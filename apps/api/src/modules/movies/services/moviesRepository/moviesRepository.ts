@@ -13,7 +13,10 @@ export type MoviesRepository = {
 
 export const MoviesRepository = (db: DbConnection): MoviesRepository => {
   return {
-    getAllMovies: async () => db.data.movies,
+    addMovie: async (movieToAdd) => {
+      db.data.movies.push({ ...movieToAdd, id: db.data.movies.length + 1 });
+      await db.write();
+    },
 
     findByTitle: async (title) => {
       const movie = db.data.movies.find((movie) => movie.title === title);
@@ -21,11 +24,8 @@ export const MoviesRepository = (db: DbConnection): MoviesRepository => {
       return movie ?? null;
     },
 
-    getGenres: async () => db.data.genres,
+    getAllMovies: async () => db.data.movies,
 
-    addMovie: async (movieToAdd) => {
-      db.data.movies.push({ ...movieToAdd, id: db.data.movies.length + 1 });
-      await db.write();
-    },
+    getGenres: async () => db.data.genres,
   };
 };

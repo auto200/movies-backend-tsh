@@ -35,7 +35,7 @@ export function Filters({ data, onReset }: FiltersProps) {
       <form>
         Genres:
         <div>
-          <select multiple {...register('genres')} style={{ width: 150, height: 200 }}>
+          <select multiple {...register('genres')} style={{ height: 200, width: 150 }}>
             {data.genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}

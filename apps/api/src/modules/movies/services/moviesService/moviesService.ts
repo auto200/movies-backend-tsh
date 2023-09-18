@@ -85,12 +85,18 @@ export const MoviesService = (
     const times = movies.map(({ runtime }) => runtime);
 
     return {
-      min: Math.min(...times),
       max: Math.max(...times),
+      min: Math.min(...times),
     };
   };
 
   return {
+    addMovie: async (movieToAdd) => {
+      await assertValidGenres(movieToAdd.genres);
+      await assertNoDuplicates(movieToAdd);
+      await moviesRepository.addMovie(movieToAdd);
+    },
+
     getFiltersMetadata: async () => {
       const [genres, movies] = await Promise.all([
         moviesRepository.getGenres(),
@@ -100,18 +106,6 @@ export const MoviesService = (
       return { genres, times: getMinMaxMovieTimes(movies) };
     },
 
-    addMovie: async (movieToAdd) => {
-      await assertValidGenres(movieToAdd.genres);
-      await assertNoDuplicates(movieToAdd);
-      await moviesRepository.addMovie(movieToAdd);
-    },
-
-    getRandomMovie: async (sampler = sample) => {
-      const movies = await moviesRepository.getAllMovies();
-      const randomMovie = sampler(movies);
-
-      return randomMovie ? [randomMovie] : [];
-    },
     // NOTE: since our database does not support filtering natively we have to do it
     // on our own, if the logic grows, it could be extracted to separate service
     getMoviesWithFilters: async (filters, durationVariation = DEFAULT_DURATION_VARIATION) => {
@@ -137,6 +131,13 @@ export const MoviesService = (
       }
 
       return [];
+    },
+
+    getRandomMovie: async (sampler = sample) => {
+      const movies = await moviesRepository.getAllMovies();
+      const randomMovie = sampler(movies);
+
+      return randomMovie ? [randomMovie] : [];
     },
   };
 };

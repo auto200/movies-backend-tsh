@@ -4,7 +4,7 @@ import { moviesAPI } from '../moviesAPIService';
 
 export function useFiltersMetadata() {
   return useQuery({
-    queryKey: ['filters-metadata'],
     queryFn: moviesAPI.getFiltersMetadata,
+    queryKey: ['filters-metadata'],
   });
 }

@@ -14,8 +14,8 @@ export function useMovies(filters: GetMovieFiltersDTO) {
   return useDebouncedQuery(
     useMemo(
       () => ({
-        queryKey: ['movies', memoFilters],
         queryFn: () => moviesAPI.getMovies(memoFilters),
+        queryKey: ['movies', memoFilters],
       }),
       [memoFilters]
     )

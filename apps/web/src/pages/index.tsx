@@ -12,8 +12,8 @@ const filterFormDefaultValues: FilterFormData = {};
 
 export default function Page() {
   const formMethods = useForm<FilterFormData>({
-    resolver: zodResolver(filterFormSchema),
     defaultValues: filterFormDefaultValues,
+    resolver: zodResolver(filterFormSchema),
   });
 
   const { data: movies } = useMovies(formMethods.getValues());

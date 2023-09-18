@@ -1,13 +1,13 @@
 /** @type {import("eslint").Linter.Config} */
 const config = {
-  extends: ["@movies/eslint-config/eslint-base.js"],
   env: {
     node: true,
   },
+  extends: ['@movies/eslint-config/eslint-base.js'],
   parserOptions: {
-    project: "tsconfig.eslint.json",
+    project: 'tsconfig.eslint.json',
+    sourceType: 'module',
     tsconfigRootDir: __dirname,
-    sourceType: "module",
   },
   root: true,
 };
