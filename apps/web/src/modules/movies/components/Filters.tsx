@@ -1,8 +1,9 @@
-import { useFormContext } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+import { useMemo } from 'react';
 
-import { FilterFormData, FiltersMetadata } from "../schema";
-import { useMemo } from "react";
+import { DevTool } from '@hookform/devtools';
+import { useFormContext } from 'react-hook-form';
+
+import { FilterFormData, FiltersMetadata } from '../schema';
 
 type FiltersProps = {
   data: FiltersMetadata;
@@ -10,11 +11,10 @@ type FiltersProps = {
 };
 
 // NOTE: not really robust solution, values could be rounded - not needed for now
-const minMaxToTimeOptions = (times: FiltersMetadata["times"]) => {
+const minMaxToTimeOptions = (times: FiltersMetadata['times']) => {
   const timeOptions: number[] = [];
 
   for (let i = times.min; i <= times.max; i += 10) {
-    console.log("xd");
     timeOptions.push(i);
   }
 
@@ -28,21 +28,14 @@ export function Filters({ data, onReset }: FiltersProps) {
     formState: { isDirty },
   } = useFormContext<FilterFormData>();
 
-  const timeOptions = useMemo(
-    () => minMaxToTimeOptions(data.times),
-    [data.times]
-  );
+  const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);
 
   return (
     <>
       <form>
         Genres:
         <div>
-          <select
-            multiple
-            {...register("genres")}
-            style={{ width: 150, height: 200 }}
-          >
+          <select multiple {...register('genres')} style={{ width: 150, height: 200 }}>
             {data.genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}
@@ -52,7 +45,7 @@ export function Filters({ data, onReset }: FiltersProps) {
         </div>
         <div>
           <p>Duration:</p>
-          <select {...register("duration")}>
+          <select {...register('duration')}>
             <option value="">-</option>
             {timeOptions.map((time) => (
               <option key={time} value={time}>

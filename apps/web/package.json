@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "format": "prettier src/**/*.ts --list-different",
+    "format:fix": "pnpm format --write",
+    "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
+    "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {
     "@hookform/resolvers": "3.3.1",
@@ -21,11 +25,11 @@
   },
   "devDependencies": {
     "@hookform/devtools": "4.3.1",
-    "@next/eslint-plugin-next": "13.4.19",
+    "@movies/eslint-config": "workspace:*",
+    "@movies/tsconfig": "workspace:*",
     "@types/node": "17.0.12",
     "@types/react": "18.0.22",
     "@types/react-dom": "18.0.7",
-    "@movies/tsconfig": "workspace:*",
     "typescript": "5.1.6"
   }
 }

@@ -27,6 +27,7 @@ module.exports = {
     ],
     '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'warn',
+    '@typescript-eslint/array-type': 'off',
     // import
     'import/newline-after-import': 'warn',
     'import/no-cycle': 'warn',

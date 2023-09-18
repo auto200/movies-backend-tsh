@@ -1,11 +1,12 @@
-import { useMemo } from "react";
-import { useDeepCompareMemoize } from "use-deep-compare-effect";
+import { useMemo } from 'react';
 
-import { GetMovieFiltersDTO } from "@movies/shared/communication";
+import { useDeepCompareMemoize } from 'use-deep-compare-effect';
 
-import { useDebouncedQuery } from "@/common/hooks/useDebouncedQuery";
+import { GetMovieFiltersDTO } from '@movies/shared/communication';
 
-import { moviesAPI } from "../moviesAPIService";
+import { useDebouncedQuery } from '@/common/hooks/useDebouncedQuery';
+
+import { moviesAPI } from '../moviesAPIService';
 
 export function useMovies(filters: GetMovieFiltersDTO) {
   const memoFilters = useDeepCompareMemoize(filters);
@@ -13,7 +14,7 @@ export function useMovies(filters: GetMovieFiltersDTO) {
   return useDebouncedQuery(
     useMemo(
       () => ({
-        queryKey: ["movies", memoFilters],
+        queryKey: ['movies', memoFilters],
         queryFn: () => moviesAPI.getMovies(memoFilters),
       }),
       [memoFilters]
