@@ -2,7 +2,7 @@ name: Prepare
 description: Prepares the repo
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - uses: pnpm/action-setup@v2
       with:
@@ -11,7 +11,11 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: 18
-        cache: "pnpm"
+        cache: pnpm
+
+    - name: disable husky
+      run: npm pkg delete scripts.prepare
+      shell: bash
 
     - name: install
       run: pnpm i
