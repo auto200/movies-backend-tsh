@@ -12,8 +12,8 @@ const filterFormDefaultValues: FilterFormData = {};
 
 export default function Page() {
   const formMethods = useForm<FilterFormData>({
-    resolver: zodResolver(filterFormSchema),
     defaultValues: filterFormDefaultValues,
+    resolver: zodResolver(filterFormSchema),
   });
 
   const { data: movies } = useMovies(formMethods.getValues());
@@ -63,12 +63,12 @@ export default function Page() {
           <h1>
             {movie.title} - {movie.year}
           </h1>
-          <object data={movie.posterUrl} type="image/jpg" style={{ width: 250 }}>
+          <object data={movie.posterUrl} style={{ width: 250 }} type="image/jpg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              style={{ width: 250 }}
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png"
               alt="poster not found"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png"
+              style={{ width: 250 }}
             />
           </object>
           <p>

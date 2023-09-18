@@ -5,15 +5,18 @@ import { DbConnection } from '@/config/database/connectJSONDb';
 import { AddMovieRequestDTO, MovieDTO } from '../../models';
 
 export type MoviesRepository = {
-  findByTitle(title: string): Promise<MovieDTO | null>;
-  getGenres(): Promise<string[]>;
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
+  findByTitle(title: string): Promise<MovieDTO | null>;
   getAllMovies(): Promise<MovieDTO[]>;
+  getGenres(): Promise<string[]>;
 };
 
 export const MoviesRepository = (db: DbConnection): MoviesRepository => {
   return {
-    getAllMovies: async () => db.data.movies,
+    addMovie: async (movieToAdd) => {
+      db.data.movies.push({ ...movieToAdd, id: db.data.movies.length + 1 });
+      await db.write();
+    },
 
     findByTitle: async (title) => {
       const movie = db.data.movies.find((movie) => movie.title === title);
@@ -21,11 +24,8 @@ export const MoviesRepository = (db: DbConnection): MoviesRepository => {
       return movie ?? null;
     },
 
-    getGenres: async () => db.data.genres,
+    getAllMovies: async () => db.data.movies,
 
-    addMovie: async (movieToAdd) => {
-      db.data.movies.push({ ...movieToAdd, id: db.data.movies.length + 1 });
-      await db.write();
-    },
+    getGenres: async () => db.data.genres,
   };
 };

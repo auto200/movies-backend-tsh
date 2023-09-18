@@ -3,9 +3,9 @@ import { z } from 'zod';
 type QueryParams = Record<string, string | number | Array<string | number>>;
 
 export type RequestParams<Schema extends z.ZodTypeAny> = RequestInit & {
-  responseType?: 'json' | 'text';
-  responseSchema: Schema;
   query?: QueryParams;
+  responseSchema: Schema;
+  responseType?: 'json' | 'text';
 };
 
 export function HttpService(fetcher: typeof fetch = fetch) {
@@ -13,7 +13,7 @@ export function HttpService(fetcher: typeof fetch = fetch) {
     url: string,
     params: RequestParams<ResponseSchema>
   ): Promise<z.infer<ResponseSchema>> {
-    const { responseSchema, responseType = 'json', query } = params;
+    const { query, responseSchema, responseType = 'json' } = params;
     const response = await fetcher(attachQueryToUrl(url, query), params);
 
     // TODO: better error formatting

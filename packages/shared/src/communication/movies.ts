@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
 export const movieSchema = z.object({
-  id: z.number().positive(),
-  genres: z.array(z.string()),
-  title: z.string().nonempty().max(255),
-  year: z.number().positive(),
-  runtime: z.number().positive(),
-  director: z.string().nonempty().max(255),
   actors: z.string().nonempty().optional(),
+  director: z.string().nonempty().max(255),
+  genres: z.array(z.string()),
+  id: z.number().positive(),
   plot: z.string().nonempty().optional(),
   posterUrl: z.string().url().optional(),
+  runtime: z.number().positive(),
+  title: z.string().nonempty().max(255),
+  year: z.number().positive(),
 });
 
 export type MovieDTO = z.infer<typeof movieSchema>;
@@ -18,14 +18,14 @@ export const getMoviesDTOSchema = z.array(movieSchema);
 export type GetMoviesDTO = z.infer<typeof getMoviesDTOSchema>;
 
 export const addMovieRequestDTOSchema = movieSchema.pick({
-  genres: true,
-  title: true,
-  year: true,
-  runtime: true,
-  director: true,
   actors: true,
+  director: true,
+  genres: true,
   plot: true,
   posterUrl: true,
+  runtime: true,
+  title: true,
+  year: true,
 });
 
 export type AddMovieRequestDTO = z.infer<typeof addMovieRequestDTOSchema>;
@@ -39,6 +39,6 @@ export type GetMovieFiltersDTO = z.infer<typeof getMovieFiltersSchema>;
 
 export const getFiltersMetadataResponseDTOSchema = z.object({
   genres: z.array(z.string()),
-  times: z.object({ min: z.number().positive(), max: z.number().positive() }),
+  times: z.object({ max: z.number().positive(), min: z.number().positive() }),
 });
 export type GetFiltersMetadataResponseDTO = z.infer<typeof getFiltersMetadataResponseDTOSchema>;

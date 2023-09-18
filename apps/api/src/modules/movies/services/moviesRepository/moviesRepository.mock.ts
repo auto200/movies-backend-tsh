@@ -7,11 +7,11 @@ export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesR
   const db = initialData;
 
   return {
-    getAllMovies: async () => db.movies,
     addMovie: async (movie) => {
       db.movies.push({ ...movie, id: db.movies.length + 1 });
     },
     findByTitle: async (title) => db.movies.find((movie) => movie.title === title) ?? null,
+    getAllMovies: async () => db.movies,
     getGenres: async () => db.genres,
   };
 };

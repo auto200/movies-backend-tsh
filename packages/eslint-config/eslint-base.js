@@ -4,17 +4,21 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:typescript-sort-keys/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'sort-keys-fix', 'sort-destructure-keys', 'typescript-sort-keys'],
   rules: {
     // global
-    eqeqeq: 'error',
+    eqeqeq: 'warn',
     'no-console': 'warn',
+    // other plugins
+    'sort-keys-fix/sort-keys-fix': 'warn',
+    'sort-destructure-keys/sort-destructure-keys': 'warn',
     // ts
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
@@ -27,7 +31,7 @@ module.exports = {
     ],
     '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'warn',
-    '@typescript-eslint/array-type': 'off',
+    '@typescript-eslint/array-type': ['warn', { default: 'array-simple' }],
     // import
     'import/newline-after-import': 'warn',
     'import/no-cycle': 'warn',

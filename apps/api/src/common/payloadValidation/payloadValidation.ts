@@ -4,9 +4,9 @@ import { ZodSchema } from 'zod';
 import { PayloadError, PayloadValidationError } from '.././errors/PayloadValidationError';
 
 type PayloadSchema<TParams, TQuery, TBody> = Partial<{
+  body: ZodSchema<TBody>;
   params: ZodSchema<TParams>;
   query: ZodSchema<TQuery>;
-  body: ZodSchema<TBody>;
 }>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ResBody = any;
@@ -24,7 +24,7 @@ export function validator<
       if (parsed.success) {
         req.params = parsed.data;
       } else {
-        errors.push({ type: 'Params', errors: parsed.error });
+        errors.push({ errors: parsed.error, type: 'Params' });
       }
     }
 
@@ -33,7 +33,7 @@ export function validator<
       if (parsed.success) {
         req.query = parsed.data;
       } else {
-        errors.push({ type: 'Query', errors: parsed.error });
+        errors.push({ errors: parsed.error, type: 'Query' });
       }
     }
 
@@ -42,7 +42,7 @@ export function validator<
       if (parsed.success) {
         req.body = parsed.data;
       } else {
-        errors.push({ type: 'Body', errors: parsed.error });
+        errors.push({ errors: parsed.error, type: 'Body' });
       }
     }
 
