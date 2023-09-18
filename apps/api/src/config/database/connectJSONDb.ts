@@ -4,15 +4,15 @@ import { JSONDbDriver } from './JSONDbDriver';
 export type DatabaseSchema = {
   genres: string[];
   movies: Array<{
-    id: number;
-    genres: string[];
-    title: string;
-    year: number;
-    runtime: number;
-    director: string;
     actors?: string;
+    director: string;
+    genres: string[];
+    id: number;
     plot?: string;
     posterUrl?: string;
+    runtime: number;
+    title: string;
+    year: number;
   }>;
 };
 

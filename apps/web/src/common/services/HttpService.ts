@@ -3,9 +3,9 @@ import { z } from 'zod';
 type QueryParams = Record<string, string | number | Array<string | number>>;
 
 export type RequestParams<Schema extends z.ZodTypeAny> = RequestInit & {
-  responseType?: 'json' | 'text';
-  responseSchema: Schema;
   query?: QueryParams;
+  responseSchema: Schema;
+  responseType?: 'json' | 'text';
 };
 
 export function HttpService(fetcher: typeof fetch = fetch) {

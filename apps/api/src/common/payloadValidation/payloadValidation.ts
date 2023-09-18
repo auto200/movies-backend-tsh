@@ -4,9 +4,9 @@ import { ZodSchema } from 'zod';
 import { PayloadError, PayloadValidationError } from '.././errors/PayloadValidationError';
 
 type PayloadSchema<TParams, TQuery, TBody> = Partial<{
+  body: ZodSchema<TBody>;
   params: ZodSchema<TParams>;
   query: ZodSchema<TQuery>;
-  body: ZodSchema<TBody>;
 }>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ResBody = any;

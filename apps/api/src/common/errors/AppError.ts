@@ -1,9 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
 
 export type AppErrorDTO = {
+  message: string;
   status: 'error';
   statusCode: StatusCodes;
-  message: string;
 };
 
 export class AppError extends Error {

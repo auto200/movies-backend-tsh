@@ -4,13 +4,14 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:typescript-sort-keys/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'sort-keys-fix', 'sort-destructure-keys'],
+  plugins: ['@typescript-eslint', 'sort-keys-fix', 'sort-destructure-keys', 'typescript-sort-keys'],
   rules: {
     // global
     eqeqeq: 'warn',

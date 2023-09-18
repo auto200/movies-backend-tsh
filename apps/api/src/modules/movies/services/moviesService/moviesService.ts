@@ -13,12 +13,12 @@ import { MoviesRepository } from '../moviesRepository';
 
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
-  getRandomMovie(sampler?: Sampler): Promise<MovieDTO[]>;
+  getFiltersMetadata(): Promise<GetFiltersMetadataResponseDTO>;
   getMoviesWithFilters(
     filters: GetMovieFiltersDTO,
     durationVariation?: number
   ): Promise<MovieDTO[]>;
-  getFiltersMetadata(): Promise<GetFiltersMetadataResponseDTO>;
+  getRandomMovie(sampler?: Sampler): Promise<MovieDTO[]>;
 };
 
 const DEFAULT_DURATION_VARIATION = 10;

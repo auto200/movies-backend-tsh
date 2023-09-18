@@ -5,10 +5,10 @@ import { DbConnection } from '@/config/database/connectJSONDb';
 import { AddMovieRequestDTO, MovieDTO } from '../../models';
 
 export type MoviesRepository = {
-  findByTitle(title: string): Promise<MovieDTO | null>;
-  getGenres(): Promise<string[]>;
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
+  findByTitle(title: string): Promise<MovieDTO | null>;
   getAllMovies(): Promise<MovieDTO[]>;
+  getGenres(): Promise<string[]>;
 };
 
 export const MoviesRepository = (db: DbConnection): MoviesRepository => {

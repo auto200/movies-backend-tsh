@@ -3,7 +3,7 @@ import { ZodError } from 'zod';
 
 import { AppError, AppErrorDTO } from './AppError';
 
-export type PayloadError = { type: 'Params' | 'Query' | 'Body'; errors: ZodError };
+export type PayloadError = { errors: ZodError; type: 'Params' | 'Query' | 'Body' };
 
 export class PayloadValidationError extends AppError {
   constructor(
