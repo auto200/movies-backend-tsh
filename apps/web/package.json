@@ -14,22 +14,22 @@
   "dependencies": {
     "@hookform/resolvers": "3.3.1",
     "@movies/shared": "workspace:*",
-    "@tanstack/react-query": "4.33.0",
-    "next": "13.4.19",
+    "@tanstack/react-query": "4.35.3",
+    "next": "13.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "7.46.1",
     "use-deep-compare-effect": "1.8.1",
     "usehooks-ts": "2.9.1",
-    "zod": "3.22.1"
+    "zod": "3.22.2"
   },
   "devDependencies": {
     "@hookform/devtools": "4.3.1",
     "@movies/eslint-config": "workspace:*",
     "@movies/tsconfig": "workspace:*",
-    "@types/node": "17.0.12",
-    "@types/react": "18.0.22",
-    "@types/react-dom": "18.0.7",
-    "typescript": "5.1.6"
+    "@types/node": "18.11.9",
+    "@types/react": "18.2.22",
+    "@types/react-dom": "18.2.7",
+    "typescript": "5.2.2"
   }
 }
