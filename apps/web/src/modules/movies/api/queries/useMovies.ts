@@ -4,7 +4,7 @@ import { useDeepCompareMemoize } from 'use-deep-compare-effect';
 
 import { GetMovieFiltersDTO } from '@movies/shared/communication';
 
-import { useDebouncedQuery } from '@/common/hooks/useDebouncedQuery';
+import { useDebouncedQuery } from '@/hooks/useDebouncedQuery';
 
 import { moviesAPI } from '../moviesAPIService';
 

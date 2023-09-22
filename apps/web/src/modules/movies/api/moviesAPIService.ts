@@ -4,7 +4,7 @@ import {
   getMoviesDTOSchema,
 } from '@movies/shared/communication';
 
-import { HttpService } from '@/common/services/HttpService';
+import { HttpService } from '@/services/HttpService';
 
 export function MoviesAPI(http: HttpService) {
   const baseUrl = 'http://localhost:3001/v1/movies';
