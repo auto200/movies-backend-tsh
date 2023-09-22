@@ -1,13 +1,10 @@
-import { useMemo } from 'react';
+import { ChangeEvent, MouseEvent, useMemo } from 'react';
 
-import { DevTool } from '@hookform/devtools';
-import { useFormContext } from 'react-hook-form';
-
-import { FilterFormData, FiltersMetadata } from '../schema';
+import { NO_VALUE, useFilters } from '../hooks/useFilters';
+import { FiltersMetadata } from '../schema';
 
 type FiltersProps = {
   data: FiltersMetadata;
-  onReset: () => void;
 };
 
 // NOTE: not really robust solution, values could be rounded - not needed for now
@@ -21,21 +18,51 @@ const minMaxToTimeOptions = (times: FiltersMetadata['times']) => {
   return timeOptions;
 };
 
-export function Filters({ data, onReset }: FiltersProps) {
+export function Filters({ data }: FiltersProps) {
   const {
-    control,
-    formState: { isDirty },
-    register,
-  } = useFormContext<FilterFormData>();
+    filters: { duration, genres: selectedGenres },
+    isAnyFilterActive,
+    reset,
+    setDuration,
+    setGenres,
+  } = useFilters();
 
+  const selectedDuration = duration ?? NO_VALUE;
   const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);
+
+  const handleGenresChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const options = e.target.options;
+    const newGenres = [...options].filter((opt) => opt.selected).map((opt) => opt.value);
+
+    setGenres(newGenres);
+  };
+
+  const handleDurationChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const duration = e.target.value;
+    if (duration === NO_VALUE) return setDuration(NO_VALUE);
+
+    const durationAsNumber = Number.parseInt(duration);
+    setDuration(Number.isNaN(durationAsNumber) ? NO_VALUE : durationAsNumber);
+  };
+
+  const handleReset = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    reset();
+  };
 
   return (
     <>
       <form>
-        Genres:
+        <div>Genres:</div>
+
         <div>
-          <select multiple {...register('genres')} style={{ height: 200, width: 150 }}>
+          <select
+            multiple
+            onChange={handleGenresChange}
+            style={{ height: 200, width: 150 }}
+            value={selectedGenres}
+          >
             {data.genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}
@@ -43,30 +70,23 @@ export function Filters({ data, onReset }: FiltersProps) {
             ))}
           </select>
         </div>
+
         <div>
           <p>Duration:</p>
-          <select {...register('duration')}>
-            <option value="">-</option>
+          <select onChange={handleDurationChange} value={selectedDuration}>
+            <option value={NO_VALUE}>-</option>
             {timeOptions.map((time) => (
               <option key={time} value={time}>
                 {time}
               </option>
             ))}
           </select>
-          {/* <input
-            type="number"
-            min={0}
-            {...register("duration", {
-              setValueAs: (v) =>
-                v === "" ? undefined : Number.parseInt(v, 10),
-            })}
-          /> */}
         </div>
-        <button disabled={!isDirty} onClick={onReset}>
+
+        <button disabled={!isAnyFilterActive} onClick={handleReset} type="reset">
           reset
         </button>
       </form>
-      <DevTool control={control} />
     </>
   );
 }
