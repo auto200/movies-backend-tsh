@@ -1,5 +1,7 @@
 import { ChangeEvent, MouseEvent, useMemo } from 'react';
 
+import { useTranslation } from 'next-i18next';
+
 import { NO_VALUE, useFilters } from '../hooks/useFilters';
 import { FiltersMetadata } from '../schema';
 
@@ -26,6 +28,8 @@ export function Filters({ data }: FiltersProps) {
     setDuration,
     setGenres,
   } = useFilters();
+
+  const { t } = useTranslation();
 
   const selectedDuration = duration ?? NO_VALUE;
   const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);
@@ -54,7 +58,7 @@ export function Filters({ data }: FiltersProps) {
   return (
     <>
       <form>
-        <div>Genres:</div>
+        <p>{t('genres')}:</p>
 
         <div>
           <select
@@ -72,7 +76,7 @@ export function Filters({ data }: FiltersProps) {
         </div>
 
         <div>
-          <p>Duration:</p>
+          <p>{t('duration')}:</p>
           <select onChange={handleDurationChange} value={selectedDuration}>
             <option value={NO_VALUE}>-</option>
             {timeOptions.map((time) => (
@@ -84,7 +88,7 @@ export function Filters({ data }: FiltersProps) {
         </div>
 
         <button disabled={!isAnyFilterActive} onClick={handleReset} type="reset">
-          reset
+          {t('reset')}
         </button>
       </form>
     </>
