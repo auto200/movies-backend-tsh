@@ -1,3 +1,6 @@
+import { GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import { useMovies, useFiltersMetadata } from '@/modules/movies/api/queries';
 import { Filters } from '@/modules/movies/components';
 import { useFilters } from '@/modules/movies/hooks/useFilters';
@@ -33,3 +36,11 @@ export default function Page() {
     </div>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+};
