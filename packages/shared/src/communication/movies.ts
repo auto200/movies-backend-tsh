@@ -17,6 +17,19 @@ export type MovieDTO = z.infer<typeof movieSchema>;
 export const getMoviesDTOSchema = z.array(movieSchema);
 export type GetMoviesDTO = z.infer<typeof getMoviesDTOSchema>;
 
+export const getMovieFiltersSchema = z.object({
+  duration: z.coerce.number().positive().optional(),
+  genres: z.union([z.string(), z.array(z.string())]).optional(),
+});
+
+export type GetMovieFiltersDTO = z.infer<typeof getMovieFiltersSchema>;
+
+export const getFiltersMetadataResponseDTOSchema = z.object({
+  genres: z.array(z.string()),
+  times: z.object({ max: z.number().positive(), min: z.number().positive() }),
+});
+export type GetFiltersMetadataResponseDTO = z.infer<typeof getFiltersMetadataResponseDTOSchema>;
+
 export const addMovieRequestDTOSchema = movieSchema.pick({
   actors: true,
   director: true,
@@ -30,15 +43,11 @@ export const addMovieRequestDTOSchema = movieSchema.pick({
 
 export type AddMovieRequestDTO = z.infer<typeof addMovieRequestDTOSchema>;
 
-export const getMovieFiltersSchema = z.object({
-  duration: z.coerce.number().positive().optional(),
-  genres: z.union([z.string(), z.array(z.string())]).optional(),
-});
+export const addMovieResponseDTOSchema = z.string();
+export type AddMovieResponseDTO = z.infer<typeof addMovieResponseDTOSchema>;
 
-export type GetMovieFiltersDTO = z.infer<typeof getMovieFiltersSchema>;
+export const getGenresRequestDTOSchema = z.never();
+export type GetGenresRequestDTO = z.infer<typeof getGenresRequestDTOSchema>;
 
-export const getFiltersMetadataResponseDTOSchema = z.object({
-  genres: z.array(z.string()),
-  times: z.object({ max: z.number().positive(), min: z.number().positive() }),
-});
-export type GetFiltersMetadataResponseDTO = z.infer<typeof getFiltersMetadataResponseDTOSchema>;
+export const getGenresResponseDTOSchema = z.array(z.string());
+export type GetGenresResponseDTO = z.infer<typeof getGenresResponseDTOSchema>;

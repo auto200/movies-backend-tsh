@@ -14,6 +14,7 @@ import { MoviesRepository } from '../moviesRepository';
 export type MoviesService = {
   addMovie(movieToAdd: AddMovieRequestDTO): Promise<void>;
   getFiltersMetadata(): Promise<GetFiltersMetadataResponseDTO>;
+  getGenres(): Promise<string[]>;
   getMoviesWithFilters(
     filters: GetMovieFiltersDTO,
     durationVariation?: number
@@ -105,6 +106,8 @@ export const MoviesService = (
 
       return { genres, times: getMinMaxMovieTimes(movies) };
     },
+
+    getGenres: () => moviesRepository.getGenres(),
 
     // NOTE: since our database does not support filtering natively we have to do it
     // on our own, if the logic grows, it could be extracted to separate service

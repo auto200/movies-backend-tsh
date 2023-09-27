@@ -1,0 +1,16 @@
+{
+  "form": {
+    "title": "Add movie",
+    "submit": "Submit",
+    "fields": {
+      "actors": { "label": "Actors" },
+      "director": { "label": "Director", "error": "Provide director" },
+      "genres": { "label": "Genres", "error": "Provide at least one genre" },
+      "plot": { "label": "Plot" },
+      "posterUrl": { "label": "Poster Url", "error": "Url is invalid" },
+      "runtime": { "label": "Runtime", "error": "Provide movie duration" },
+      "title": { "label": "Title", "error": "Provide movie title" },
+      "year": { "label": "Year", "error": "Provide move release year" }
+    }
+  }
+}

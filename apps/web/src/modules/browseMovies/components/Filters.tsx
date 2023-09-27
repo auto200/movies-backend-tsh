@@ -29,7 +29,7 @@ export function Filters({ data }: FiltersProps) {
     setGenres,
   } = useFilters();
 
-  const { t } = useTranslation();
+  const { t } = useTranslation('browse-movies');
 
   const selectedDuration = duration ?? NO_VALUE;
   const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);
