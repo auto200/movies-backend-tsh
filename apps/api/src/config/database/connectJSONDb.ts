@@ -6,7 +6,7 @@ export type DatabaseSchema = {
   movies: Array<{
     actors?: string;
     director: string;
-    genres: string[];
+    genres: [string, ...string[]];
     id: number;
     plot?: string;
     posterUrl?: string;

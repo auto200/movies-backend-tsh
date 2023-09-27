@@ -29,7 +29,7 @@ describe('movies relevance service', () => {
   });
 
   test('sorting by genre rating', () => {
-    const movies = [
+    const movies: Array<Pick<MovieDTO, 'genres'>> = [
       {
         genres: ['Comedy', 'Drama'],
       },
@@ -39,7 +39,7 @@ describe('movies relevance service', () => {
       {
         genres: ['Horror', 'Action'],
       },
-    ] as MovieDTO[];
+    ];
 
     const expected = [
       {
@@ -53,8 +53,8 @@ describe('movies relevance service', () => {
       },
     ];
 
-    expect(moviesRelevanceService.sortMoviesByGenresRelevance(movies, ['Crime', 'Drama'])).toEqual(
-      expected
-    );
+    expect(
+      moviesRelevanceService.sortMoviesByGenresRelevance(movies as MovieDTO[], ['Crime', 'Drama'])
+    ).toEqual(expected);
   });
 });
