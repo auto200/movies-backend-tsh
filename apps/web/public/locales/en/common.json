@@ -1,5 +1,6 @@
 {
-  "genres": "Genres",
-  "duration": "Duration",
-  "reset": "Reset"
+  "header": {
+    "browse": "Browse",
+    "addMovie": "Add movie"
+  }
 }

@@ -6,15 +6,15 @@ import { GetMovieFiltersDTO } from '@movies/shared/communication';
 
 import { useDebouncedQuery } from '@/hooks/useDebouncedQuery';
 
-import { moviesAPI } from '../moviesAPIService';
+import { browseMoviesAPI } from '../browseMoviesAPIService';
 
-export function useMovies(filters: GetMovieFiltersDTO) {
+export function useBrowseMovies(filters: GetMovieFiltersDTO) {
   const memoFilters = useDeepCompareMemoize(filters);
 
   return useDebouncedQuery(
     useMemo(
       () => ({
-        queryFn: () => moviesAPI.getMovies(memoFilters),
+        queryFn: () => browseMoviesAPI.getMovies(memoFilters),
         queryKey: ['movies', memoFilters],
       }),
       [memoFilters]

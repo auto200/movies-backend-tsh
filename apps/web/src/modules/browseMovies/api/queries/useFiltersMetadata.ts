@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { moviesAPI } from '../moviesAPIService';
+import { browseMoviesAPI } from '../browseMoviesAPIService';
 
 export function useFiltersMetadata() {
   return useQuery({
-    queryFn: moviesAPI.getFiltersMetadata,
+    queryFn: browseMoviesAPI.getFiltersMetadata,
     queryKey: ['filters-metadata'],
   });
 }

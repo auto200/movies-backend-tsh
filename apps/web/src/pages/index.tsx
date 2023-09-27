@@ -1,13 +1,13 @@
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { useMovies, useFiltersMetadata } from '@/modules/movies/api/queries';
-import { Filters } from '@/modules/movies/components';
-import { useFilters } from '@/modules/movies/hooks/useFilters';
+import { useBrowseMovies, useFiltersMetadata } from '@/modules/browseMovies/api/queries';
+import { Filters } from '@/modules/browseMovies/components';
+import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
 
-export default function Page() {
+export default function BrowsePage() {
   const { filters } = useFilters();
-  const { data: movies } = useMovies(filters);
+  const { data: movies } = useBrowseMovies(filters);
   const { data: filtersMetadata } = useFiltersMetadata();
 
   return (
@@ -40,7 +40,7 @@ export default function Page() {
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ['common', 'browse-movies'])),
     },
   };
 };

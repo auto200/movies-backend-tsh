@@ -5,8 +5,9 @@ import {
 } from '@movies/shared/communication';
 
 import { HttpService } from '@/services/HttpService';
+import { stripOptionalValues } from '@/utils';
 
-export function MoviesAPI(http: HttpService) {
+export function BrowseMoviesAPI(http: HttpService) {
   const baseUrl = 'http://localhost:3001/v1/movies';
 
   return {
@@ -14,12 +15,12 @@ export function MoviesAPI(http: HttpService) {
       http.get(`${baseUrl}/filters-metadata`, {
         responseSchema: getFiltersMetadataResponseDTOSchema,
       }),
-    getMovies: ({ duration, genres }: GetMovieFiltersDTO) =>
+    getMovies: (payload: GetMovieFiltersDTO) =>
       http.get(baseUrl, {
-        query: { ...(genres && { genres }), ...(duration && { duration }) },
+        query: stripOptionalValues(payload),
         responseSchema: getMoviesDTOSchema,
       }),
   };
 }
 
-export const moviesAPI = MoviesAPI(HttpService());
+export const browseMoviesAPI = BrowseMoviesAPI(HttpService());

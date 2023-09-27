@@ -1,0 +1,16 @@
+{
+  "form": {
+    "title": "Dodaj film",
+    "submit": "Wyślij",
+    "fields": {
+      "actors": { "label": "Aktorzy" },
+      "director": { "label": "Reżyser", "error": "Podaj reżysera" },
+      "genres": { "label": "Gatunki", "error": "Podaj conajmniej jeden gatunek" },
+      "plot": { "label": "Fabuła" },
+      "posterUrl": { "label": "Plakat", "error": "Url jest nieprawidłowy" },
+      "runtime": { "label": "Czas trwania", "error": "Podaj ile trwa film" },
+      "title": { "label": "Tytuł", "error": "Podaj tytuł filmu" },
+      "year": { "label": "Rok", "error": "Podaj rok powstania filmu" }
+    }
+  }
+}
