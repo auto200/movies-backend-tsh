@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 import { addMovieRequestDTOSchema, getMovieFiltersSchema } from '@movies/shared/communication';
 
@@ -22,7 +23,7 @@ export const createMoviesRouter = ({ moviesService }: RootService): Router => {
 
     moviesService
       .addMovie(movieToAdd)
-      .then(() => res.send('Success'))
+      .then(() => res.sendStatus(StatusCodes.OK))
       .catch(next);
   });
 

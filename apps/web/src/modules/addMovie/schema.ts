@@ -12,13 +12,13 @@ function emptyFieldToUndefined(value: unknown) {
 }
 
 export const addMovieFormSchema = z.object({
-  actors: z.preprocess(emptyFieldToUndefined, z.string().nonempty().optional()),
-  director: z.string().nonempty().max(255),
-  genres: z.array(z.string()),
-  plot: z.preprocess(emptyFieldToUndefined, z.string().nonempty().optional()),
-  posterUrl: z.preprocess(emptyFieldToUndefined, z.string().url().optional()),
+  actors: z.preprocess(emptyFieldToUndefined, z.string().trim().nonempty().optional()),
+  director: z.string().trim().nonempty().max(255),
+  genres: z.array(z.string().trim()).nonempty(),
+  plot: z.preprocess(emptyFieldToUndefined, z.string().trim().nonempty().optional()),
+  posterUrl: z.preprocess(emptyFieldToUndefined, z.string().trim().url().toLowerCase().optional()),
   runtime: z.number().positive(),
-  title: z.string().nonempty().max(255),
+  title: z.string().trim().nonempty().max(255),
   year: z.number().positive(),
 });
 
