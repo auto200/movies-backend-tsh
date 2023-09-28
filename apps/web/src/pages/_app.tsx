@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
 
+import { AppErrorBoundary } from '@/components/AppErrorBoundary';
 import { MainLayout } from '@/layouts/MainLayout';
 import { QueryProvider } from '@/providers/queryProvider';
 import { NextPageWithLayout } from '@/typings/NextPageWithLayout';
@@ -11,7 +12,11 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <MainLayout>{page}</MainLayout>);
 
-  return <QueryProvider>{getLayout(<Component {...pageProps} />)}</QueryProvider>;
+  return (
+    <QueryProvider>
+      <AppErrorBoundary>{getLayout(<Component {...pageProps} />)}</AppErrorBoundary>
+    </QueryProvider>
+  );
 }
 
 // explicit type declaration fixes typescript error:

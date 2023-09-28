@@ -2,5 +2,10 @@
   "header": {
     "browse": "Browse",
     "addMovie": "Add movie"
+  },
+  "errorBoundary": {
+    "title": "Sorry, something went wrong",
+    "details": "Details",
+    "tryAgain": "Try again"
   }
 }
