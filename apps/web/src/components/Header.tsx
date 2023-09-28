@@ -30,7 +30,7 @@ function getRouteStyles(isActive: boolean): React.CSSProperties {
 
 export const Header = () => {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const isMounted = useIsMounted();
 

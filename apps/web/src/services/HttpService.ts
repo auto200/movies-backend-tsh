@@ -1,6 +1,8 @@
 import { z, ZodFirstPartyTypeKind } from 'zod';
 
 import { isPlainObject } from '@/utils';
+import { HttpError } from '@/utils/errors/HttpError';
+import { PayloadParsingError } from '@/utils/errors/PayloadParsingError';
 
 type QueryParams = Record<string, string | number | Array<string | number>>;
 type PayloadBody = RequestInit['body'] | object;
@@ -32,21 +34,19 @@ export function HttpService(fetcher: typeof fetch = fetch) {
       headers: extendHeaders(headers, body),
     });
 
-    // TODO: better error formatting
     if (!response.ok) {
-      const error = new Error('fetch response status status not ok', {
-        cause: response,
-      });
-      // eslint-disable-next-line no-console
-      console.error(error);
-      throw error;
+      throw new HttpError(response.status, response, 'HTTP request failed');
     }
+
     const data: unknown = await response[responseType]();
 
-    // TODO: better error formatting
-    // we infer the type from schema,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return responseSchema.parse(data);
+    const parsed = responseSchema.safeParse(data);
+    if (parsed.success) {
+      // we infer the type from schema,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return parsed.data;
+    }
+    throw new PayloadParsingError('Returned data does not match expected schema', parsed.error);
   }
 
   return {

@@ -3,7 +3,10 @@ const path = require('path');
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  extends: ['@movies/eslint-config/eslint-nextjs.js'],
+  extends: [
+    '@movies/eslint-config/eslint-nextjs.js',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
+  ],
   overrides: [
     {
       files: ['src/pages/**', './next.config.mjs'],
@@ -17,6 +20,7 @@ module.exports = {
     sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
+  plugins: ['@tanstack/query'],
   root: true,
   rules: {
     'no-restricted-imports': [

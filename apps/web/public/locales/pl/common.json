@@ -2,5 +2,10 @@
   "header": {
     "browse": "Przeglądaj",
     "addMovie": "Dodaj film"
+  },
+  "errorBoundary": {
+    "title": "Przepraszamy, coś poszło nie tak",
+    "details": "Szczegóły",
+    "tryAgain": "Spróbuj ponownie"
   }
 }

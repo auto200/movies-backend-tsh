@@ -34,5 +34,6 @@ export function useDebouncedQuery<
   const isCached =
     config.omitDebounceOnCacheHit && options.queryKey ? !!qc.find(options.queryKey) : false;
 
+  // eslint-disable-next-line @tanstack/query/prefer-query-object-syntax
   return useQuery(isCached ? options : debouncedOptions);
 }
