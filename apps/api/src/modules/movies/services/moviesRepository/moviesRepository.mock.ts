@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/require-await */
+import cloneDeep from 'lodash/cloneDeep';
+
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
 
 import { MoviesRepository } from './moviesRepository';
 
 export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesRepository => {
-  const db = initialData;
+  // make sure data is not shared between instances
+  const db = cloneDeep(initialData);
 
   return {
     addMovie: async (movie) => {
