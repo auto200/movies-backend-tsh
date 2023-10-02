@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
-
 import { DbConnection } from '@/config/database/connectJSONDb';
 
 import { AddMovieRequestDTO, MovieDTO } from '../../models';
@@ -21,11 +19,11 @@ export const MoviesRepository = (db: DbConnection): MoviesRepository => {
     findByTitle: async (title) => {
       const movie = db.data.movies.find((movie) => movie.title === title);
 
-      return movie ?? null;
+      return Promise.resolve(movie ?? null);
     },
 
-    getAllMovies: async () => db.data.movies,
+    getAllMovies: async () => Promise.resolve(db.data.movies),
 
-    getGenres: async () => db.data.genres,
+    getGenres: async () => Promise.resolve(db.data.genres),
   };
 };
