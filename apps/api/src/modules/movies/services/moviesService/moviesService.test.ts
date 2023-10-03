@@ -1,6 +1,7 @@
 /*eslint-disable @typescript-eslint/no-floating-promises */
 import { describe, test, expect } from 'vitest';
 
+import { SearchEngineServiceMock } from '@/common/infrastructure/searchEngine/SearchEngineClient.mock';
 import { Sampler } from '@/common/utils';
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
 
@@ -15,7 +16,8 @@ import { MoviesService } from './moviesService';
 const createMockMovieService = (initialData: DatabaseSchema) => {
   const mockMoviesRepository = createMockMoviesRepository(initialData);
   const moviesRelevanceService = MoviesRelevanceService();
-  return MoviesService(mockMoviesRepository, moviesRelevanceService);
+  const searchEngineService = SearchEngineServiceMock();
+  return MoviesService(mockMoviesRepository, moviesRelevanceService, searchEngineService);
 };
 
 describe('MoviesService', () => {

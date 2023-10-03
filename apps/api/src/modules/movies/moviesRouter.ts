@@ -3,8 +3,8 @@ import { StatusCodes } from 'http-status-codes';
 
 import { addMovieRequestDTOSchema, getMovieFiltersSchema } from '@movies/shared/communication';
 
+import { type RootService } from '@/common/infrastructure/rootService';
 import { validator } from '@/common/payloadValidation';
-import { type RootService } from '@/config/rootService';
 
 const validators = {
   addMovie: validator({ body: addMovieRequestDTOSchema }),
