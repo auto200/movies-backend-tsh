@@ -9,12 +9,13 @@
     "lint:fix": "turbo run lint:fix",
     "format": "turbo run format",
     "format:fix": "turbo run format:fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed:searchEngine": "turbo run seed:searchEngine --filter api"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.7.1",
+    "@commitlint/cli": "17.7.2",
     "@commitlint/config-conventional": "17.7.0",
-    "eslint": "8.49.0",
+    "eslint": "8.50.0",
     "husky": "8.0.3",
     "prettier": "3.0.3",
     "syncpack": "11.2.1",

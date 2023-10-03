@@ -2,9 +2,9 @@ import cors from 'cors';
 import express, { Express, json } from 'express';
 import helmet from 'helmet';
 
+import { RootService } from '@/common/infrastructure/rootService';
 import { errorHandlerMiddleware } from '@/common/middlewares/errorHandlerMiddleware';
-import { RootService } from '@/config/rootService';
-import { createMoviesRouter } from '@/modules/movies/moviesRouter';
+import { createMoviesRouter } from '@/modules/movies';
 
 export const initApp = (rootService: RootService): Express => {
   const app = express();

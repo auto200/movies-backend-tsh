@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
 import cloneDeep from 'lodash/cloneDeep';
 
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
@@ -11,10 +10,13 @@ export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesR
 
   return {
     addMovie: async (movie) => {
-      db.movies.push({ ...movie, id: db.movies.length + 1 });
+      const movieWithId = { ...movie, id: db.movies.length + 1 };
+      db.movies.push(movieWithId);
+      return Promise.resolve(movieWithId);
     },
-    findByTitle: async (title) => db.movies.find((movie) => movie.title === title) ?? null,
-    getAllMovies: async () => db.movies,
-    getGenres: async () => db.genres,
+    findByTitle: async (title) =>
+      Promise.resolve(db.movies.find((movie) => movie.title === title) ?? null),
+    getAllMovies: async () => Promise.resolve(db.movies),
+    getGenres: async () => Promise.resolve(db.genres),
   };
 };

@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  run-unit-tests:
+  run-tests:
     environment: testing
     env:
       PORT: ${{vars.PORT}}
