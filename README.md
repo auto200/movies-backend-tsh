@@ -11,6 +11,8 @@ endpoints:
 
 ```bash
 pnpm i
+docker compose up
+pnpm seed:searchEngine
 pnpm dev
 
 pnpm test

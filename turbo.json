@@ -12,20 +12,11 @@
       "persistent": true
     },
     "test": {},
-    "format": {
-      "cache": false
-    },
-    "format:fix": {
-      "cache": false
-    },
-    "typecheck": {
-      "cache": false
-    },
-    "lint": {
-      "cache": false
-    },
-    "lint:fix": {
-      "cache": false
-    }
+    "format": {},
+    "format:fix": {},
+    "typecheck": {},
+    "lint": {},
+    "lint:fix": {},
+    "seed:searchEngine": { "cache": false }
   }
 }

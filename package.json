@@ -9,7 +9,8 @@
     "lint:fix": "turbo run lint:fix",
     "format": "turbo run format",
     "format:fix": "turbo run format:fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed:searchEngine": "turbo run seed:searchEngine --filter api"
   },
   "devDependencies": {
     "@commitlint/cli": "17.7.2",
