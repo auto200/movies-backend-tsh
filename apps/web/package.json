@@ -16,6 +16,7 @@
     "@movies/shared": "workspace:*",
     "@tanstack/react-query": "4.35.7",
     "i18next": "23.5.1",
+    "meilisearch": "0.35.0",
     "next": "13.5.3",
     "next-i18next": "14.0.3",
     "react": "18.2.0",
