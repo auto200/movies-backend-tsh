@@ -1,7 +1,7 @@
 import { initApp } from '@/app';
 import { MoviesSearchEngineServiceMock } from '@/common/infrastructure/moviesSearchEngine/MoviesSearchEngineService.mock';
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
-import { MoviesRelevanceService, MoviesService } from '@/modules/movies';
+import { MoviesService } from '@/modules/movies';
 import { createMockMoviesRepository } from '@/modules/movies/services/moviesRepository/moviesRepository.mock';
 
 const initialData: DatabaseSchema = {
@@ -28,13 +28,8 @@ const initialData: DatabaseSchema = {
 
 export function createTestingApp() {
   const moviesRepository = createMockMoviesRepository(initialData);
-  const moviesRelevanceService = MoviesRelevanceService();
   const moviesSearchEngineService = MoviesSearchEngineServiceMock();
-  const moviesService = MoviesService(
-    moviesRepository,
-    moviesRelevanceService,
-    moviesSearchEngineService
-  );
+  const moviesService = MoviesService(moviesRepository, moviesSearchEngineService);
 
   return {
     app: initApp({ moviesSearchEngineService, moviesService }),

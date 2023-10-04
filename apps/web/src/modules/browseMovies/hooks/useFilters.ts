@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { GetMovieSearchFilters } from '../schema';
@@ -65,7 +67,9 @@ export function useFilters(): UseFiltersResult {
     setUrlState(newSearchParams);
   };
 
-  return { filters: { duration, genres }, isAnyFilterActive, reset, setDuration, setGenres };
+  const filters = useMemo(() => ({ duration, genres }), [duration, genres]);
+
+  return { filters, isAnyFilterActive, reset, setDuration, setGenres };
 }
 
 function decodeDuration(duration: string | null): number | undefined {

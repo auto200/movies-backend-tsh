@@ -1,5 +1,7 @@
 import { z, ZodObject, ZodRawShape } from 'zod';
 
+export * from './moviesRelevance';
+
 export function validateEnv<T extends ZodObject<ZodRawShape>>(
   schema: T,
   env: Record<string, string | undefined> = process?.env

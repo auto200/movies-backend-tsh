@@ -1,12 +1,10 @@
 import { describe, expect, test } from 'vitest';
 
-import { MovieDTO } from '../../models';
+import { MovieDTO } from '../../communication';
 
-import { MoviesRelevanceService } from './moviesRelevanceService';
+import { MoviesRelevance } from './moviesRelevance';
 
-describe('movies relevance service', () => {
-  const moviesRelevanceService = MoviesRelevanceService();
-
+describe('movies relevance', () => {
   test('movie genre relevance rating', () => {
     const movie: MovieDTO = {
       actors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
@@ -21,11 +19,11 @@ describe('movies relevance service', () => {
       year: 1994,
     };
 
-    expect(moviesRelevanceService.getMovieRelevanceByGenres(movie, [])).toBe(0);
+    expect(MoviesRelevance.getMovieRelevanceByGenres(movie, [])).toBe(0);
 
-    expect(moviesRelevanceService.getMovieRelevanceByGenres(movie, ['Crime'])).toBe(1);
+    expect(MoviesRelevance.getMovieRelevanceByGenres(movie, ['Crime'])).toBe(1);
 
-    expect(moviesRelevanceService.getMovieRelevanceByGenres(movie, ['Crime', 'Drama'])).toBe(2);
+    expect(MoviesRelevance.getMovieRelevanceByGenres(movie, ['Crime', 'Drama'])).toBe(2);
   });
 
   test('sorting by genre rating', () => {
@@ -54,7 +52,7 @@ describe('movies relevance service', () => {
     ];
 
     expect(
-      moviesRelevanceService.sortMoviesByGenresRelevance(movies as MovieDTO[], ['Crime', 'Drama'])
+      MoviesRelevance.sortMoviesByGenresRelevance(movies as MovieDTO[], ['Crime', 'Drama'])
     ).toEqual(expected);
   });
 });

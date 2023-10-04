@@ -1,5 +1,5 @@
 import { DbConnection } from '@/config/database/connectJSONDb';
-import { MoviesRelevanceService, MoviesRepository, MoviesService } from '@/modules/movies';
+import { MoviesRepository, MoviesService } from '@/modules/movies';
 
 import { MoviesSearchEngineService } from './moviesSearchEngine/MoviesSearchEngineService';
 
@@ -10,14 +10,9 @@ export type RootService = {
 
 export function createRootService(db: DbConnection): RootService {
   const moviesRepository = MoviesRepository(db);
-  const moviesRelevanceService = MoviesRelevanceService();
 
   const moviesSearchEngineService = MoviesSearchEngineService();
-  const moviesService = MoviesService(
-    moviesRepository,
-    moviesRelevanceService,
-    moviesSearchEngineService
-  );
+  const moviesService = MoviesService(moviesRepository, moviesSearchEngineService);
 
   return { moviesSearchEngineService, moviesService };
 }

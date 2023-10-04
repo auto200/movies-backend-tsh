@@ -6,6 +6,7 @@ import { AddMovieForm } from '@/modules/addMovie/components/AddMovieForm';
 
 export default function AddMoviePage() {
   const { t } = useTranslation('add-movie');
+
   return (
     <div>
       <p>{t('form.title')}</p>

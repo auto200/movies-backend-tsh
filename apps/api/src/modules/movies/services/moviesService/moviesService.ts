@@ -1,3 +1,5 @@
+import { MoviesRelevance } from '@movies/shared/utils';
+
 import { MoviesSearchEngineService } from '@/common/infrastructure/moviesSearchEngine/MoviesSearchEngineService';
 import { Sampler, isNumberInTolerance, sample, toArray } from '@/common/utils';
 
@@ -9,7 +11,6 @@ import {
   MovieDTO,
   GetFiltersMetadataResponseDTO,
 } from '../../models';
-import { MoviesRelevanceService } from '../moviesRelevanceService';
 import { MoviesRepository } from '../moviesRepository';
 
 export type MoviesService = {
@@ -27,7 +28,6 @@ const DEFAULT_DURATION_VARIATION = 10;
 
 export const MoviesService = (
   moviesRepository: MoviesRepository,
-  moviesRelevanceService: MoviesRelevanceService,
   searchEngineService: MoviesSearchEngineService
 ): MoviesService => {
   const assertValidGenres = async (genres: string[]) => {
@@ -66,7 +66,7 @@ export const MoviesService = (
     const allMovies = await moviesRepository.getAllMovies();
     const filteredMovies = filterMoviesByGenres(allMovies, genres);
 
-    return moviesRelevanceService.sortMoviesByGenresRelevance(filteredMovies, genres);
+    return MoviesRelevance.sortMoviesByGenresRelevance(filteredMovies, genres);
   };
 
   const getMoviesByGenresAndDuration = async (

@@ -20,16 +20,19 @@
     }
   },
   "scripts": {
+    "test": "vitest run",
     "format": "prettier src/**/*.ts --list-different",
     "format:fix": "pnpm format --write",
     "lint": "eslint . --max-warnings 0 --report-unused-disable-directives",
     "lint:fix": "pnpm lint --fix"
   },
   "devDependencies": {
-    "@movies/tsconfig": "workspace:*",
     "@movies/eslint-config": "workspace:*",
+    "@movies/tsconfig": "workspace:*",
+    "@types/node": "18.11.9",
     "typescript": "5.2.2",
-    "@types/node": "18.11.9"
+    "vite-tsconfig-paths": "4.2.1",
+    "vitest": "0.34.6"
   },
   "dependencies": {
     "zod": "3.22.2"
