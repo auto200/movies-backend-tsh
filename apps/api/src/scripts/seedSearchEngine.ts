@@ -1,7 +1,6 @@
 import 'dotenv/config';
 
-import { SearchEngineIndexName } from '@/common/infrastructure/searchEngine/models';
-import { SearchEngineService } from '@/common/infrastructure/searchEngine/searchEngineService';
+import { MoviesSearchEngineService } from '@/common/infrastructure/moviesSearchEngine/MoviesSearchEngineService';
 import { connectJSONDb } from '@/config/database/connectJSONDb';
 import { MoviesRepository } from '@/modules/movies';
 
@@ -10,21 +9,16 @@ import { MoviesRepository } from '@/modules/movies';
   const conn = await connectJSONDb();
   const moviesRepository = MoviesRepository(conn);
 
-  const searchEngineService = SearchEngineService();
+  const moviesSearchEngineService = MoviesSearchEngineService();
 
   const allMovies = await moviesRepository.getAllMovies();
 
-  await searchEngineService.waitForTask(
-    await searchEngineService.createIndex(SearchEngineIndexName.movies)
-  );
+  await moviesSearchEngineService.waitForTask(await moviesSearchEngineService.createMoviesIndex());
 
-  const task = await searchEngineService.addDocumentsToIndex({
-    data: allMovies,
-    indexName: SearchEngineIndexName.movies,
-  });
+  const task = await moviesSearchEngineService.addDocuments(allMovies);
   const {
     details: { indexedDocuments },
-  } = await searchEngineService.waitForTask(task);
+  } = await moviesSearchEngineService.waitForTask(task);
   // eslint-disable-next-line no-console
   console.log(`Successfully added ${indexedDocuments} documents`);
 })();

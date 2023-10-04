@@ -2,12 +2,20 @@
   "name": "@movies/shared",
   "version": "1.0.0",
   "exports": {
-    "./communication": "./src/communication/index.ts"
+    "./communication": "./src/communication/index.ts",
+    "./utils": "./src/utils/index.ts",
+    "./searchEngine": "./src/searchEngine/index.ts"
   },
   "typesVersions": {
     "*": {
       "communication": [
         "./src/communication/index.ts"
+      ],
+      "utils": [
+        "./src/utils/index.ts"
+      ],
+      "searchEngine": [
+        "./src/searchEngine/index.ts"
       ]
     }
   },
@@ -20,7 +28,8 @@
   "devDependencies": {
     "@movies/tsconfig": "workspace:*",
     "@movies/eslint-config": "workspace:*",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "@types/node": "18.11.9"
   },
   "dependencies": {
     "zod": "3.22.2"
