@@ -8,9 +8,7 @@ import { validator } from '@/common/payloadValidation';
 
 const validators = {
   addMovie: validator({ body: addMovieRequestDTOSchema }),
-  getMovie: validator({
-    query: getMovieFiltersSchema,
-  }),
+  getMovie: validator({ query: getMovieFiltersSchema }),
 };
 
 // NOTE: currently movie genres has to exactly match genres from database, including capitalization

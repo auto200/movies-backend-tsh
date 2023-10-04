@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -6,13 +8,22 @@ import { Filters } from '@/modules/browseMovies/components';
 import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
 
 export default function BrowsePage() {
+  const [isUsingSearchEngine, setIsUsingSearchEngine] = useState(true);
   const { filters } = useFilters();
-  const { data: movies } = useBrowseMovies(filters);
+  const { data: movies } = useBrowseMovies(filters, isUsingSearchEngine);
   const { data: filtersMetadata } = useFiltersMetadata();
 
   return (
     <div>
       {filtersMetadata && <Filters data={filtersMetadata} />}
+      <label style={{ display: 'flex' }}>
+        <span>Use search engine</span>
+        <input
+          checked={isUsingSearchEngine}
+          onChange={() => setIsUsingSearchEngine(!isUsingSearchEngine)}
+          type="checkbox"
+        />
+      </label>
 
       {movies?.map((movie) => (
         <div key={movie.id}>

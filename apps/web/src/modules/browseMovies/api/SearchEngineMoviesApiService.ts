@@ -35,7 +35,17 @@ const MoviesSearchEngine = (): MoviesSearchEngine => {
         Filter.IN('genres', filters.genres),
       ].filter(isNotNullable);
 
-      const result = await index.search('', { filter });
+      const getSingleRandomResult = filter.length === 0;
+
+      const result = await index.search('', {
+        filter,
+        // dummy way to get random result, assuming index has at least 100 documents
+        // https://github.com/meilisearch/meilisearch/discussions/1105#discussioncomment-139568
+        ...(getSingleRandomResult && {
+          limit: 1,
+          offset: Math.floor(Math.random() * 100),
+        }),
+      });
       return result.hits;
     },
   };
