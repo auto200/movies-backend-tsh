@@ -11,3 +11,7 @@ export function validateEnv<T extends ZodObject<ZodRawShape>>(
   }
   return result.data;
 }
+
+export function isNotNullable<T>(value: T | null | undefined): value is T {
+  return value !== undefined && value !== null;
+}

@@ -1,5 +1,4 @@
-import { SearchEngineIndexName } from '@/common/infrastructure/searchEngine/models';
-import { SearchEngineService } from '@/common/infrastructure/searchEngine/searchEngineService';
+import { MoviesSearchEngineService } from '@/common/infrastructure/moviesSearchEngine/MoviesSearchEngineService';
 import { Sampler, isNumberInTolerance, sample, toArray } from '@/common/utils';
 
 import { DuplicateMovieError } from '../../errors/duplicateMovieError';
@@ -29,7 +28,7 @@ const DEFAULT_DURATION_VARIATION = 10;
 export const MoviesService = (
   moviesRepository: MoviesRepository,
   moviesRelevanceService: MoviesRelevanceService,
-  searchEngineService: SearchEngineService
+  searchEngineService: MoviesSearchEngineService
 ): MoviesService => {
   const assertValidGenres = async (genres: string[]) => {
     const validGenres = await moviesRepository.getGenres();
@@ -99,10 +98,7 @@ export const MoviesService = (
       await assertValidGenres(movieToAdd.genres);
       await assertNoDuplicates(movieToAdd);
       const addedMovie = await moviesRepository.addMovie(movieToAdd);
-      await searchEngineService.addDocumentsToIndex({
-        data: [addedMovie],
-        indexName: SearchEngineIndexName.movies,
-      });
+      await searchEngineService.addDocuments([addedMovie]);
     },
 
     getFiltersMetadata: async () => {

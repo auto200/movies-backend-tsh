@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { browseMoviesAPI } from '../browseMoviesAPIService';
+import { browseMoviesAPI } from '../BrowseMoviesAPIService';
 
 export function useFiltersMetadata() {
   return useQuery({

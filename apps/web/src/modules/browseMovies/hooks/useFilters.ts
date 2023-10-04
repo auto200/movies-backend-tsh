@@ -1,5 +1,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { GetMovieSearchFilters } from '../schema';
+
 const PARAM_NAMES = {
   duration: 'duration',
   genres: 'genres',
@@ -8,7 +10,7 @@ const PARAM_NAMES = {
 export const NO_VALUE = '#!NO_VALUE!#';
 
 type UseFiltersResult = {
-  filters: { duration: number | undefined; genres: string[] };
+  filters: GetMovieSearchFilters;
   isAnyFilterActive: boolean;
   reset: () => void;
   setDuration: (duration: number | typeof NO_VALUE) => void;

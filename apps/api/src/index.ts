@@ -11,7 +11,7 @@ import { initApp } from './app';
   const conn = await connectJSONDb();
   const rootService = createRootService(conn);
 
-  await rootService.searchEngineService.setupSearchRules();
+  await rootService.moviesSearchEngineService.setupSearchRules();
 
   const app = initApp(rootService);
 
