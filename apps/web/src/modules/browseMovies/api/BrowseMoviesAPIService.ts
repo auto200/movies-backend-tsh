@@ -4,11 +4,12 @@ import {
   getMoviesDTOSchema,
 } from '@movies/shared/communication';
 
+import { appConfig } from '@/config/appConfig';
 import { HttpService } from '@/services/HttpService';
 import { stripOptionalValues } from '@/utils';
 
 export function BrowseMoviesAPI(http: HttpService) {
-  const baseUrl = 'http://localhost:3001/v1/movies';
+  const baseUrl = `${appConfig.NEXT_PUBLIC_API_URL}/v1/movies`;
 
   return {
     getFiltersMetadata: () =>
