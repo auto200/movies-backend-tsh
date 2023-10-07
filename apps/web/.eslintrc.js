@@ -14,6 +14,15 @@ module.exports = {
         'import/no-default-export': 'off',
       },
     },
+    // NOTE: it disables all of the restricted imports in `src/components/ui`, what we really want
+    // to achieve is to only disable the rule forbidding imports from '@radix-ui/*'. Possible
+    // solution would be to extract all the rules and reapply them here, omitting '@radix-ui/*' rule
+    {
+      files: ['src/components/ui/**'],
+      rules: {
+        'no-restricted-imports': 'off',
+      },
+    },
   ],
   parserOptions: {
     project: 'tsconfig.eslint.json',
@@ -26,8 +35,18 @@ module.exports = {
     'no-restricted-imports': [
       'warn',
       {
-        message: 'Please use next-i18next module instead',
-        name: 'react-i18next',
+        paths: [
+          {
+            message: 'Please use next-i18next module instead',
+            name: 'react-i18next',
+          },
+        ],
+        patterns: [
+          {
+            group: ['@radix-ui/*'],
+            message: 'Please use components defined at `@/components/ui` instead',
+          },
+        ],
       },
     ],
   },

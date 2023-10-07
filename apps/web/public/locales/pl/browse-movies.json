@@ -1,5 +1,6 @@
 {
   "genres": "Gatunki",
   "duration": "Czas trwania",
-  "reset": "Reset"
+  "reset": "Reset",
+  "useSearchEngine": "Użyj ulepszonego wyszukiwania"
 }
