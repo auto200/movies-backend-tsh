@@ -1,8 +1,11 @@
 import { useState } from 'react';
 
 import { GetStaticProps } from 'next';
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import { Label } from '@/components/ui/Label';
+import { Switch } from '@/components/ui/Switch';
 import { useBrowseMovies, useFiltersMetadata } from '@/modules/browseMovies/api/queries';
 import { Filters } from '@/modules/browseMovies/components';
 import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
@@ -13,17 +16,21 @@ export default function BrowsePage() {
   const { data: movies } = useBrowseMovies(filters, isUsingSearchEngine);
   const { data: filtersMetadata } = useFiltersMetadata();
 
+  const { t } = useTranslation('browse-movies');
+
   return (
     <div>
       {filtersMetadata && <Filters data={filtersMetadata} />}
-      <label style={{ display: 'flex' }}>
-        <span>Use search engine</span>
-        <input
+      <div className="mt-2 flex items-center">
+        <Switch
           checked={isUsingSearchEngine}
-          onChange={() => setIsUsingSearchEngine(!isUsingSearchEngine)}
-          type="checkbox"
+          id="use-search-engine"
+          onCheckedChange={() => setIsUsingSearchEngine(!isUsingSearchEngine)}
         />
-      </label>
+        <Label className="ml-2" htmlFor="use-search-engine">
+          {t('useSearchEngine')}
+        </Label>
+      </div>
 
       {movies?.map((movie) => (
         <div key={movie.id}>

@@ -2,6 +2,17 @@ import { ChangeEvent, MouseEvent, useMemo } from 'react';
 
 import { useTranslation } from 'next-i18next';
 
+import { Button } from '@/components/ui/Button';
+import { Label } from '@/components/ui/Label';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/Select';
+
 import { NO_VALUE, useFilters } from '../hooks/useFilters';
 import { FiltersMetadata } from '../schema';
 
@@ -41,8 +52,7 @@ export function Filters({ data }: FiltersProps) {
     setGenres(newGenres);
   };
 
-  const handleDurationChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const duration = e.target.value;
+  const handleDurationChange = (duration: string) => {
     if (duration === NO_VALUE) return setDuration(NO_VALUE);
 
     const durationAsNumber = Number.parseInt(duration);
@@ -57,39 +67,55 @@ export function Filters({ data }: FiltersProps) {
 
   return (
     <>
-      <form>
-        <p>{t('genres')}:</p>
-
+      <form className="flex flex-col gap-4">
         <div>
-          <select
-            multiple
-            onChange={handleGenresChange}
-            style={{ height: 200, width: 150 }}
-            value={selectedGenres}
-          >
-            {data.genres.map((genre) => (
-              <option key={genre} value={genre}>
-                {genre}
-              </option>
-            ))}
-          </select>
+          <Label htmlFor="genres-select">{t('genres')}:</Label>
+
+          <div>
+            <select
+              multiple
+              id="genres-select"
+              onChange={handleGenresChange}
+              style={{ height: 200, width: 150 }}
+              value={selectedGenres}
+            >
+              {data.genres.map((genre) => (
+                <option key={genre} value={genre}>
+                  {genre}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div>
-          <p>{t('duration')}:</p>
-          <select onChange={handleDurationChange} value={selectedDuration}>
-            <option value={NO_VALUE}>-</option>
-            {timeOptions.map((time) => (
-              <option key={time} value={time}>
-                {time}
-              </option>
-            ))}
-          </select>
+          <Label htmlFor="duration-select">{t('duration')}</Label>
+
+          <Select onValueChange={handleDurationChange} value={selectedDuration.toString()}>
+            <SelectTrigger className="w-[180px]" id="duration-select">
+              <SelectValue placeholder={t('duration')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value={NO_VALUE}>-</SelectItem>
+                {timeOptions.map((time) => (
+                  <SelectItem key={time} value={time.toString()}>
+                    {time}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
-        <button disabled={!isAnyFilterActive} onClick={handleReset} type="reset">
+        <Button
+          className="w-[100px]"
+          disabled={!isAnyFilterActive}
+          onClick={handleReset}
+          type="reset"
+        >
           {t('reset')}
-        </button>
+        </Button>
       </form>
     </>
   );

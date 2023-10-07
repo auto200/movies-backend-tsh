@@ -1,8 +1,8 @@
 import { z, ZodFirstPartyTypeKind } from 'zod';
 
-import { isPlainObject } from '@/utils';
-import { HttpError } from '@/utils/errors/HttpError';
-import { PayloadParsingError } from '@/utils/errors/PayloadParsingError';
+import { HttpError } from '@/lib/errors/HttpError';
+import { PayloadParsingError } from '@/lib/errors/PayloadParsingError';
+import { isPlainObject } from '@/lib/utils';
 
 type QueryParams = Record<string, string | number | Array<string | number>>;
 type PayloadBody = RequestInit['body'] | object;
