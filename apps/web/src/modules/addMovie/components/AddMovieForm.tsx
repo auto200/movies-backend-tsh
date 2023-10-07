@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 
-import { stripOptionalValues } from '@/lib/utils';
+import { stripOptionalValues } from '@/utils';
 
 import { useAddMovie } from '../api/mutations';
 import { useGenres } from '../api/queries';

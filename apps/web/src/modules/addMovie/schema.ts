@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { type AddMovieRequestDTO } from '@movies/shared/communication';
 
-import { isEmpty } from '@/lib/utils';
+import { isEmpty } from '@/utils';
 
 function emptyFieldToUndefined(value: unknown) {
   if (typeof value !== 'string') return undefined;
