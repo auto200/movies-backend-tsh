@@ -1,8 +1,9 @@
-import { ChangeEvent, MouseEvent, useMemo } from 'react';
+import { MouseEvent, useMemo } from 'react';
 
 import { useTranslation } from 'next-i18next';
 
 import { Button } from '@/components/ui/Button';
+import { Checkbox, CheckedState } from '@/components/ui/Checkbox';
 import { Label } from '@/components/ui/Label';
 import {
   Select,
@@ -12,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
+import { cn } from '@/utils';
 
 import { NO_VALUE, useFilters } from '../hooks/useFilters';
 import { FiltersMetadata } from '../schema';
@@ -45,11 +47,12 @@ export function Filters({ data }: FiltersProps) {
   const selectedDuration = duration ?? NO_VALUE;
   const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);
 
-  const handleGenresChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const options = e.target.options;
-    const newGenres = [...options].filter((opt) => opt.selected).map((opt) => opt.value);
+  const handleGenreChange = (genre: string, checkedState: CheckedState) => {
+    if (checkedState === true) {
+      return setGenres([...selectedGenres, genre]);
+    }
 
-    setGenres(newGenres);
+    setGenres(selectedGenres.filter((g) => g !== genre));
   };
 
   const handleDurationChange = (duration: string) => {
@@ -71,20 +74,22 @@ export function Filters({ data }: FiltersProps) {
         <div>
           <Label htmlFor="genres-select">{t('genres')}:</Label>
 
-          <div>
-            <select
-              multiple
-              id="genres-select"
-              onChange={handleGenresChange}
-              style={{ height: 200, width: 150 }}
-              value={selectedGenres}
-            >
-              {data.genres.map((genre) => (
-                <option key={genre} value={genre}>
+          <div className="flex max-h-48 w-40 flex-col overflow-auto py-1" id="genres-select">
+            {data.genres.map((genre) => (
+              <div
+                key={genre}
+                className={cn('flex gap-1 py-1', selectedGenres.includes(genre) && 'bg-slate-200')}
+              >
+                <Checkbox
+                  checked={selectedGenres.includes(genre)}
+                  id={genre}
+                  onCheckedChange={(value) => handleGenreChange(genre, value)}
+                />
+                <Label className="flex-grow" htmlFor={genre}>
                   {genre}
-                </option>
-              ))}
-            </select>
+                </Label>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -92,7 +97,7 @@ export function Filters({ data }: FiltersProps) {
           <Label htmlFor="duration-select">{t('duration')}</Label>
 
           <Select onValueChange={handleDurationChange} value={selectedDuration.toString()}>
-            <SelectTrigger className="w-[180px]" id="duration-select">
+            <SelectTrigger className="w-40" id="duration-select">
               <SelectValue placeholder={t('duration')} />
             </SelectTrigger>
             <SelectContent>
