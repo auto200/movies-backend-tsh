@@ -18,7 +18,7 @@ export type MoviesSearchEngineService = {
 
 export const MoviesSearchEngineService = (): MoviesSearchEngineService => {
   const client = new MeiliSearch({
-    host: searchEngineConfig.SE_HOST,
+    host: searchEngineConfig.SE_URL,
   });
 
   let cachedIndex: Index<Movie_SearchableModel> | null = null;
