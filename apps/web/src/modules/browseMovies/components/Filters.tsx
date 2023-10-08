@@ -1,8 +1,9 @@
-import { ChangeEvent, MouseEvent, useMemo } from 'react';
+import { MouseEvent, useMemo } from 'react';
 
 import { useTranslation } from 'next-i18next';
 
 import { Button } from '@/components/ui/Button';
+import { CheckboxSelectList, Option } from '@/components/ui/CheckboxSelectList';
 import { Label } from '@/components/ui/Label';
 import {
   Select,
@@ -44,13 +45,10 @@ export function Filters({ data }: FiltersProps) {
 
   const selectedDuration = duration ?? NO_VALUE;
   const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);
-
-  const handleGenresChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const options = e.target.options;
-    const newGenres = [...options].filter((opt) => opt.selected).map((opt) => opt.value);
-
-    setGenres(newGenres);
-  };
+  const genreOptions: Option[] = useMemo(
+    () => data.genres.map((genre) => ({ label: genre, value: genre })),
+    [data.genres]
+  );
 
   const handleDurationChange = (duration: string) => {
     if (duration === NO_VALUE) return setDuration(NO_VALUE);
@@ -69,30 +67,22 @@ export function Filters({ data }: FiltersProps) {
     <>
       <form className="flex flex-col gap-4">
         <div>
-          <Label htmlFor="genres-select">{t('genres')}:</Label>
+          <Label asChild>
+            <p>{t('genres')}:</p>
+          </Label>
 
-          <div>
-            <select
-              multiple
-              id="genres-select"
-              onChange={handleGenresChange}
-              style={{ height: 200, width: 150 }}
-              value={selectedGenres}
-            >
-              {data.genres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-          </div>
+          <CheckboxSelectList
+            onChange={setGenres}
+            options={genreOptions}
+            selected={selectedGenres}
+          />
         </div>
 
         <div>
           <Label htmlFor="duration-select">{t('duration')}</Label>
 
           <Select onValueChange={handleDurationChange} value={selectedDuration.toString()}>
-            <SelectTrigger className="w-[180px]" id="duration-select">
+            <SelectTrigger className="w-40" id="duration-select">
               <SelectValue placeholder={t('duration')} />
             </SelectTrigger>
             <SelectContent>

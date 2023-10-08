@@ -17,6 +17,7 @@ module.exports = {
     // NOTE: it disables all of the restricted imports in `src/components/ui`, what we really want
     // to achieve is to only disable the rule forbidding imports from '@radix-ui/*'. Possible
     // solution would be to extract all the rules and reapply them here, omitting '@radix-ui/*' rule
+    // Related: https://github.com/eslint/eslint/discussions/17047
     {
       files: ['src/components/ui/**'],
       rules: {

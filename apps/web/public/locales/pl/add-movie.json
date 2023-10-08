@@ -1,6 +1,5 @@
 {
   "form": {
-    "title": "Dodaj film",
     "submit": "Wyślij",
     "fields": {
       "actors": { "label": "Aktorzy" },

@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
 export const movieSchema = z.object({
-  actors: z.string().trim().nonempty().optional(),
-  director: z.string().trim().nonempty().max(255),
-  genres: z.array(z.string().trim()).nonempty(),
+  actors: z.string().trim().min(1).optional(),
+  director: z.string().trim().min(1).max(255),
+  genres: z.array(z.string().trim().min(1)).nonempty(),
   id: z.number().positive(),
-  plot: z.string().trim().nonempty().optional(),
+  plot: z.string().trim().min(1).optional(),
   posterUrl: z.string().trim().url().toLowerCase().optional(),
   runtime: z.number().positive().max(10000),
-  title: z.string().trim().nonempty().max(255),
+  title: z.string().trim().min(1).max(255),
   year: z.number().positive().max(10000),
 });
 export type MovieDTO = z.infer<typeof movieSchema>;
