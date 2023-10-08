@@ -5,10 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isEmpty(str: string) {
-  return str === '';
-}
-
 type RemoveUndefined<T extends object> = {
   [K in keyof T as Exclude<T[K], undefined> extends never ? never : K]: Exclude<T[K], undefined>;
 };

@@ -3,7 +3,7 @@ import { MouseEvent, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import { Button } from '@/components/ui/Button';
-import { Checkbox, CheckedState } from '@/components/ui/Checkbox';
+import { CheckboxSelectList, Option } from '@/components/ui/CheckboxSelectList';
 import { Label } from '@/components/ui/Label';
 import {
   Select,
@@ -13,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-import { cn } from '@/utils';
 
 import { NO_VALUE, useFilters } from '../hooks/useFilters';
 import { FiltersMetadata } from '../schema';
@@ -46,14 +45,10 @@ export function Filters({ data }: FiltersProps) {
 
   const selectedDuration = duration ?? NO_VALUE;
   const timeOptions = useMemo(() => minMaxToTimeOptions(data.times), [data.times]);
-
-  const handleGenreChange = (genre: string, checkedState: CheckedState) => {
-    if (checkedState === true) {
-      return setGenres([...selectedGenres, genre]);
-    }
-
-    setGenres(selectedGenres.filter((g) => g !== genre));
-  };
+  const genreOptions: Option[] = useMemo(
+    () => data.genres.map((genre) => ({ label: genre, value: genre })),
+    [data.genres]
+  );
 
   const handleDurationChange = (duration: string) => {
     if (duration === NO_VALUE) return setDuration(NO_VALUE);
@@ -72,25 +67,15 @@ export function Filters({ data }: FiltersProps) {
     <>
       <form className="flex flex-col gap-4">
         <div>
-          <Label htmlFor="genres-select">{t('genres')}:</Label>
+          <Label asChild>
+            <p>{t('genres')}:</p>
+          </Label>
 
-          <div className="flex max-h-48 w-40 flex-col overflow-auto py-1" id="genres-select">
-            {data.genres.map((genre) => (
-              <div
-                key={genre}
-                className={cn('flex gap-1 py-1', selectedGenres.includes(genre) && 'bg-slate-200')}
-              >
-                <Checkbox
-                  checked={selectedGenres.includes(genre)}
-                  id={genre}
-                  onCheckedChange={(value) => handleGenreChange(genre, value)}
-                />
-                <Label className="flex-grow" htmlFor={genre}>
-                  {genre}
-                </Label>
-              </div>
-            ))}
-          </div>
+          <CheckboxSelectList
+            onChange={setGenres}
+            options={genreOptions}
+            selected={selectedGenres}
+          />
         </div>
 
         <div>

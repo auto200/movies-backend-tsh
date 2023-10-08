@@ -5,7 +5,7 @@ import { Check } from 'lucide-react';
 
 import { cn } from '@/utils';
 
-export type CheckedState = boolean | 'indeterminate';
+export { type CheckedState } from '@radix-ui/react-checkbox';
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,

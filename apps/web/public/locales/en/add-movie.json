@@ -1,6 +1,5 @@
 {
   "form": {
-    "title": "Add movie",
     "submit": "Submit",
     "fields": {
       "actors": { "label": "Actors" },
