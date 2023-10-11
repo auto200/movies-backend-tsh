@@ -1,9 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
-import { ZodError } from 'zod';
+import { ZodIssue } from 'zod';
 
 import { AppError, AppErrorDTO } from './AppError';
 
-export type PayloadError = { errors: ZodError; type: 'Params' | 'Query' | 'Body' };
+export type PayloadError = { errors: ZodIssue[]; type: 'Params' | 'Query' | 'Body' };
 
 export class PayloadValidationError extends AppError {
   constructor(
