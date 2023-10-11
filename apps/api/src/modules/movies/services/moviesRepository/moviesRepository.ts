@@ -15,6 +15,7 @@ export const MoviesRepository = (db: DbConnection): MoviesRepository => {
       const movie = { ...movieToAdd, id: db.data.movies.length + 1 };
       db.data.movies.push(movie);
       await db.write();
+
       return movie;
     },
 

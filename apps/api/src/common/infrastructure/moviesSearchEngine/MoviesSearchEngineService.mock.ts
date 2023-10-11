@@ -10,6 +10,7 @@ export const MoviesSearchEngineServiceMock = (): MoviesSearchEngineService => {
   return {
     addDocuments: (movies) => {
       index.push(...movies);
+
       return Promise.resolve({} as EnqueuedTask);
     },
 

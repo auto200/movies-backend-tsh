@@ -12,6 +12,7 @@ export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesR
     addMovie: async (movie) => {
       const movieWithId = { ...movie, id: db.movies.length + 1 };
       db.movies.push(movieWithId);
+
       return Promise.resolve(movieWithId);
     },
     findByTitle: async (title) =>

@@ -15,6 +15,7 @@ import { MoviesService } from './moviesService';
 const createMockMovieService = (initialData: DatabaseSchema) => {
   const mockMoviesRepository = createMockMoviesRepository(initialData);
   const moviesSearchEngineService = MoviesSearchEngineServiceMock();
+
   return MoviesService(mockMoviesRepository, moviesSearchEngineService);
 };
 

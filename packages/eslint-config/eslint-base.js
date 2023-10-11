@@ -19,6 +19,7 @@ module.exports = {
     // other plugins
     'sort-keys-fix/sort-keys-fix': 'warn',
     'sort-destructure-keys/sort-destructure-keys': 'warn',
+    'padding-line-between-statements': ['warn', { blankLine: 'always', next: 'return', prev: '*' }],
     // ts
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [

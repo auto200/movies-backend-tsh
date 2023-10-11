@@ -59,6 +59,7 @@ export const MoviesService = (
 
   const getMoviesByDuration = async (duration: number, durationVariation: number) => {
     const allMovies = await moviesRepository.getAllMovies();
+
     return filterMoviesByDuration(allMovies, duration, durationVariation);
   };
 
@@ -125,6 +126,7 @@ export const MoviesService = (
         const genres = toArray(filters.genres);
 
         await assertValidGenres(genres);
+
         return await getMoviesByGenres(genres);
       }
 

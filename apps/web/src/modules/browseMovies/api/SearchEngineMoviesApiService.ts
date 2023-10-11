@@ -23,6 +23,7 @@ const MoviesSearchEngine = (): MoviesSearchEngine => {
   const getIndex = async () => {
     if (cachedIndex) return cachedIndex;
     cachedIndex = await client.getIndex(MoviesSearchIndex);
+
     return cachedIndex;
   };
 
@@ -46,6 +47,7 @@ const MoviesSearchEngine = (): MoviesSearchEngine => {
           offset: Math.floor(Math.random() * 100),
         }),
       });
+
       return result.hits;
     },
   };
@@ -61,6 +63,7 @@ type IN = `${FilterableAttr} IN [${string}]`;
 const Filter = {
   IN: (attr: FilterableAttr, values: Array<string | number>): IN | null => {
     if (values.length === 0) return null;
+
     return `${attr} IN [${values.join(',')}]`;
   },
   TO: (

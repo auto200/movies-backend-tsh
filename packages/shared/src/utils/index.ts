@@ -11,6 +11,7 @@ export function validateEnv<T extends ZodObject<ZodRawShape>>(
   if (!result.success) {
     throw new Error(`Configuration validation error, ${result.error.message}`);
   }
+
   return result.data;
 }
 

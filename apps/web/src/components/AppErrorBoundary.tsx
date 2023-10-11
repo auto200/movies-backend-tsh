@@ -20,6 +20,7 @@ export function AppErrorBoundary({ children }: AppErrorBoundaryProps) {
 
 function ErrorBoundaryFallback({ error, resetErrorBoundary }: FallbackProps) {
   const { t } = useTranslation();
+
   return (
     <div>
       <div>{t('errorBoundary.title')}</div>

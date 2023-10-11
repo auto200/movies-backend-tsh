@@ -76,5 +76,6 @@ function decodeDuration(duration: string | null): number | undefined {
   if (!duration) return undefined;
 
   const durationAsNumber = Number.parseInt(duration);
+
   return Number.isNaN(durationAsNumber) ? undefined : durationAsNumber;
 }

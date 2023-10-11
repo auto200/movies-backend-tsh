@@ -6,6 +6,7 @@ import { type AddMovieRequestDTO } from '@movies/shared/communication';
 function emptyStringToUndefined(value: unknown) {
   if (typeof value !== 'string') return undefined;
   if (value === '') return undefined;
+
   return value;
 }
 

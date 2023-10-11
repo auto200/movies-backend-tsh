@@ -28,12 +28,14 @@ export const MoviesSearchEngineService = (): MoviesSearchEngineService => {
   const getIndex = async () => {
     if (cachedIndex) return cachedIndex;
     cachedIndex = await client.getIndex(MoviesSearchIndex);
+
     return cachedIndex;
   };
 
   return {
     addDocuments: async (movies) => {
       const index = await getIndex();
+
       return await index.addDocuments(movies);
     },
 
