@@ -2,5 +2,10 @@
   "genres": "Genres",
   "duration": "Duration",
   "reset": "Reset",
-  "useSearchEngine": "Use search engine"
+  "useAlternativeSearchEngine": "Use alternative search engine",
+  "randomMovie": "Radom movie",
+  "posterNotFound": "Poster not found",
+  "movieCart": {
+    "director": "Director"
+  }
 }

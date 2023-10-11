@@ -28,9 +28,10 @@ export const CheckboxSelectList: React.FC<CheckboxSelectListProps> = ({
   };
 
   return (
-    <div className={cn('flex max-h-48 w-40 flex-col overflow-auto py-1', className)}>
+    <div className={cn('flex max-h-48 flex-col overflow-auto py-1', className)}>
       {options.map(({ label, value }) => {
         const isSelected = selected.includes(value);
+
         return (
           <Label key={value} className={cn('flex gap-1 py-1', isSelected && 'bg-slate-200')}>
             <Checkbox

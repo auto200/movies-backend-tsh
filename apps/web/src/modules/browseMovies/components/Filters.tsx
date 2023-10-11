@@ -65,7 +65,7 @@ export function Filters({ data }: FiltersProps) {
 
   return (
     <>
-      <form className="flex flex-col gap-4">
+      <form className="flex max-w-xs flex-col gap-4">
         <div>
           <Label asChild>
             <p>{t('genres')}:</p>
@@ -99,7 +99,7 @@ export function Filters({ data }: FiltersProps) {
         </div>
 
         <Button
-          className="w-[100px]"
+          className="w-fit px-8"
           disabled={!isAnyFilterActive}
           onClick={handleReset}
           type="reset"

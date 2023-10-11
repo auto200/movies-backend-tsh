@@ -37,7 +37,7 @@ export const AddMovieForm = () => {
     <Form {...form}>
       {/* rhc quirk */}
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <form className="w-min" onSubmit={handleSubmit(onSubmit)}>
+      <form className="max-w-sm" onSubmit={handleSubmit(onSubmit)}>
         <FormField
           control={control}
           name="title"

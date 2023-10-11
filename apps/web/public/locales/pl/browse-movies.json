@@ -2,5 +2,10 @@
   "genres": "Gatunki",
   "duration": "Czas trwania",
   "reset": "Reset",
-  "useSearchEngine": "Użyj ulepszonego wyszukiwania"
+  "useAlternativeSearchEngine": "Użyj alternatywnego silnika wyszukiwań",
+  "randomMovie": "Losowy film",
+  "posterNotFound": "Nie znaleziono plakatu",
+  "movieCart": {
+    "director": "Reżyser"
+  }
 }

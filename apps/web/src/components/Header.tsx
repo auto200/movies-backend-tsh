@@ -15,7 +15,7 @@ export function Header() {
     <div className="container flex items-center">
       <div className="flex gap-5">
         <Link
-          className={cn('p-3 text-4xl text-black', {
+          className={cn('px-1 py-3 text-4xl text-black', {
             'bg-zinc-300': router.pathname === ROUTES.browseMovies,
           })}
           href={ROUTES.browseMovies}
@@ -23,7 +23,7 @@ export function Header() {
           {t('header.browse')}
         </Link>
         <Link
-          className={cn('p-3 text-4xl text-black', {
+          className={cn('px-1 py-3 text-4xl text-black', {
             'bg-zinc-300': router.pathname === ROUTES.addMovie,
           })}
           href={ROUTES.addMovie}
