@@ -37,12 +37,12 @@ export default function BrowsePage() {
           <h1>
             {movie.title} - {movie.year}
           </h1>
-          <object data={movie.posterUrl} style={{ width: 250 }} type="image/jpg">
+          <object className="w-[250px]" data={movie.posterUrl} type="image/jpg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               alt="poster not found"
+              className="w-[250px]"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png"
-              style={{ width: 250 }}
             />
           </object>
           <p>

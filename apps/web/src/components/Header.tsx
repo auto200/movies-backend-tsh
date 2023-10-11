@@ -5,69 +5,50 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import { ROUTES } from '@/constants/routes';
-import { useIsMounted } from '@/hooks/useIsMounted';
+import { cn } from '@/utils';
 
-function getLocaleStyles(isActive: boolean): React.CSSProperties {
-  return {
-    ...(isActive && {
-      fontWeight: 'bold',
-    }),
-    color: 'black',
-    textDecoration: 'none',
-  };
-}
-function getRouteStyles(isActive: boolean): React.CSSProperties {
-  return {
-    ...(isActive && {
-      backgroundColor: 'lightGray',
-    }),
-    color: 'black',
-    fontSize: '2rem',
-    padding: 10,
-    textDecoration: 'none',
-  };
-}
-
-export const Header = () => {
+export function Header() {
   const router = useRouter();
   const { t } = useTranslation('common');
 
-  const isMounted = useIsMounted();
-
   return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ display: 'flex', gap: 20 }}>
+    <div className="flex">
+      <div className="flex gap-5">
         <Link
+          className={cn('p-3 text-4xl text-black', {
+            'bg-zinc-300': router.pathname === ROUTES.browseMovies,
+          })}
           href={ROUTES.browseMovies}
-          style={getRouteStyles(isMounted && router.pathname === ROUTES.browseMovies)}
         >
           {t('header.browse')}
         </Link>
         <Link
+          className={cn('p-3 text-4xl text-black', {
+            'bg-zinc-300': router.pathname === ROUTES.addMovie,
+          })}
           href={ROUTES.addMovie}
-          style={getRouteStyles(isMounted && router.pathname === ROUTES.addMovie)}
         >
           {t('header.addMovie')}
         </Link>
       </div>
 
-      <div style={{ fontSize: '1.5rem', marginLeft: 'auto', marginRight: 10 }}>
+      <div className="ml-auto mr-3 text-2xl">
         <Link
+          className={cn({ 'font-bold': router.locale === 'en' })}
           href={router.pathname}
           locale="en"
-          style={getLocaleStyles(isMounted && router.locale === 'en')}
         >
           EN
         </Link>
         /
         <Link
+          className={cn({ 'font-bold': router.locale === 'pl' })}
           href={router.pathname}
           locale="pl"
-          style={getLocaleStyles(isMounted && router.locale === 'pl')}
         >
           PL
         </Link>
       </div>
     </div>
   );
-};
+}
