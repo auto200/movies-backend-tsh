@@ -7,7 +7,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   return (
     <div>
       <Header />
-      {children}
+      <div className="container mt-5">{children}</div>
     </div>
   );
 }

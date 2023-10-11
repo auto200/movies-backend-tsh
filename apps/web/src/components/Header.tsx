@@ -12,7 +12,7 @@ export function Header() {
   const { t } = useTranslation('common');
 
   return (
-    <div className="flex">
+    <div className="container flex items-center">
       <div className="flex gap-5">
         <Link
           className={cn('p-3 text-4xl text-black', {
