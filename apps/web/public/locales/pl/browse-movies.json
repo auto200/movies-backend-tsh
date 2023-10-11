@@ -7,5 +7,6 @@
   "posterNotFound": "Nie znaleziono plakatu",
   "movieCart": {
     "director": "Reżyser"
-  }
+  },
+  "getAnotherRandomMovie": "Losuj kolejny film"
 }

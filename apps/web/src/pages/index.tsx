@@ -1,9 +1,12 @@
 import { useState } from 'react';
 
+import { RefreshCw } from 'lucide-react';
 import { GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import { BasicTooltip } from '@/components/ui/BasicTooltip';
+import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
 import { useBrowseMovies, useFiltersMetadata } from '@/modules/browseMovies/api/queries';
@@ -13,7 +16,7 @@ import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
 export default function BrowsePage() {
   const [isUsingSearchEngine, setIsUsingSearchEngine] = useState(true);
   const { filters, isAnyFilterActive } = useFilters();
-  const { data: movies } = useBrowseMovies(filters, isUsingSearchEngine);
+  const { data: movies, refetch: refetchMovies } = useBrowseMovies(filters, isUsingSearchEngine);
   const { data: filtersMetadata } = useFiltersMetadata();
 
   const { t } = useTranslation('browse-movies');
@@ -32,7 +35,23 @@ export default function BrowsePage() {
         </Label>
       </div>
 
-      {!isAnyFilterActive && <p className="my-10 text-center text-4xl ">{t('randomMovie')}</p>}
+      {!isAnyFilterActive && (
+        <p className="relative my-10 text-center text-4xl">
+          <>
+            {t('randomMovie')}
+            <BasicTooltip content={t('getAnotherRandomMovie')}>
+              <Button
+                className="absolute top-0 ml-2"
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onClick={() => refetchMovies()}
+                variant="ghost"
+              >
+                <RefreshCw />
+              </Button>
+            </BasicTooltip>
+          </>
+        </p>
+      )}
 
       <div className="flex flex-col items-center justify-center gap-16 md:flex-row md:flex-wrap">
         {movies?.map((movie) => <MovieCard key={movie.id} movie={movie} />)}

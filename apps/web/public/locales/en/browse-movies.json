@@ -7,5 +7,6 @@
   "posterNotFound": "Poster not found",
   "movieCart": {
     "director": "Director"
-  }
+  },
+  "getAnotherRandomMovie": "Get another random movie"
 }
