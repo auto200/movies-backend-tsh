@@ -9,7 +9,7 @@ const config = {
   },
   i18n,
   reactStrictMode: true,
-  transpilePackages: ['shared'],
+  transpilePackages: ['@movies/shared'],
 };
 
 export default config;

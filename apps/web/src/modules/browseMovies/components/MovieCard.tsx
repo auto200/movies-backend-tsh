@@ -14,10 +14,10 @@ export const MovieCard: React.FC<MovieResultProps> = ({ movie }) => {
   const { t } = useTranslation('browse-movies');
 
   return (
-    <div key={movie.id} className="flex max-w-lg flex-col items-center">
+    <div key={movie.id} className="flex min-h-[600px] max-w-lg flex-col items-center">
       <h2 className="mb-4 text-2xl font-bold">{movie.title}</h2>
       <object
-        className="flex aspect-[2/3] w-[250px] align-middle"
+        className="flex aspect-[2/3] w-[250px] bg-slate-50 align-middle"
         data={movie.posterUrl}
         type="image/jpg"
       >
