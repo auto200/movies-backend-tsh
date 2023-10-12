@@ -9,8 +9,10 @@ import { BasicTooltip } from '@/components/ui/BasicTooltip';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
-import { useBrowseMovies, useFiltersMetadata } from '@/modules/browseMovies/api/queries';
-import { Filters, MovieCard } from '@/modules/browseMovies/components';
+import { useBrowseMovies } from '@/modules/browseMovies/api/queries/useBrowseMovies';
+import { useFiltersMetadata } from '@/modules/browseMovies/api/queries/useFiltersMetadata';
+import { Filters } from '@/modules/browseMovies/components/Filters';
+import { MovieCard } from '@/modules/browseMovies/components/MovieCard';
 import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
 
 export default function BrowsePage() {

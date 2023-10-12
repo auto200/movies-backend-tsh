@@ -7,9 +7,7 @@ const appConfigSchema = z.object({
   NEXT_PUBLIC_SE_URL: z.string().url(),
 });
 
-const envs = {
+export const appConfig = validateEnv(appConfigSchema, {
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_SE_URL: process.env.NEXT_PUBLIC_SE_URL,
-};
-
-export const appConfig = validateEnv(appConfigSchema, envs);
+});

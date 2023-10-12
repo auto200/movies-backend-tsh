@@ -10,8 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Input } from '@/components/ui/Input';
 import { stripOptionalValues } from '@/utils';
 
-import { useAddMovie } from '../api/mutations';
-import { useGenres } from '../api/queries';
+import { useAddMovie } from '../api/mutations/useAddMovie';
+import { useGenres } from '../api/queries/useGenres';
 import { AddMovieFormData, addMovieFormSchema } from '../schema';
 
 export const AddMovieForm = () => {
