@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const client = new QueryClient({
   defaultOptions: {
-    mutations: { useErrorBoundary: true },
-    queries: { staleTime: Infinity, useErrorBoundary: true },
+    mutations: { throwOnError: true },
+    queries: { staleTime: Infinity, throwOnError: true },
   },
 });
 
