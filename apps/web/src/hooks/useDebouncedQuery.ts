@@ -1,4 +1,5 @@
 import {
+  DefaultError,
   QueryKey,
   UseQueryOptions,
   UseQueryResult,
@@ -21,7 +22,7 @@ type Config = {
  */
 export function useDebouncedQuery<
   TQueryFnData = unknown,
-  TError = unknown,
+  TError = DefaultError,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
 >(
@@ -29,11 +30,10 @@ export function useDebouncedQuery<
   config: Config = { debounceMs: 500, omitDebounceOnCacheHit: true }
 ): UseQueryResult<TData, TError> {
   const debouncedOptions = useDebounce(options, config.debounceMs);
-  const qc = useQueryClient().getQueryCache();
+  const qc = useQueryClient();
 
   const isCached =
-    config.omitDebounceOnCacheHit && options.queryKey ? !!qc.find(options.queryKey) : false;
+    config.omitDebounceOnCacheHit && options.queryKey ? !!qc.getQueryData(options.queryKey) : false;
 
-  // eslint-disable-next-line @tanstack/query/prefer-query-object-syntax
   return useQuery(isCached ? options : debouncedOptions);
 }
