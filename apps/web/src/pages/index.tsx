@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { DehydratedState, HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 import { RefreshCw } from 'lucide-react';
 import { GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
@@ -9,13 +10,17 @@ import { BasicTooltip } from '@/components/ui/BasicTooltip';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import { Switch } from '@/components/ui/Switch';
+import { MainLayout } from '@/layouts/MainLayout';
+import { browseMoviesAPI } from '@/modules/browseMovies/api/BrowseMoviesAPIService';
 import { useBrowseMovies } from '@/modules/browseMovies/api/queries/useBrowseMovies';
 import { useFiltersMetadata } from '@/modules/browseMovies/api/queries/useFiltersMetadata';
 import { Filters } from '@/modules/browseMovies/components/Filters';
 import { MovieCard } from '@/modules/browseMovies/components/MovieCard';
+import { METADATA_QUERY_KEY } from '@/modules/browseMovies/consts';
 import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
+import { NextPageWithLayout } from '@/typings/NextPageWithLayout';
 
-export default function BrowsePage() {
+const BrowsePage: NextPageWithLayout = () => {
   const [isUsingSearchEngine, setIsUsingSearchEngine] = useState(true);
   const { filters, isAnyFilterActive } = useFilters();
   const { data: movies, refetch: refetchMovies } = useBrowseMovies(filters, isUsingSearchEngine);
@@ -60,12 +65,35 @@ export default function BrowsePage() {
       </div>
     </div>
   );
-}
+};
+
+BrowsePage.getLayout = (page) => {
+  if (!('dehydratedState' in page.props)) {
+    throw new Error('missing dehydrated query state');
+  }
+
+  return (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    <HydrationBoundary state={page.props.dehydratedState as DehydratedState}>
+      <MainLayout>{page}</MainLayout>
+    </HydrationBoundary>
+  );
+};
+
+export default BrowsePage;
 
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryFn: browseMoviesAPI.getFiltersMetadata,
+    queryKey: METADATA_QUERY_KEY,
+  });
+
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common', 'browse-movies'])),
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };
