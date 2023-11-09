@@ -16,15 +16,15 @@ export type UsersRepository = {
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
 };
 
-export function UsersRepository(db: DbConnection): UsersRepository {
+export function UsersRepository(_db: DbConnection): UsersRepository {
   return {
-    addRefreshToken: (userId, refreshToken) => Promise.resolve(),
+    addRefreshToken: (_userId, _refreshToken) => Promise.resolve(),
     create: (_user) => Promise.resolve(new Error() as unknown as DbUser),
     doesUserWithEmailExist: (_email) => Promise.resolve(false),
     doesUserWithUsernameExist: (_username) => Promise.resolve(false),
     getByEmail: (_email) => Promise.resolve(null),
-    getById: (userId) => Promise.resolve(null),
-    getUserByRefreshToken: (refreshToken) => Promise.resolve(null),
-    removeRefreshToken: (userId, refreshToken) => Promise.resolve(),
+    getById: (_userId) => Promise.resolve(null),
+    getUserByRefreshToken: (_refreshToken) => Promise.resolve(null),
+    removeRefreshToken: (_userId, _refreshToken) => Promise.resolve(),
   };
 }

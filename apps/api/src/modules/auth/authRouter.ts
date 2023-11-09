@@ -61,7 +61,7 @@ export function createAuthRouter({ authService, usersService }: RootService): Ro
   router.get('/refresh-token', async (req, res, next) => {
     try {
       // To be investigated
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME] as string;
 
       if (!refreshToken) return res.sendStatus(StatusCodes.UNAUTHORIZED);
@@ -99,7 +99,7 @@ export function createAuthRouter({ authService, usersService }: RootService): Ro
   router.post('/logout', async (req, res, next) => {
     try {
       // To be investigated
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME] as string;
 
       if (!refreshToken) return res.sendStatus(StatusCodes.NO_CONTENT);
