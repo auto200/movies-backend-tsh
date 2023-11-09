@@ -22,10 +22,9 @@ export function useBrowseMovies(filters: GetMovieSearchFilters, useSearchEngine 
             ? moviesSearchEngine.getMovies(memoFilters)
             : browseMoviesAPI.getMovies(memoFilters),
         queryKey: ['movies', memoFilters, useSearchEngine],
-        select:
-          useSearchEngine && memoFilters.genres.length > 0
-            ? (a: MovieDTO[]) => MoviesRelevance.sortMoviesByGenresRelevance(a, memoFilters.genres)
-            : undefined,
+        select: useSearchEngine
+          ? (a: MovieDTO[]) => MoviesRelevance.sortMoviesByGenresRelevance(a, memoFilters.genres)
+          : undefined,
       }),
       [memoFilters, useSearchEngine]
     )

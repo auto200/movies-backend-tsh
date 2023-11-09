@@ -10,8 +10,19 @@ jobs:
   run-tests:
     environment: testing
     env:
+      NODE_ENV: ${{vars.NODE_ENV}}
+
       PORT: ${{vars.PORT}}
       DB_JSON_FILE_PATH: ${{vars.DB_JSON_FILE_PATH}}
+
+      CLIENT_URL: ${{vars.CLIENT_URL}}
+
+      SE_URL: ${{vars.SE_URL}}
+
+      JWT_ACCESS_TOKEN_SECRET: ${{vars.JWT_ACCESS_TOKEN_SECRET}}
+      JWT_ACCESS_TOKEN_TTL: ${{vars.JWT_ACCESS_TOKEN_TTL}}
+      JWT_REFRESH_TOKEN_SECRET: ${{vars.JWT_REFRESH_TOKEN_SECRET}}
+      JWT_REFRESH_TOKEN_TTL: ${{vars.JWT_REFRESH_TOKEN_TTL}}
 
     timeout-minutes: 60
     runs-on: ubuntu-latest

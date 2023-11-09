@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import supertest from 'supertest';
 import { describe, test, expect } from 'vitest';
 
@@ -21,7 +22,7 @@ describe('movies module', () => {
         .post('/v1/movies')
         .send({ title: 'test' })
         .expect('Content-Type', /json/)
-        .expect(400);
+        .expect(StatusCodes.BAD_REQUEST);
     });
 
     test('adds movie to database', async () => {
@@ -38,20 +39,24 @@ describe('movies module', () => {
         .post('/v1/movies')
         .send(movie)
         .expect('Content-Type', /text/)
-        .expect(200);
+        .expect(StatusCodes.CREATED);
 
       expect(() => addMovieResponseDTOSchema.parse(res.text)).not.toThrow();
     });
   });
 
   describe('GET /v1/movies', () => {
-    test('returns random movie', async () => {
+    test('returns single random movie', async () => {
       const { app } = createTestingApp();
 
-      const res = await supertest(app).get('/v1/movies').expect('Content-Type', /json/).expect(200);
+      const res = await supertest(app)
+        .get('/v1/movies')
+        .expect('Content-Type', /json/)
+        .expect(StatusCodes.OK);
+
+      expect(() => getMoviesDTOSchema.parse(res.body)).not.toThrow();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(res.body.length).toEqual(1);
-      expect(() => getMoviesDTOSchema.parse(res.body)).not.toThrow();
     });
 
     test('returns filtered movie', async () => {
@@ -65,7 +70,7 @@ describe('movies module', () => {
         .get('/v1/movies')
         .query(query)
         .expect('Content-Type', /json/)
-        .expect(200);
+        .expect(StatusCodes.OK);
 
       expect(() => getMoviesDTOSchema.parse(res.body)).not.toThrow();
     });
@@ -78,7 +83,7 @@ describe('movies module', () => {
       const res = await supertest(app)
         .get('/v1/movies/genres')
         .expect('Content-Type', /json/)
-        .expect(200);
+        .expect(StatusCodes.OK);
 
       expect(res.body).toMatchObject(initialData.genres);
 
@@ -93,7 +98,7 @@ describe('movies module', () => {
       const res = await supertest(app)
         .get('/v1/movies/filters-metadata')
         .expect('Content-Type', /json/)
-        .expect(200);
+        .expect(StatusCodes.OK);
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(res.body.genres).toStrictEqual(initialData.genres);
