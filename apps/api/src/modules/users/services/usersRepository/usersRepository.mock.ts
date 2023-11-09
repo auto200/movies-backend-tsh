@@ -57,19 +57,10 @@ export function MockUsersRepository(initialUsers: DbUser[] = []): UsersRepositor
       return Promise.resolve({ password, user: safeUser });
     },
 
-    getById: (userId) => {
-      const user = users.find((user) => user.id === userId);
-      if (!user) {
-        return Promise.resolve(null);
-      }
-      const { password: _, ...userWithoutPassword } = user;
-
-      return Promise.resolve(userWithoutPassword);
-    },
-
     getUserByRefreshToken: (refreshToken) => {
       const user = users.find((user) => user.refreshTokens.includes(refreshToken));
       if (!user) return Promise.resolve(null);
+
       const toReturn: JwtPayload = {
         email: user.email,
         id: user.id,
@@ -79,10 +70,21 @@ export function MockUsersRepository(initialUsers: DbUser[] = []): UsersRepositor
       return Promise.resolve(toReturn);
     },
 
+    removeAllRefreshTokens: (userId) => {
+      const user = users.find((user) => user.id === userId);
+      if (!user) return Promise.resolve();
+
+      user.refreshTokens = [];
+      user.updatedAt = Date.now().toString();
+
+      return Promise.resolve();
+    },
+
     removeRefreshToken: (userId, refreshToken) => {
       const user = users.find((user) => user.id === userId);
       if (!user) return Promise.resolve();
       user.refreshTokens = user.refreshTokens.filter((token) => token !== refreshToken);
+      user.updatedAt = Date.now().toString();
 
       return Promise.resolve();
     },

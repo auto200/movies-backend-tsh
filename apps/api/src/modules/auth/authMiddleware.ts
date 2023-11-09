@@ -21,7 +21,7 @@ export const authMiddleware: RequestHandler = (req, _res, next) => {
     jwtPayloadSchema
   );
 
-  if (decoded.valid) {
+  if (decoded.isValid) {
     req.user = decoded.payload;
 
     return next();

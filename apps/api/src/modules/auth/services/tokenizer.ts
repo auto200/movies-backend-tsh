@@ -1,17 +1,15 @@
-import { SignOptions, TokenExpiredError, sign, verify } from 'jsonwebtoken';
+import { SignOptions, sign, verify } from 'jsonwebtoken';
 import { ZodTypeAny, z } from 'zod';
 
 import { JwtPayload } from '../schema';
 
 type VerifyJwtResult<T> =
   | {
-      expired: false;
+      isValid: true;
       payload: T;
-      valid: true;
     }
   | {
-      expired: boolean;
-      valid: false;
+      isValid: false;
     };
 
 export const tokenizer = {
@@ -31,14 +29,12 @@ export const tokenizer = {
       const payload = schema.parse(decodedToken) as z.infer<T>;
 
       return {
-        expired: false,
+        isValid: true,
         payload,
-        valid: true,
       };
     } catch (e) {
       return {
-        expired: e instanceof TokenExpiredError,
-        valid: false,
+        isValid: false,
       };
     }
   },

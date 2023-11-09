@@ -11,8 +11,8 @@ export type UsersRepository = {
   doesUserWithEmailExist: (email: string) => Promise<boolean>;
   doesUserWithUsernameExist: (username: string) => Promise<boolean>;
   getByEmail: (email: string) => Promise<{ password: string; user: UserData } | null>;
-  getById: (userId: string) => Promise<Omit<DbUser, 'password'> | null>;
   getUserByRefreshToken: (refreshToken: string) => Promise<JwtPayload | null>;
+  removeAllRefreshTokens: (userId: string) => Promise<void>;
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
 };
 
@@ -23,8 +23,8 @@ export function UsersRepository(_db: DbConnection): UsersRepository {
     doesUserWithEmailExist: (_email) => Promise.resolve(false),
     doesUserWithUsernameExist: (_username) => Promise.resolve(false),
     getByEmail: (_email) => Promise.resolve(null),
-    getById: (_userId) => Promise.resolve(null),
     getUserByRefreshToken: (_refreshToken) => Promise.resolve(null),
+    removeAllRefreshTokens: (_userId) => Promise.resolve(),
     removeRefreshToken: (_userId, _refreshToken) => Promise.resolve(),
   };
 }

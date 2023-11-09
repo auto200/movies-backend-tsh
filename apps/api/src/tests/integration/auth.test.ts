@@ -70,8 +70,32 @@ describe('auth module', () => {
 
       expect(() => loginResponseDTOSchema.parse(res.body)).not.toThrow();
 
-      const authCookie = cookie.parse(res.get('Set-Cookie')[0] ?? '');
+      const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
       expect(REFRESH_TOKEN_COOKIE_NAME in authCookie).toBeTruthy();
+    });
+
+    test('multi device support', async () => {
+      const { app } = createTestingApp();
+
+      const loginRequestPayload: LoginRequestDTO = {
+        email: testUser.email,
+        password: testUser.password,
+      };
+
+      const res = await signUpAndLoginSuccessfully(app, {
+        loginUser: loginRequestPayload,
+        signUpUser: testUser,
+      });
+      const accessToken = res.get('Set-Cookie');
+
+      const res2 = await supertest(app)
+        .post('/v1/auth/login')
+        .send(loginRequestPayload)
+        .expect(StatusCodes.OK);
+      const accessToken2 = res2.get('Set-Cookie');
+
+      await supertest(app).post('/v1/auth/logout').set('Cookie', accessToken);
+      await supertest(app).post('/v1/auth/logout').set('Cookie', accessToken2);
     });
   });
 
@@ -88,7 +112,7 @@ describe('auth module', () => {
       await supertest(app)
         .get('/v1/auth/refresh-token')
         .set('Cookie', [`${REFRESH_TOKEN_COOKIE_NAME}=gibberish`])
-        .expect(StatusCodes.UNAUTHORIZED);
+        .expect(StatusCodes.FORBIDDEN);
     });
 
     test('returns new access token', async () => {
@@ -127,7 +151,7 @@ describe('auth module', () => {
         .post('/v1/auth/logout')
         .set('Cookie', [`${REFRESH_TOKEN_COOKIE_NAME}=gibberish`])
         .expect(StatusCodes.NO_CONTENT);
-      const authCookie = cookie.parse(res.get('Set-Cookie')[0] ?? '');
+      const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
 
       expect(authCookie[REFRESH_TOKEN_COOKIE_NAME]).toBe('');
     });
@@ -152,9 +176,37 @@ describe('auth module', () => {
         .set('Cookie', [authCookie])
         .expect(StatusCodes.NO_CONTENT);
 
-      const authCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[0] ?? '');
+      const authCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[0]!);
 
       expect(authCookieAfterLogout[REFRESH_TOKEN_COOKIE_NAME]).toBe('');
+    });
+
+    test('does not allow old token reuse', async () => {
+      const { app } = createTestingApp();
+
+      const loginRequestPayload: LoginRequestDTO = {
+        email: testUser.email,
+        password: testUser.password,
+      };
+
+      const loginRes = await signUpAndLoginSuccessfully(app, {
+        loginUser: loginRequestPayload,
+        signUpUser: testUser,
+      });
+
+      const authCookie = loginRes.get('Set-Cookie')[0]!;
+
+      await supertest(app)
+        .get('/v1/auth/refresh-token')
+        .set('Cookie', [authCookie])
+        .expect(StatusCodes.OK);
+
+      const invalidatedAuthCookie = authCookie;
+
+      await supertest(app)
+        .get('/v1/auth/refresh-token')
+        .set('Cookie', [invalidatedAuthCookie])
+        .expect(StatusCodes.FORBIDDEN);
     });
   });
 });

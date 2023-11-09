@@ -7,14 +7,21 @@ import { InvalidCredentialsError } from '../errors/invalidCredentialsError';
 import { JwtPayload } from '../schema';
 
 export type AuthService = {
+  addRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
   getUserByRefreshToken: (refreshToken: string) => Promise<JwtPayload | null>;
+  removeAllRefreshTokens: (userId: string) => Promise<void>;
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
   validatePassword: (email: string, password: string) => Promise<UserData>;
 };
 
 export function AuthService(usersRepository: UsersRepository): AuthService {
   return {
+    addRefreshToken: async (userId, refreshToken) =>
+      usersRepository.addRefreshToken(userId, refreshToken),
+
     getUserByRefreshToken: (refreshToken) => usersRepository.getUserByRefreshToken(refreshToken),
+
+    removeAllRefreshTokens: (userId) => usersRepository.removeAllRefreshTokens(userId),
 
     removeRefreshToken: (userId, refreshToken) =>
       usersRepository.removeRefreshToken(userId, refreshToken),

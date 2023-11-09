@@ -14,41 +14,57 @@ import { validator } from '@/common/payloadValidation';
 import { jwtConfig } from '@/config/jwtConfig';
 
 import { REFRESH_TOKEN_COOKIE_NAME } from './consts';
-import { jwtPayloadSchema } from './schema';
+import { JwtPayload, jwtPayloadSchema } from './schema';
 import { tokenizer } from './services/tokenizer';
 
 const validators = {
   login: validator({ body: loginRequestDTOSchema }),
 };
 
-export function createAuthRouter({ authService, usersService }: RootService): Router {
+export function createAuthRouter({ authService }: RootService): Router {
   const router = Router();
 
   const refreshTokenCookieOptions: CookieOptions = {
     httpOnly: true,
     maxAge: ms(jwtConfig.JWT_REFRESH_TOKEN_TTL),
     secure: true,
+    // to be investigated if needed when integrating with frontend
+    // sameSite:"none"
+  };
+
+  const getTokenPair = (user: JwtPayload) => {
+    const newAccessToken = tokenizer.signJwt(user, jwtConfig.JWT_ACCESS_TOKEN_SECRET, {
+      expiresIn: jwtConfig.JWT_ACCESS_TOKEN_TTL,
+    });
+    const newRefreshToken = tokenizer.signJwt(user, jwtConfig.JWT_REFRESH_TOKEN_SECRET, {
+      expiresIn: jwtConfig.JWT_REFRESH_TOKEN_TTL,
+    });
+
+    return { newAccessToken, newRefreshToken };
   };
 
   // express v4 quirk
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   router.post('/login', validators.login, async (req, res, next) => {
     try {
+      // To be investigated
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const oldRefreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME] as string | undefined;
+
       const user = await authService.validatePassword(req.body.email, req.body.password);
 
-      const accessToken = tokenizer.signJwt(user, jwtConfig.JWT_ACCESS_TOKEN_SECRET, {
-        expiresIn: jwtConfig.JWT_ACCESS_TOKEN_TTL,
-      });
-      const refreshToken = tokenizer.signJwt(user, jwtConfig.JWT_REFRESH_TOKEN_SECRET, {
-        expiresIn: jwtConfig.JWT_REFRESH_TOKEN_TTL,
-      });
+      const { newAccessToken, newRefreshToken } = getTokenPair(user);
 
-      await usersService.addRefreshToken(user.id, refreshToken);
+      if (oldRefreshToken) {
+        res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
+        await authService.removeRefreshToken(user.id, oldRefreshToken);
+      }
+      await authService.addRefreshToken(user.id, newRefreshToken);
 
-      res.cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken, refreshTokenCookieOptions);
+      res.cookie(REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenCookieOptions);
 
       const response: LoginResponseDTO = {
-        accessToken,
+        accessToken: newAccessToken,
       };
 
       res.json(response);
@@ -62,27 +78,42 @@ export function createAuthRouter({ authService, usersService }: RootService): Ro
     try {
       // To be investigated
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME] as string;
+      const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME] as string | undefined;
 
       if (!refreshToken) return res.sendStatus(StatusCodes.UNAUTHORIZED);
 
-      const userFromDb = await authService.getUserByRefreshToken(refreshToken);
-      if (!userFromDb) return res.sendStatus(StatusCodes.UNAUTHORIZED);
+      res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
 
       const decodedToken = tokenizer.verifyJwt(
         refreshToken,
         jwtConfig.JWT_REFRESH_TOKEN_SECRET,
         jwtPayloadSchema
       );
+      const user = await authService.getUserByRefreshToken(refreshToken);
 
-      // TODO: figure out decoded token schema, this check is hacky, we need a better solution
-      if (!('payload' in decodedToken) || !isEqual(userFromDb, decodedToken.payload)) {
+      // this happens when someone tries to use refresh token that has been already
+      // invalidated/removed. we wanna logout user
+      if (!user) {
+        if (!decodedToken.isValid) {
+          return res.send(StatusCodes.FORBIDDEN);
+        }
+
+        await authService.removeAllRefreshTokens(decodedToken.payload.id);
+
+        return res.sendStatus(StatusCodes.FORBIDDEN);
+      }
+
+      await authService.removeRefreshToken(user.id, refreshToken);
+
+      if (!decodedToken.isValid || !isEqual(user, decodedToken.payload)) {
         return res.sendStatus(StatusCodes.UNAUTHORIZED);
       }
 
-      const newAccessToken = tokenizer.signJwt(userFromDb, jwtConfig.JWT_ACCESS_TOKEN_SECRET, {
-        expiresIn: jwtConfig.JWT_ACCESS_TOKEN_TTL,
-      });
+      const { newAccessToken, newRefreshToken } = getTokenPair(user);
+
+      await authService.addRefreshToken(user.id, newRefreshToken);
+
+      res.cookie(REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenCookieOptions);
 
       const response: GetRefreshTokenResponseDTO = {
         accessToken: newAccessToken,
@@ -100,19 +131,19 @@ export function createAuthRouter({ authService, usersService }: RootService): Ro
     try {
       // To be investigated
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME] as string;
+      const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME] as string | undefined;
 
       if (!refreshToken) return res.sendStatus(StatusCodes.NO_CONTENT);
 
-      const userFromDb = await authService.getUserByRefreshToken(refreshToken);
-      if (!userFromDb) {
-        res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
+      res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
 
+      const user = await authService.getUserByRefreshToken(refreshToken);
+
+      if (!user) {
         return res.sendStatus(StatusCodes.NO_CONTENT);
       }
 
-      await authService.removeRefreshToken(userFromDb.id, refreshToken);
-      res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
+      await authService.removeRefreshToken(user.id, refreshToken);
 
       return res.sendStatus(StatusCodes.NO_CONTENT);
     } catch (err) {
