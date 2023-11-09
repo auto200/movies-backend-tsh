@@ -1,23 +1,24 @@
-import cloneDeep from 'lodash/cloneDeep';
-
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
 
 import { MoviesRepository } from './moviesRepository';
 
-export const createMockMoviesRepository = (initialData: DatabaseSchema): MoviesRepository => {
+type InitialDbData = Pick<DatabaseSchema, 'movies' | 'genres'>;
+
+export const MockMoviesRepository = (initialData?: InitialDbData): MoviesRepository => {
   // make sure data is not shared between instances
-  const db = cloneDeep(initialData);
+  const movies: DatabaseSchema['movies'] = initialData?.movies ?? [];
+  const genres: DatabaseSchema['genres'] = initialData?.genres ?? [];
 
   return {
     addMovie: async (movie) => {
-      const movieWithId = { ...movie, id: db.movies.length + 1 };
-      db.movies.push(movieWithId);
+      const movieWithId = { ...movie, id: movies.length + 1 };
+      movies.push(movieWithId);
 
       return Promise.resolve(movieWithId);
     },
     findByTitle: async (title) =>
-      Promise.resolve(db.movies.find((movie) => movie.title === title) ?? null),
-    getAllMovies: async () => Promise.resolve(db.movies),
-    getGenres: async () => Promise.resolve(db.genres),
+      Promise.resolve(movies.find((movie) => movie.title === title) ?? null),
+    getAllMovies: async () => Promise.resolve(movies),
+    getGenres: async () => Promise.resolve(genres),
   };
 };

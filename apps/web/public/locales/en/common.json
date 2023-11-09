@@ -7,5 +7,6 @@
     "title": "Sorry, something went wrong",
     "details": "Details",
     "tryAgain": "Try again"
-  }
+  },
+  "auth": {}
 }

@@ -1,11 +1,18 @@
+import { RequestHandler } from 'express';
+
 import { DbConnection } from '@/config/database/connectJSONDb';
+import { AuthService, authMiddleware } from '@/modules/auth';
 import { MoviesRepository, MoviesService } from '@/modules/movies';
+import { UsersRepository, UsersService } from '@/modules/users';
 
 import { MoviesSearchEngineService } from './moviesSearchEngine/MoviesSearchEngineService';
 
 export type RootService = {
+  authMiddleware: RequestHandler;
+  authService: AuthService;
   moviesSearchEngineService: MoviesSearchEngineService;
   moviesService: MoviesService;
+  usersService: UsersService;
 };
 
 export function createRootService(db: DbConnection): RootService {
@@ -14,5 +21,16 @@ export function createRootService(db: DbConnection): RootService {
   const moviesSearchEngineService = MoviesSearchEngineService();
   const moviesService = MoviesService(moviesRepository, moviesSearchEngineService);
 
-  return { moviesSearchEngineService, moviesService };
+  const usersRepository = UsersRepository(db);
+  const usersService = UsersService(usersRepository);
+
+  const authService = AuthService(usersRepository);
+
+  return {
+    authMiddleware,
+    authService,
+    moviesSearchEngineService,
+    moviesService,
+    usersService,
+  };
 }

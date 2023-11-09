@@ -21,7 +21,7 @@ export const createMoviesRouter = ({ moviesService }: RootService): Router => {
 
     moviesService
       .addMovie(movieToAdd)
-      .then(() => res.sendStatus(StatusCodes.OK))
+      .then(() => res.sendStatus(StatusCodes.CREATED))
       .catch(next);
   });
 

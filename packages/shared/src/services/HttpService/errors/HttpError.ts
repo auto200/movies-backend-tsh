@@ -1,4 +1,4 @@
-import { AppError } from './AppError';
+import { AppError } from '../../../errors';
 
 export class HttpError extends AppError {
   constructor(

@@ -1,8 +1,7 @@
 import { z, ZodFirstPartyTypeKind } from 'zod';
 
-import { isPlainObject } from '@/utils';
-import { HttpError } from '@/utils/errors/HttpError';
-import { PayloadParsingError } from '@/utils/errors/PayloadParsingError';
+import { HttpError } from './errors/HttpError';
+import { PayloadParsingError } from './errors/PayloadParsingError';
 
 type QueryParams = Record<string, string | number | Array<string | number>>;
 type PayloadBody = RequestInit['body'] | object;
@@ -96,10 +95,17 @@ function formatBody(body: PayloadBody): RequestInit['body'] {
 
 function extendHeaders(headers: RequestInit['headers'], body: PayloadBody): RequestInit['headers'] {
   return {
+    ...(isPlainObject(body) && { 'Content-Type': 'application/json' }),
     ...headers,
-    ...(isPlainObject(body) ? { 'Content-Type': 'application/json' } : {}),
   };
 }
+
+function isPlainObject(value: unknown): value is object {
+  return (
+    typeof value === 'object' && value !== null && Object.getPrototypeOf(value) === Object.prototype
+  );
+}
+
 // NOTE: add other object like schemas, like enums if needed
 const JSON_SERIALIZABLE_SCHEMAS = [ZodFirstPartyTypeKind.ZodObject, ZodFirstPartyTypeKind.ZodArray];
 

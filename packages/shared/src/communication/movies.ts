@@ -40,7 +40,7 @@ export const addMovieRequestDTOSchema = movieSchema.pick({
 });
 export type AddMovieRequestDTO = z.infer<typeof addMovieRequestDTOSchema>;
 
-export const addMovieResponseDTOSchema = z.literal('OK');
+export const addMovieResponseDTOSchema = z.literal('Created');
 export type AddMovieResponseDTO = z.infer<typeof addMovieResponseDTOSchema>;
 
 export const getGenresRequestDTOSchema = z.never();

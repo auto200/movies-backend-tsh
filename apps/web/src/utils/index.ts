@@ -13,9 +13,3 @@ export function stripOptionalValues<T extends object>(obj: T): RemoveUndefined<T
     Object.entries(obj).filter(([_, value]) => value !== undefined)
   ) as RemoveUndefined<T>;
 }
-
-export function isPlainObject(value: unknown): value is object {
-  return (
-    typeof value === 'object' && value !== null && Object.getPrototypeOf(value) === Object.prototype
-  );
-}

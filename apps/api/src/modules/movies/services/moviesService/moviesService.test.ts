@@ -3,17 +3,18 @@ import { describe, test, expect } from 'vitest';
 
 import { MoviesSearchEngineServiceMock } from '@/common/infrastructure/moviesSearchEngine/MoviesSearchEngineService.mock';
 import { Sampler } from '@/common/utils';
-import { DatabaseSchema } from '@/config/database/connectJSONDb';
 
 import { DuplicateMovieError } from '../../errors/duplicateMovieError';
 import { InvalidGenreError } from '../../errors/invalidGenreError';
 import { AddMovieRequestDTO, MovieDTO } from '../../models';
-import { createMockMoviesRepository } from '../moviesRepository/moviesRepository.mock';
+import { MockMoviesRepository } from '../moviesRepository/moviesRepository.mock';
 
 import { MoviesService } from './moviesService';
 
-const createMockMovieService = (initialData: DatabaseSchema) => {
-  const mockMoviesRepository = createMockMoviesRepository(initialData);
+type MockData = Parameters<typeof MockMoviesRepository>[0];
+
+const createMockMovieService = (initialData: MockData) => {
+  const mockMoviesRepository = MockMoviesRepository(initialData);
   const moviesSearchEngineService = MoviesSearchEngineServiceMock();
 
   return MoviesService(mockMoviesRepository, moviesSearchEngineService);
@@ -21,7 +22,7 @@ const createMockMovieService = (initialData: DatabaseSchema) => {
 
 describe('MoviesService', () => {
   test('adding a movie', () => {
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy'],
       movies: [],
     };
@@ -55,7 +56,7 @@ describe('MoviesService', () => {
       year: 1988,
     };
 
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy'],
       movies: [{ ...movie, id: 1 }],
     };
@@ -67,7 +68,7 @@ describe('MoviesService', () => {
   });
 
   test('adding movie with invalid genre should throw', () => {
-    const initialData: DatabaseSchema = { genres: ['action', 'horror'], movies: [] };
+    const initialData: MockData = { genres: ['action', 'horror'], movies: [] };
     const moviesService = createMockMovieService(initialData);
 
     const movie: AddMovieRequestDTO = {
@@ -98,7 +99,7 @@ describe('MoviesService', () => {
       year: 1988,
     };
 
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy'],
       movies: [{ ...movie, id: 1 }],
     };
@@ -108,7 +109,7 @@ describe('MoviesService', () => {
   });
 
   test('get random movie', () => {
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy'],
       movies: [
         {
@@ -149,7 +150,7 @@ describe('MoviesService', () => {
   });
 
   test('get movies with duration filter', () => {
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy'],
       movies: [
         {
@@ -189,7 +190,7 @@ describe('MoviesService', () => {
   });
 
   test('get movies with genres filter', () => {
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy', 'Drama'],
       movies: [
         {
@@ -229,7 +230,7 @@ describe('MoviesService', () => {
   });
 
   test('get movies with genres filter should throw if provided invalid genre', () => {
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy'],
       movies: [],
     };
@@ -242,7 +243,7 @@ describe('MoviesService', () => {
   });
 
   test('get movies with genres and duration filters', () => {
-    const initialData: DatabaseSchema = {
+    const initialData: MockData = {
       genres: ['Comedy', 'Fantasy'],
       movies: [
         {

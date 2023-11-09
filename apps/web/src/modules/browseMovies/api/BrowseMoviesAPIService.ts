@@ -3,9 +3,9 @@ import {
   getFiltersMetadataResponseDTOSchema,
   getMoviesDTOSchema,
 } from '@movies/shared/communication';
+import { HttpService } from '@movies/shared/services';
 
 import { appConfig } from '@/config/appConfig';
-import { HttpService } from '@/services/HttpService';
 import { stripOptionalValues } from '@/utils';
 
 export function BrowseMoviesAPI(http: HttpService) {

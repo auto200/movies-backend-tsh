@@ -3,9 +3,9 @@ import {
   addMovieResponseDTOSchema,
   getGenresResponseDTOSchema,
 } from '@movies/shared/communication';
+import { HttpService } from '@movies/shared/services';
 
 import { appConfig } from '@/config/appConfig';
-import { HttpService } from '@/services/HttpService';
 
 export function AddMovieAPI(http: HttpService) {
   const baseUrl = `${appConfig.NEXT_PUBLIC_API_URL}/v1/movies`;
