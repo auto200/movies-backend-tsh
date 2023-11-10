@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 
 import { DbConnection } from '@/config/database/connectJSONDb';
-import { AuthService, authMiddleware } from '@/modules/auth';
+import { AuthService, createAuthMiddleware } from '@/modules/auth';
 import { MoviesRepository, MoviesService } from '@/modules/movies';
 import { UsersRepository, UsersService } from '@/modules/users';
 
@@ -25,6 +25,7 @@ export function createRootService(db: DbConnection): RootService {
   const usersService = UsersService(usersRepository);
 
   const authService = AuthService(usersRepository);
+  const authMiddleware = createAuthMiddleware(authService);
 
   return {
     authMiddleware,

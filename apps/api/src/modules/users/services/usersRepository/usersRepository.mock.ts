@@ -6,6 +6,7 @@ import { type DbUser } from '@/config/database/connectJSONDb';
 import { JwtPayload } from '@/modules/auth/schema';
 
 import { UserNotFoundError } from '../../errors/userNotFoundError';
+import { UserData } from '../../schema';
 
 import { UsersRepository } from './usersRepository';
 
@@ -23,6 +24,7 @@ export function MockUsersRepository(initialUsers: DbUser[] = []): UsersRepositor
 
       return Promise.resolve();
     },
+
     create: (user) => {
       const now = Date.now().toString();
       const userToAdd: DbUser = {
@@ -41,6 +43,7 @@ export function MockUsersRepository(initialUsers: DbUser[] = []): UsersRepositor
 
       return Promise.resolve(addedUser);
     },
+
     doesUserWithEmailExist: (email) =>
       Promise.resolve(!!users.find((user) => user.email === email)),
 
@@ -52,9 +55,14 @@ export function MockUsersRepository(initialUsers: DbUser[] = []): UsersRepositor
 
       if (!user) return Promise.resolve(null);
 
-      const { password, ...safeUser } = user;
+      const userData: UserData = {
+        createdAt: user.createdAt,
+        email: user.email,
+        id: user.id,
+        username: user.username,
+      };
 
-      return Promise.resolve({ password, user: safeUser });
+      return Promise.resolve({ password: user.password, user: userData });
     },
 
     getUserByRefreshToken: (refreshToken) => {

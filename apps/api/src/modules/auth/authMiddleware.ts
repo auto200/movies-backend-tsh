@@ -4,28 +4,31 @@ import { jwtConfig } from '@/config/jwtConfig';
 
 import { InvalidCredentialsError } from './errors/invalidCredentialsError';
 import { jwtPayloadSchema } from './schema';
+import { AuthService } from './services';
 import { tokenizer } from './services/tokenizer';
 
-export const authMiddleware: RequestHandler = (req, _res, next) => {
-  const authorization = req.get('authorization') ?? '';
+export function createAuthMiddleware(_authService: AuthService): RequestHandler {
+  return (req, _res, next) => {
+    const authorization = req.get('authorization') ?? '';
 
-  const accessToken = authorization.split(' ')[1];
+    const accessToken = authorization.split(' ')[1];
 
-  if (!accessToken) {
-    return next(new InvalidCredentialsError('Missing bearer token'));
-  }
+    if (!accessToken) {
+      return next(new InvalidCredentialsError('Missing bearer token'));
+    }
 
-  const decoded = tokenizer.verifyJwt(
-    accessToken,
-    jwtConfig.JWT_ACCESS_TOKEN_SECRET,
-    jwtPayloadSchema
-  );
+    const tokenPayload = tokenizer.verifyJwt(
+      accessToken,
+      jwtConfig.JWT_ACCESS_TOKEN_SECRET,
+      jwtPayloadSchema
+    );
 
-  if (decoded.isValid) {
-    req.user = decoded.payload;
+    if (!tokenPayload) {
+      return next(new InvalidCredentialsError('Token is invalid'));
+    }
+
+    req.user = tokenPayload;
 
     return next();
-  }
-
-  next(new InvalidCredentialsError('Token is invalid'));
-};
+  };
+}

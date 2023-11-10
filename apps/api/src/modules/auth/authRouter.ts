@@ -84,7 +84,7 @@ export function createAuthRouter({ authService }: RootService): Router {
 
       res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
 
-      const decodedToken = tokenizer.verifyJwt(
+      const tokenPayload = tokenizer.verifyJwt(
         refreshToken,
         jwtConfig.JWT_REFRESH_TOKEN_SECRET,
         jwtPayloadSchema
@@ -94,18 +94,18 @@ export function createAuthRouter({ authService }: RootService): Router {
       // this happens when someone tries to use refresh token that has been already
       // invalidated/removed. we wanna logout user
       if (!user) {
-        if (!decodedToken.isValid) {
+        if (!tokenPayload) {
           return res.send(StatusCodes.FORBIDDEN);
         }
 
-        await authService.removeAllRefreshTokens(decodedToken.payload.id);
+        await authService.removeAllRefreshTokens(tokenPayload.id);
 
         return res.sendStatus(StatusCodes.FORBIDDEN);
       }
 
       await authService.removeRefreshToken(user.id, refreshToken);
 
-      if (!decodedToken.isValid || !isEqual(user, decodedToken.payload)) {
+      if (!tokenPayload || !isEqual(user, tokenPayload)) {
         return res.sendStatus(StatusCodes.UNAUTHORIZED);
       }
 
