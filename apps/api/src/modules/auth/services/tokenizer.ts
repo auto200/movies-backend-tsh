@@ -5,7 +5,7 @@ import { JwtPayload } from '../schema';
 
 export const tokenizer = {
   signJwt: (data: JwtPayload, secret: string, options?: SignOptions) =>
-    sign(data, secret, {
+    sign({ ...data, iat: Date.now() }, secret, {
       ...options,
     }),
 

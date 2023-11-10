@@ -89,6 +89,7 @@ export function createAuthRouter({ authService }: RootService): Router {
         jwtConfig.JWT_REFRESH_TOKEN_SECRET,
         jwtPayloadSchema
       );
+
       const user = await authService.getUserByRefreshToken(refreshToken);
 
       // this happens when someone tries to use refresh token that has been already

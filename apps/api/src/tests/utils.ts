@@ -4,6 +4,7 @@ import { initApp } from '@/app';
 import { MoviesSearchEngineServiceMock } from '@/common/infrastructure/moviesSearchEngine/MoviesSearchEngineService.mock';
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
 import { AuthService, createAuthMiddleware } from '@/modules/auth';
+import { MockAuthRepository } from '@/modules/auth/services/authRepository/authRepository.mock';
 import { MoviesService } from '@/modules/movies';
 import { MockMoviesRepository } from '@/modules/movies/services/moviesRepository/moviesRepository.mock';
 import { UsersService } from '@/modules/users';
@@ -42,7 +43,8 @@ export function createTestingApp(testSpecificData?: Partial<DatabaseSchema>) {
   const usersRepository = MockUsersRepository(dbData.users);
   const usersService = UsersService(usersRepository);
 
-  const authService = AuthService(usersRepository);
+  const authRepository = MockAuthRepository(dbData.users);
+  const authService = AuthService(authRepository);
   const authMiddleware = createAuthMiddleware(authService);
 
   return {

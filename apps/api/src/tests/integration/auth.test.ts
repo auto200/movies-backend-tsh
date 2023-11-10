@@ -135,6 +135,34 @@ describe('auth module', () => {
         .set('Cookie', [authCookie])
         .expect(StatusCodes.OK);
     });
+
+    test.only('does not allow old token reuse', async () => {
+      const { app } = createTestingApp();
+
+      const loginRequestPayload: LoginRequestDTO = {
+        email: testUser.email,
+        password: testUser.password,
+      };
+
+      const loginRes = await signUpAndLoginSuccessfully(app, {
+        loginUser: loginRequestPayload,
+        signUpUser: testUser,
+      });
+
+      const authCookie = loginRes.get('Set-Cookie')[0]!;
+
+      await supertest(app)
+        .get('/v1/auth/refresh-token')
+        .set('Cookie', [authCookie])
+        .expect(StatusCodes.OK);
+
+      const invalidatedAuthCookie = authCookie;
+
+      await supertest(app)
+        .get('/v1/auth/refresh-token')
+        .set('Cookie', [invalidatedAuthCookie])
+        .expect(StatusCodes.FORBIDDEN);
+    });
   });
 
   describe('POST /v1/auth/logout', () => {
@@ -179,34 +207,6 @@ describe('auth module', () => {
       const authCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[0]!);
 
       expect(authCookieAfterLogout[REFRESH_TOKEN_COOKIE_NAME]).toBe('');
-    });
-
-    test('does not allow old token reuse', async () => {
-      const { app } = createTestingApp();
-
-      const loginRequestPayload: LoginRequestDTO = {
-        email: testUser.email,
-        password: testUser.password,
-      };
-
-      const loginRes = await signUpAndLoginSuccessfully(app, {
-        loginUser: loginRequestPayload,
-        signUpUser: testUser,
-      });
-
-      const authCookie = loginRes.get('Set-Cookie')[0]!;
-
-      await supertest(app)
-        .get('/v1/auth/refresh-token')
-        .set('Cookie', [authCookie])
-        .expect(StatusCodes.OK);
-
-      const invalidatedAuthCookie = authCookie;
-
-      await supertest(app)
-        .get('/v1/auth/refresh-token')
-        .set('Cookie', [invalidatedAuthCookie])
-        .expect(StatusCodes.FORBIDDEN);
     });
   });
 });
