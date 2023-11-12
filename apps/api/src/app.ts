@@ -8,7 +8,6 @@ import { errorHandlerMiddleware } from '@/common/middlewares/errorHandlerMiddlew
 import { createMoviesRouter } from '@/modules/movies';
 
 import { createAuthRouter } from './modules/auth';
-import { createUsersRouter } from './modules/users';
 
 export const initApp = (rootService: RootService): Express => {
   const app = express();
@@ -23,7 +22,6 @@ export const initApp = (rootService: RootService): Express => {
   );
 
   app.use('/v1/movies', createMoviesRouter(rootService));
-  app.use('/v1/users', createUsersRouter(rootService));
   app.use('/v1/auth', createAuthRouter(rootService));
 
   app.use(errorHandlerMiddleware);

@@ -7,8 +7,6 @@ import { AuthService, createAuthMiddleware } from '@/modules/auth';
 import { MockAuthRepository } from '@/modules/auth/services/authRepository/authRepository.mock';
 import { MoviesService } from '@/modules/movies';
 import { MockMoviesRepository } from '@/modules/movies/services/moviesRepository/moviesRepository.mock';
-import { UsersService } from '@/modules/users';
-import { MockUsersRepository } from '@/modules/users/services/usersRepository/usersRepository.mock';
 
 const initialData: DatabaseSchema = {
   genres: ['Action', 'Crime'],
@@ -40,9 +38,6 @@ export function createTestingApp(testSpecificData?: Partial<DatabaseSchema>) {
   const moviesSearchEngineService = MoviesSearchEngineServiceMock();
   const moviesService = MoviesService(moviesRepository, moviesSearchEngineService);
 
-  const usersRepository = MockUsersRepository(dbData.users);
-  const usersService = UsersService(usersRepository);
-
   const authRepository = MockAuthRepository(dbData.users);
   const authService = AuthService(authRepository);
   const authMiddleware = createAuthMiddleware(authService);
@@ -53,7 +48,6 @@ export function createTestingApp(testSpecificData?: Partial<DatabaseSchema>) {
       authService,
       moviesSearchEngineService,
       moviesService,
-      usersService,
     }),
     initialData,
   };

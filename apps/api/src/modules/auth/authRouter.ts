@@ -7,6 +7,7 @@ import {
   LoginResponseDTO,
   GetRefreshTokenResponseDTO,
   loginRequestDTOSchema,
+  signupRequestDTOSchema,
 } from '@movies/shared/communication';
 
 import { type RootService } from '@/common/infrastructure/rootService';
@@ -19,6 +20,7 @@ import { tokenizer } from './services/tokenizer';
 
 const validators = {
   login: validator({ body: loginRequestDTOSchema }),
+  signup: validator({ body: signupRequestDTOSchema }),
 };
 
 export function createAuthRouter({ authService }: RootService): Router {
@@ -42,6 +44,15 @@ export function createAuthRouter({ authService }: RootService): Router {
 
     return { newAccessToken, newRefreshToken };
   };
+
+  router.post('/signup', validators.signup, (req, res, next) => {
+    authService
+      .signup(req.body)
+      .then((user) => {
+        res.status(StatusCodes.CREATED).json(user);
+      })
+      .catch(next);
+  });
 
   // express v4 quirk
   // eslint-disable-next-line @typescript-eslint/no-misused-promises

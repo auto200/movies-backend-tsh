@@ -1,8 +1,21 @@
 import { z } from 'zod';
 
-import { signupUserRequestDTOSchema } from './users';
+// signup
+export const signupRequestDTOSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6).max(64),
+  username: z.string().min(4).max(24),
+});
+export type SignupRequestDTO = z.infer<typeof signupRequestDTOSchema>;
 
-export const loginRequestDTOSchema = signupUserRequestDTOSchema.pick({
+export const signupResponseDTOSchema = z.object({
+  email: z.string(),
+  username: z.string(),
+});
+export type SignupResponseDTO = z.infer<typeof signupResponseDTOSchema>;
+
+// login
+export const loginRequestDTOSchema = signupRequestDTOSchema.pick({
   email: true,
   password: true,
 });
@@ -13,6 +26,7 @@ export const loginResponseDTOSchema = z.object({
 });
 export type LoginResponseDTO = z.infer<typeof loginResponseDTOSchema>;
 
+// refresh token
 export const getRefreshTokenRequestDTOSchema = z.never();
 export type GetRefreshTokenRequestDTO = z.infer<typeof getRefreshTokenRequestDTOSchema>;
 

@@ -7,16 +7,16 @@ import { describe, expect, test } from 'vitest';
 
 import {
   LoginRequestDTO,
-  SignupUserRequestDTO,
+  SignupRequestDTO,
   loginResponseDTOSchema,
+  signupResponseDTOSchema,
 } from '@movies/shared/communication';
 
 import { REFRESH_TOKEN_COOKIE_NAME } from '@/modules/auth/consts';
 import { createTestingApp } from '@/tests/utils';
 
-// TODO: create utility functions to DRY out creating user and logging in
 describe('auth module', () => {
-  const testUser: SignupUserRequestDTO = {
+  const testUser: SignupRequestDTO = {
     email: 'test@example.com',
     password: 'test-password',
     username: 'user123',
@@ -24,19 +24,66 @@ describe('auth module', () => {
 
   const signUpSuccessfully = async (
     app: Express.Application,
-    user: SignupUserRequestDTO = testUser
+    user: SignupRequestDTO = testUser
   ) => {
-    return await supertest(app).post('/v1/users').send(user).expect(StatusCodes.CREATED);
+    const res = await supertest(app).post('/v1/auth/signup').send(user).expect(StatusCodes.CREATED);
+
+    expect(() => signupResponseDTOSchema.strict().parse(res.body)).not.toThrow();
+
+    return res;
   };
 
   const signUpAndLoginSuccessfully = async (
     app: Express.Application,
-    { loginUser, signUpUser }: { loginUser: LoginRequestDTO; signUpUser: SignupUserRequestDTO }
+    { loginUser, signUpUser }: { loginUser: LoginRequestDTO; signUpUser: SignupRequestDTO }
   ) => {
-    await supertest(app).post('/v1/users').send(signUpUser).expect(StatusCodes.CREATED);
+    await signUpSuccessfully(app, signUpUser);
 
     return await supertest(app).post('/v1/auth/login').send(loginUser).expect(StatusCodes.OK);
   };
+
+  describe('POST /v1/auth/signup - signup user', () => {
+    const testUser: SignupRequestDTO = {
+      email: 'test@example.com',
+      password: 'test-password',
+      username: 'test',
+    };
+
+    test('fails when providing invalid data', async () => {
+      const { app } = createTestingApp();
+
+      await supertest(app)
+        .post('/v1/auth/signup')
+        .send({ invalidPayload: 'test' })
+        .expect('Content-Type', /json/)
+        .expect(StatusCodes.BAD_REQUEST);
+    });
+
+    test('creates user providing correct data', async () => {
+      const { app } = createTestingApp();
+
+      await signUpSuccessfully(app);
+    });
+
+    test('does not create user with duplicated email or username', async () => {
+      const { app } = createTestingApp();
+
+      await signUpSuccessfully(app, testUser);
+
+      // duplicated user
+      await supertest(app).post('/v1/auth/signup').send(testUser).expect(StatusCodes.CONFLICT);
+      // username taken
+      await supertest(app)
+        .post('/v1/auth/signup')
+        .send({ ...testUser, email: 'unique@example.com' })
+        .expect(StatusCodes.CONFLICT);
+      // email taken
+      await supertest(app)
+        .post('/v1/auth/signup')
+        .send({ ...testUser, username: 'unique' })
+        .expect(StatusCodes.CONFLICT);
+    });
+  });
 
   describe('POST /v1/auth/login - login user', () => {
     test('fails to login if providing invalid credentials', async () => {

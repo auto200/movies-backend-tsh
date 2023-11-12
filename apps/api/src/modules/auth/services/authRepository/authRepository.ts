@@ -1,14 +1,21 @@
-import { DbConnection } from '@/config/database/connectJSONDb';
+import { randomUUID } from 'crypto';
+
+import { SignupRequestDTO, SignupResponseDTO } from '@movies/shared/communication';
+
+import { DbConnection, DbUser } from '@/config/database/connectJSONDb';
 
 import { UserNotFoundError } from '../../errors/userNotFoundError';
 import { JwtPayload } from '../../schema';
 
 export type AuthRepository = {
   addRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
+  doesUserWithEmailExist: (email: string) => Promise<boolean>;
+  doesUserWithUsernameExist: (username: string) => Promise<boolean>;
   getByEmail: (email: string) => Promise<{ password: string; user: JwtPayload } | null>;
   getUserByRefreshToken: (refreshToken: string) => Promise<JwtPayload | null>;
   removeAllRefreshTokens: (userId: string) => Promise<void>;
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
+  signup: (user: SignupRequestDTO) => Promise<SignupResponseDTO>;
 };
 
 export function AuthRepository(db: DbConnection): AuthRepository {
@@ -22,6 +29,12 @@ export function AuthRepository(db: DbConnection): AuthRepository {
 
       await db.write();
     },
+
+    doesUserWithEmailExist: (email) =>
+      Promise.resolve(!!db.data.users.find((user) => user.email === email)),
+
+    doesUserWithUsernameExist: (username) =>
+      Promise.resolve(!!db.data.users.find((user) => user.username === username)),
 
     getByEmail: (email) => {
       const user = db.data.users.find((user) => user.email === email) ?? null;
@@ -68,6 +81,27 @@ export function AuthRepository(db: DbConnection): AuthRepository {
       user.updatedAt = Date.now().toString();
 
       await db.write();
+    },
+
+    signup: async (user) => {
+      const now = Date.now().toString();
+      const userToAdd: DbUser = {
+        ...user,
+        createdAt: now,
+        id: randomUUID(),
+        refreshTokens: [],
+        updatedAt: now,
+      };
+      db.data.users.push(userToAdd);
+
+      await db.write();
+
+      const addedUser: SignupResponseDTO = {
+        email: user.email,
+        username: user.username,
+      };
+
+      return addedUser;
     },
   };
 }

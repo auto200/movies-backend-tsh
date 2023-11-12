@@ -1,6 +1,10 @@
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
+import { SignupRequestDTO, SignupResponseDTO } from '@movies/shared/communication';
+
+import { EmailAlreadyInUseError } from '../errors/emailAlreadyInUseError';
 import { InvalidCredentialsError } from '../errors/invalidCredentialsError';
+import { UsernameAlreadyInUseError } from '../errors/usernameAlreadyInUseError';
 import { JwtPayload } from '../schema';
 
 import { AuthRepository } from './authRepository/authRepository';
@@ -10,6 +14,7 @@ export type AuthService = {
   getUserByRefreshToken: (refreshToken: string) => Promise<JwtPayload | null>;
   removeAllRefreshTokens: (userId: string) => Promise<void>;
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
+  signup: (user: SignupRequestDTO) => Promise<SignupResponseDTO>;
   validatePassword: (email: string, password: string) => Promise<JwtPayload>;
 };
 
@@ -24,6 +29,23 @@ export function AuthService(authRepository: AuthRepository): AuthService {
 
     removeRefreshToken: (userId, refreshToken) =>
       authRepository.removeRefreshToken(userId, refreshToken),
+
+    signup: async (user) => {
+      if (await authRepository.doesUserWithEmailExist(user.email)) {
+        throw new EmailAlreadyInUseError(user.email);
+      }
+
+      if (await authRepository.doesUserWithUsernameExist(user.username)) {
+        throw new UsernameAlreadyInUseError(user.email);
+      }
+
+      const userWithHashedPassword: SignupRequestDTO = {
+        ...user,
+        password: await hash(user.password, 10),
+      };
+
+      return await authRepository.signup(userWithHashedPassword);
+    },
 
     validatePassword: async (email, password) => {
       const userData = await authRepository.getByEmail(email);

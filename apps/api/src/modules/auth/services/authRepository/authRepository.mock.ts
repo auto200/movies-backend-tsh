@@ -1,3 +1,7 @@
+import { randomUUID } from 'crypto';
+
+import { SignupResponseDTO } from '@movies/shared/communication';
+
 import { DbUser } from '@/config/database/connectJSONDb';
 
 import { UserNotFoundError } from '../../errors/userNotFoundError';
@@ -18,6 +22,12 @@ export function MockAuthRepository(initialUsers: DbUser[] = []): AuthRepository 
 
       return Promise.resolve();
     },
+
+    doesUserWithEmailExist: (email) =>
+      Promise.resolve(!!users.find((user) => user.email === email)),
+
+    doesUserWithUsernameExist: (username) =>
+      Promise.resolve(!!users.find((user) => user.username === username)),
 
     getByEmail: (email) => {
       const user = users.find((user) => user.email === email) ?? null;
@@ -65,6 +75,25 @@ export function MockAuthRepository(initialUsers: DbUser[] = []): AuthRepository 
       user.updatedAt = Date.now().toString();
 
       return Promise.resolve();
+    },
+
+    signup: (user) => {
+      const now = Date.now().toString();
+      const userToAdd: DbUser = {
+        ...user,
+        createdAt: now,
+        id: randomUUID(),
+        refreshTokens: [],
+        updatedAt: now,
+      };
+      users.push(userToAdd);
+
+      const addedUser: SignupResponseDTO = {
+        email: user.email,
+        username: user.username,
+      };
+
+      return Promise.resolve(addedUser);
     },
   };
 }
