@@ -3,6 +3,7 @@ import { hash } from 'bcrypt';
 import { SignupUserRequestDTO, SignupUserResponseDTO } from '@movies/shared/communication';
 
 import { EmailAlreadyInUseError } from '../errors/emailAlreadyInUseError';
+import { UsernameAlreadyInUseError } from '../errors/usernameAlreadyInUseError';
 
 import { UsersRepository } from './usersRepository';
 
@@ -18,7 +19,7 @@ export function UsersService(usersRepository: UsersRepository): UsersService {
       }
 
       if (await usersRepository.doesUserWithUsernameExist(user.username)) {
-        throw new EmailAlreadyInUseError(user.email);
+        throw new UsernameAlreadyInUseError(user.email);
       }
 
       const userWithHashedPassword: SignupUserRequestDTO = {

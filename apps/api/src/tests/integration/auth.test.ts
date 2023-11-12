@@ -136,7 +136,7 @@ describe('auth module', () => {
         .expect(StatusCodes.OK);
     });
 
-    test.only('does not allow old token reuse', async () => {
+    test('does not allow old token reuse', async () => {
       const { app } = createTestingApp();
 
       const loginRequestPayload: LoginRequestDTO = {
