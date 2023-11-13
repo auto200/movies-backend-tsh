@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const basicUserInfoSchema = z.object({
+  email: z.string().email(),
+  id: z.string(),
+  username: z.string(),
+});
+
+export type BasicUserInfo = z.infer<typeof basicUserInfoSchema>;
+
 // signup
 export const signupRequestDTOSchema = z.object({
   email: z.string().email(),
@@ -9,8 +17,8 @@ export const signupRequestDTOSchema = z.object({
 export type SignupRequestDTO = z.infer<typeof signupRequestDTOSchema>;
 
 export const signupResponseDTOSchema = z.object({
-  email: z.string(),
-  username: z.string(),
+  accessToken: z.string(),
+  user: basicUserInfoSchema,
 });
 export type SignupResponseDTO = z.infer<typeof signupResponseDTOSchema>;
 
@@ -23,6 +31,7 @@ export type LoginRequestDTO = z.infer<typeof loginRequestDTOSchema>;
 
 export const loginResponseDTOSchema = z.object({
   accessToken: z.string(),
+  user: basicUserInfoSchema,
 });
 export type LoginResponseDTO = z.infer<typeof loginResponseDTOSchema>;
 

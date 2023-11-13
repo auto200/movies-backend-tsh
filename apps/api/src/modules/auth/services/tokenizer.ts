@@ -1,22 +1,25 @@
 import { SignOptions, sign, verify } from 'jsonwebtoken';
-import { ZodTypeAny, z } from 'zod';
+import { z } from 'zod';
 
-import { JwtPayload } from '../schema';
+import { BasicUserInfo, basicUserInfoSchema } from '@movies/shared/communication';
+
+const jwtPayloadSchema = basicUserInfoSchema.extend({ iat: z.number() });
+type JwtPayload = z.infer<typeof jwtPayloadSchema>;
 
 export const tokenizer = {
-  signJwt: (data: JwtPayload, secret: string, options?: SignOptions) =>
-    sign({ ...data, iat: Date.now() }, secret, {
-      ...options,
-    }),
+  signJwt: (userInfo: BasicUserInfo, secret: string, options?: SignOptions): string => {
+    const payload: JwtPayload = { ...userInfo, iat: Date.now() };
 
-  verifyJwt: <T extends ZodTypeAny>(token: string, secret: string, schema: T) => {
+    return sign(payload, secret, {
+      ...options,
+    });
+  },
+
+  verifyJwt: (token: string, secret: string) => {
     try {
       const decodedToken = verify(token, secret);
 
-      const payload = schema.parse(decodedToken) as z.infer<T>;
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return payload;
+      return jwtPayloadSchema.parse(decodedToken);
     } catch (e) {
       return null;
     }

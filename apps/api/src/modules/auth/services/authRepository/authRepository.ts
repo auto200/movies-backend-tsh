@@ -1,21 +1,20 @@
 import { randomUUID } from 'crypto';
 
-import { SignupRequestDTO, SignupResponseDTO } from '@movies/shared/communication';
+import { BasicUserInfo, SignupRequestDTO } from '@movies/shared/communication';
 
 import { DbConnection, DbUser } from '@/config/database/connectJSONDb';
 
 import { UserNotFoundError } from '../../errors/userNotFoundError';
-import { JwtPayload } from '../../schema';
 
 export type AuthRepository = {
   addRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
   doesUserWithEmailExist: (email: string) => Promise<boolean>;
   doesUserWithUsernameExist: (username: string) => Promise<boolean>;
-  getByEmail: (email: string) => Promise<{ password: string; user: JwtPayload } | null>;
-  getUserByRefreshToken: (refreshToken: string) => Promise<JwtPayload | null>;
+  getByEmail: (email: string) => Promise<{ password: string; user: BasicUserInfo } | null>;
+  getUserByRefreshToken: (refreshToken: string) => Promise<BasicUserInfo | null>;
   removeAllRefreshTokens: (userId: string) => Promise<void>;
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
-  signup: (user: SignupRequestDTO) => Promise<SignupResponseDTO>;
+  signup: (user: SignupRequestDTO) => Promise<BasicUserInfo>;
 };
 
 export function AuthRepository(db: DbConnection): AuthRepository {
@@ -41,7 +40,7 @@ export function AuthRepository(db: DbConnection): AuthRepository {
 
       if (!user) return Promise.resolve(null);
 
-      const userData: JwtPayload = {
+      const userData: BasicUserInfo = {
         email: user.email,
         id: user.id,
         username: user.username,
@@ -54,7 +53,7 @@ export function AuthRepository(db: DbConnection): AuthRepository {
       const user = db.data.users.find((user) => user.refreshTokens.includes(refreshToken));
       if (!user) return Promise.resolve(null);
 
-      const toReturn: JwtPayload = {
+      const toReturn: BasicUserInfo = {
         email: user.email,
         id: user.id,
         username: user.username,
@@ -96,9 +95,10 @@ export function AuthRepository(db: DbConnection): AuthRepository {
 
       await db.write();
 
-      const addedUser: SignupResponseDTO = {
-        email: user.email,
-        username: user.username,
+      const addedUser: BasicUserInfo = {
+        email: userToAdd.email,
+        id: userToAdd.id,
+        username: userToAdd.username,
       };
 
       return addedUser;

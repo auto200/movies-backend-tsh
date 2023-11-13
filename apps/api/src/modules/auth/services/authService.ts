@@ -1,21 +1,20 @@
 import { compare, hash } from 'bcrypt';
 
-import { SignupRequestDTO, SignupResponseDTO } from '@movies/shared/communication';
+import { BasicUserInfo, SignupRequestDTO } from '@movies/shared/communication';
 
 import { EmailAlreadyInUseError } from '../errors/emailAlreadyInUseError';
 import { InvalidCredentialsError } from '../errors/invalidCredentialsError';
 import { UsernameAlreadyInUseError } from '../errors/usernameAlreadyInUseError';
-import { JwtPayload } from '../schema';
 
 import { AuthRepository } from './authRepository/authRepository';
 
 export type AuthService = {
   addRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
-  getUserByRefreshToken: (refreshToken: string) => Promise<JwtPayload | null>;
+  getUserByRefreshToken: (refreshToken: string) => Promise<BasicUserInfo | null>;
   removeAllRefreshTokens: (userId: string) => Promise<void>;
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
-  signup: (user: SignupRequestDTO) => Promise<SignupResponseDTO>;
-  validatePassword: (email: string, password: string) => Promise<JwtPayload>;
+  signup: (user: SignupRequestDTO) => Promise<BasicUserInfo>;
+  validatePassword: (email: string, password: string) => Promise<BasicUserInfo>;
 };
 
 export function AuthService(authRepository: AuthRepository): AuthService {

@@ -1,11 +1,10 @@
 import { randomUUID } from 'crypto';
 
-import { SignupResponseDTO } from '@movies/shared/communication';
+import { BasicUserInfo } from '@movies/shared/communication';
 
 import { DbUser } from '@/config/database/connectJSONDb';
 
 import { UserNotFoundError } from '../../errors/userNotFoundError';
-import { JwtPayload } from '../../schema';
 
 import { AuthRepository } from './authRepository';
 
@@ -34,7 +33,7 @@ export function MockAuthRepository(initialUsers: DbUser[] = []): AuthRepository 
 
       if (!user) return Promise.resolve(null);
 
-      const userData: JwtPayload = {
+      const userData: BasicUserInfo = {
         email: user.email,
         id: user.id,
         username: user.username,
@@ -47,7 +46,7 @@ export function MockAuthRepository(initialUsers: DbUser[] = []): AuthRepository 
       const user = users.find((user) => user.refreshTokens.includes(refreshToken));
       if (!user) return Promise.resolve(null);
 
-      const toReturn: JwtPayload = {
+      const toReturn: BasicUserInfo = {
         email: user.email,
         id: user.id,
         username: user.username,
@@ -88,9 +87,10 @@ export function MockAuthRepository(initialUsers: DbUser[] = []): AuthRepository 
       };
       users.push(userToAdd);
 
-      const addedUser: SignupResponseDTO = {
-        email: user.email,
-        username: user.username,
+      const addedUser: BasicUserInfo = {
+        email: userToAdd.email,
+        id: userToAdd.id,
+        username: userToAdd.username,
       };
 
       return Promise.resolve(addedUser);

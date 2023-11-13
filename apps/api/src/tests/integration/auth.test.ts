@@ -28,18 +28,23 @@ describe('auth module', () => {
   ) => {
     const res = await supertest(app).post('/v1/auth/signup').send(user).expect(StatusCodes.CREATED);
 
+    const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
+    expect(REFRESH_TOKEN_COOKIE_NAME in authCookie).toBeTruthy();
+
     expect(() => signupResponseDTOSchema.strict().parse(res.body)).not.toThrow();
 
     return res;
   };
 
-  const signUpAndLoginSuccessfully = async (
-    app: Express.Application,
-    { loginUser, signUpUser }: { loginUser: LoginRequestDTO; signUpUser: SignupRequestDTO }
-  ) => {
-    await signUpSuccessfully(app, signUpUser);
+  const loginSuccessfully = async (app: Express.Application, user: LoginRequestDTO = testUser) => {
+    const res = await supertest(app).post('/v1/auth/login').send(user).expect(StatusCodes.OK);
 
-    return await supertest(app).post('/v1/auth/login').send(loginUser).expect(StatusCodes.OK);
+    const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
+    expect(REFRESH_TOKEN_COOKIE_NAME in authCookie).toBeTruthy();
+
+    expect(() => loginResponseDTOSchema.parse(res.body)).not.toThrow();
+
+    return res;
   };
 
   describe('POST /v1/auth/signup - signup user', () => {
@@ -59,7 +64,7 @@ describe('auth module', () => {
         .expect(StatusCodes.BAD_REQUEST);
     });
 
-    test('creates user providing correct data', async () => {
+    test('creates user providing correct data and sets token in cookie', async () => {
       const { app } = createTestingApp();
 
       await signUpSuccessfully(app);
@@ -102,43 +107,21 @@ describe('auth module', () => {
         .expect(StatusCodes.UNAUTHORIZED);
     });
 
-    test('loggsin and sets cookie if providing valid credentials', async () => {
+    test('logs in and sets cookie if provided valid credentials', async () => {
       const { app } = createTestingApp();
 
-      const loginRequestPayload: LoginRequestDTO = {
-        email: testUser.email,
-        password: testUser.password,
-      };
+      await signUpSuccessfully(app);
 
-      const res = await signUpAndLoginSuccessfully(app, {
-        loginUser: loginRequestPayload,
-        signUpUser: testUser,
-      });
-
-      expect(() => loginResponseDTOSchema.parse(res.body)).not.toThrow();
-
-      const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
-      expect(REFRESH_TOKEN_COOKIE_NAME in authCookie).toBeTruthy();
+      await loginSuccessfully(app);
     });
 
     test('multi device support', async () => {
       const { app } = createTestingApp();
 
-      const loginRequestPayload: LoginRequestDTO = {
-        email: testUser.email,
-        password: testUser.password,
-      };
-
-      const res = await signUpAndLoginSuccessfully(app, {
-        loginUser: loginRequestPayload,
-        signUpUser: testUser,
-      });
+      const res = await signUpSuccessfully(app);
       const accessToken = res.get('Set-Cookie');
 
-      const res2 = await supertest(app)
-        .post('/v1/auth/login')
-        .send(loginRequestPayload)
-        .expect(StatusCodes.OK);
+      const res2 = await loginSuccessfully(app);
       const accessToken2 = res2.get('Set-Cookie');
 
       await supertest(app).post('/v1/auth/logout').set('Cookie', accessToken);
@@ -165,15 +148,7 @@ describe('auth module', () => {
     test('returns new access token', async () => {
       const { app } = createTestingApp();
 
-      const loginRequestPayload: LoginRequestDTO = {
-        email: testUser.email,
-        password: testUser.password,
-      };
-
-      const res = await signUpAndLoginSuccessfully(app, {
-        loginUser: loginRequestPayload,
-        signUpUser: testUser,
-      });
+      const res = await signUpSuccessfully(app);
 
       const authCookie = res.get('Set-Cookie')[0]!;
 
@@ -186,17 +161,9 @@ describe('auth module', () => {
     test('does not allow old token reuse', async () => {
       const { app } = createTestingApp();
 
-      const loginRequestPayload: LoginRequestDTO = {
-        email: testUser.email,
-        password: testUser.password,
-      };
+      const res = await signUpSuccessfully(app);
 
-      const loginRes = await signUpAndLoginSuccessfully(app, {
-        loginUser: loginRequestPayload,
-        signUpUser: testUser,
-      });
-
-      const authCookie = loginRes.get('Set-Cookie')[0]!;
+      const authCookie = res.get('Set-Cookie')[0]!;
 
       await supertest(app)
         .get('/v1/auth/refresh-token')
@@ -234,22 +201,14 @@ describe('auth module', () => {
     test('clears valid cookie', async () => {
       const { app } = createTestingApp();
 
-      const loginRequestPayload: LoginRequestDTO = {
-        email: testUser.email,
-        password: testUser.password,
-      };
-
-      const loginRes = await signUpAndLoginSuccessfully(app, {
-        loginUser: loginRequestPayload,
-        signUpUser: testUser,
-      });
+      const loginRes = await signUpSuccessfully(app);
 
       const authCookie = loginRes.get('Set-Cookie')[0]!;
 
       const logoutRes = await supertest(app)
         .post('/v1/auth/logout')
         .set('Cookie', [authCookie])
-        .expect(StatusCodes.NO_CONTENT);
+        .expect(StatusCodes.OK);
 
       const authCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[0]!);
 

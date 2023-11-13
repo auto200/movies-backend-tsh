@@ -1,6 +1,7 @@
 import { CookieOptions, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
 import ms from 'ms';
 
 import {
@@ -8,6 +9,8 @@ import {
   GetRefreshTokenResponseDTO,
   loginRequestDTOSchema,
   signupRequestDTOSchema,
+  SignupResponseDTO,
+  BasicUserInfo,
 } from '@movies/shared/communication';
 
 import { type RootService } from '@/common/infrastructure/rootService';
@@ -15,7 +18,6 @@ import { validator } from '@/common/payloadValidation';
 import { jwtConfig } from '@/config/jwtConfig';
 
 import { REFRESH_TOKEN_COOKIE_NAME } from './consts';
-import { JwtPayload, jwtPayloadSchema } from './schema';
 import { tokenizer } from './services/tokenizer';
 
 const validators = {
@@ -34,24 +36,34 @@ export function createAuthRouter({ authService }: RootService): Router {
     // sameSite:"none"
   };
 
-  const getTokenPair = (user: JwtPayload) => {
-    const newAccessToken = tokenizer.signJwt(user, jwtConfig.JWT_ACCESS_TOKEN_SECRET, {
+  const getTokenPair = (userInfo: BasicUserInfo) => {
+    const newAccessToken = tokenizer.signJwt(userInfo, jwtConfig.JWT_ACCESS_TOKEN_SECRET, {
       expiresIn: jwtConfig.JWT_ACCESS_TOKEN_TTL,
     });
-    const newRefreshToken = tokenizer.signJwt(user, jwtConfig.JWT_REFRESH_TOKEN_SECRET, {
+    const newRefreshToken = tokenizer.signJwt(userInfo, jwtConfig.JWT_REFRESH_TOKEN_SECRET, {
       expiresIn: jwtConfig.JWT_REFRESH_TOKEN_TTL,
     });
 
     return { newAccessToken, newRefreshToken };
   };
 
-  router.post('/signup', validators.signup, (req, res, next) => {
-    authService
-      .signup(req.body)
-      .then((user) => {
-        res.status(StatusCodes.CREATED).json(user);
-      })
-      .catch(next);
+  // express v4 quirk
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  router.post('/signup', validators.signup, async (req, res, next) => {
+    try {
+      const user = await authService.signup(req.body);
+
+      const { newAccessToken, newRefreshToken } = getTokenPair(user);
+      await authService.addRefreshToken(user.id, newRefreshToken);
+
+      res.cookie(REFRESH_TOKEN_COOKIE_NAME, newRefreshToken, refreshTokenCookieOptions);
+
+      const response: SignupResponseDTO = { accessToken: newAccessToken, user };
+
+      res.status(StatusCodes.CREATED).json(response);
+    } catch (err) {
+      next(err);
+    }
   });
 
   // express v4 quirk
@@ -76,6 +88,7 @@ export function createAuthRouter({ authService }: RootService): Router {
 
       const response: LoginResponseDTO = {
         accessToken: newAccessToken,
+        user,
       };
 
       res.json(response);
@@ -95,11 +108,7 @@ export function createAuthRouter({ authService }: RootService): Router {
 
       res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
 
-      const tokenPayload = tokenizer.verifyJwt(
-        refreshToken,
-        jwtConfig.JWT_REFRESH_TOKEN_SECRET,
-        jwtPayloadSchema
-      );
+      const tokenPayload = tokenizer.verifyJwt(refreshToken, jwtConfig.JWT_REFRESH_TOKEN_SECRET);
 
       const user = await authService.getUserByRefreshToken(refreshToken);
 
@@ -117,7 +126,7 @@ export function createAuthRouter({ authService }: RootService): Router {
 
       await authService.removeRefreshToken(user.id, refreshToken);
 
-      if (!tokenPayload || !isEqual(user, tokenPayload)) {
+      if (!tokenPayload || !isEqual(user, omit(tokenPayload, ['iat']))) {
         return res.sendStatus(StatusCodes.UNAUTHORIZED);
       }
 
@@ -157,7 +166,7 @@ export function createAuthRouter({ authService }: RootService): Router {
 
       await authService.removeRefreshToken(user.id, refreshToken);
 
-      return res.sendStatus(StatusCodes.NO_CONTENT);
+      return res.sendStatus(StatusCodes.OK);
     } catch (err) {
       return next(err);
     }
