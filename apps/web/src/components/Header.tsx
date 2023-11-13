@@ -7,6 +7,8 @@ import { useTranslation } from 'next-i18next';
 import { ROUTES } from '@/constants/routes';
 import { cn } from '@/utils';
 
+import { Button } from './ui/Button';
+
 export function Header() {
   const router = useRouter();
   const { t } = useTranslation('common');
@@ -32,22 +34,30 @@ export function Header() {
         </Link>
       </div>
 
-      <div className="ml-auto mr-3 text-2xl">
-        <Link
-          className={cn({ 'font-bold': router.locale === 'en' })}
-          href={router.pathname}
-          locale="en"
-        >
-          EN
-        </Link>
-        /
-        <Link
-          className={cn({ 'font-bold': router.locale === 'pl' })}
-          href={router.pathname}
-          locale="pl"
-        >
-          PL
-        </Link>
+      <div className="ml-auto mr-3 flex gap-5 text-2xl">
+        <div>
+          <Link href={ROUTES.login}>
+            <Button>Login</Button>
+          </Link>
+        </div>
+
+        <div>
+          <Link
+            className={cn({ 'font-bold': router.locale === 'en' })}
+            href={router.pathname}
+            locale="en"
+          >
+            EN
+          </Link>
+          /
+          <Link
+            className={cn({ 'font-bold': router.locale === 'pl' })}
+            href={router.pathname}
+            locale="pl"
+          >
+            PL
+          </Link>
+        </div>
       </div>
     </div>
   );

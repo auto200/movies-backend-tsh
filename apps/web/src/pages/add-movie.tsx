@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { AddMovieForm } from '@/modules/addMovie/components/AddMovieForm';
+import { getServerTranslations } from '@/utils/server';
 
 export default function AddMoviePage() {
   return (
@@ -14,7 +14,7 @@ export default function AddMoviePage() {
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'add-movie'])),
+      ...(await getServerTranslations(locale, ['add-movie'])),
     },
   };
 };

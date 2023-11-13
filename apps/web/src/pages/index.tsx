@@ -4,7 +4,6 @@ import { DehydratedState, HydrationBoundary, QueryClient, dehydrate } from '@tan
 import { RefreshCw } from 'lucide-react';
 import { GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { BasicTooltip } from '@/components/ui/BasicTooltip';
 import { Button } from '@/components/ui/Button';
@@ -19,6 +18,7 @@ import { MovieCard } from '@/modules/browseMovies/components/MovieCard';
 import { METADATA_QUERY_KEY } from '@/modules/browseMovies/consts';
 import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
 import { NextPageWithLayout } from '@/typings/NextPageWithLayout';
+import { getServerTranslations } from '@/utils/server';
 
 const BrowsePage: NextPageWithLayout = () => {
   const [isUsingSearchEngine, setIsUsingSearchEngine] = useState(true);
@@ -92,7 +92,8 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'browse-movies'])),
+      ...(await getServerTranslations(locale, ['browse-movies'])),
+
       dehydratedState: dehydrate(queryClient),
     },
   };

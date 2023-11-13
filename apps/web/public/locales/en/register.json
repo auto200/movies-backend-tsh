@@ -1,0 +1,17 @@
+{
+  "fields": {
+    "email": {
+      "label": "Email",
+      "placeholder": "name@example.com"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "******"
+    },
+    "username": {
+      "label": "Username",
+      "placeholder": "username"
+    }
+  },
+  "registerButton": "Register"
+}

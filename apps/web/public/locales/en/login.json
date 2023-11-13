@@ -1,0 +1,15 @@
+{
+  "fields": {
+    "email": {
+      "label": "Email",
+      "placeholder": "name@example.com"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "******"
+    }
+  },
+  "loginButton": "Login",
+  "registerPrompt": "Don't have an account yet?",
+  "registerNow": "Register now"
+}
