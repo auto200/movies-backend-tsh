@@ -13,5 +13,7 @@
       "placeholder": "username"
     }
   },
-  "signupButton": "Register"
+  "signupButton": "Register",
+  "loginPrompt": "Already have an account?",
+  "loginHere": "Login here"
 }

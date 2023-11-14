@@ -13,5 +13,7 @@
       "placeholder": "nazwa"
     }
   },
-  "signupButton": "Zarejestruj"
+  "signupButton": "Zarejestruj",
+  "loginPrompt": "Masz już założone konto?",
+  "loginHere": "Zaloguj się"
 }
