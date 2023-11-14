@@ -35,7 +35,7 @@ export function AuthService(authRepository: AuthRepository): AuthService {
       }
 
       if (await authRepository.doesUserWithUsernameExist(user.username)) {
-        throw new UsernameAlreadyInUseError(user.email);
+        throw new UsernameAlreadyInUseError(user.username);
       }
 
       const userWithHashedPassword: SignupRequestDTO = {

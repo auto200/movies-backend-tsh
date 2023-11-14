@@ -10,6 +10,6 @@
     }
   },
   "loginButton": "Login",
-  "registerPrompt": "Don't have an account yet?",
-  "registerNow": "Register now"
+  "signupPrompt": "Don't have an account yet?",
+  "signupNow": "Register now"
 }

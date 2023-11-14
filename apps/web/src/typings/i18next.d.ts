@@ -4,7 +4,7 @@ import addMovieEN from '../../public/locales/en/add-movie.json';
 import browseMoviesEN from '../../public/locales/en/browse-movies.json';
 import commonEN from '../../public/locales/en/common.json';
 import loginEN from '../../public/locales/en/login.json';
-import registerEN from '../../public/locales/en/register.json';
+import signupEN from '../../public/locales/en/signup.json';
 
 declare module 'i18next' {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -15,7 +15,7 @@ declare module 'i18next' {
       ['browse-movies']: typeof browseMoviesEN;
       ['common']: typeof commonEN;
       ['login']: typeof loginEN;
-      ['register']: typeof registerEN;
+      ['signup']: typeof signupEN;
     };
   }
 }

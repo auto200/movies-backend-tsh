@@ -10,6 +10,6 @@
     }
   },
   "loginButton": "Zaloguj",
-  "registerPrompt": "Nie masz jeszcze konta?",
-  "registerNow": "Załóż konto"
+  "signupPrompt": "Nie masz jeszcze konta?",
+  "signupNow": "Załóż konto"
 }

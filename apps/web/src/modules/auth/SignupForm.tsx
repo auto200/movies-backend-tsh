@@ -1,28 +1,26 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/Button';
-import { FormField, FormItem, FormLabel, FormControl, Form } from '@/components/ui/Form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
-import { ROUTES } from '@/constants/routes';
 
-import { useLogin } from './api/mutations/useLogin';
-import { LoginFormData, loginFormSchema } from './schema';
+import { useSignup } from './api/mutations/useSignup';
+import { SignupFormData, signupFormSchema } from './schema';
 
-export function LoginForm() {
-  const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginFormSchema),
+export function SignupForm() {
+  const form = useForm<SignupFormData>({
+    resolver: zodResolver(signupFormSchema),
   });
 
-  const { isPending, mutate: login } = useLogin();
+  const { isPending, mutate: login } = useSignup();
 
-  const { t } = useTranslation('login');
+  const { t } = useTranslation('signup');
 
   const { control, handleSubmit } = form;
 
-  function onSubmit(data: LoginFormData) {
+  function onSubmit(data: SignupFormData) {
     login(data);
   }
 
@@ -58,6 +56,28 @@ export function LoginForm() {
 
             <FormField
               control={control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('fields.username.label')}</FormLabel>
+                  <FormControl>
+                    {/* https://github.com/shadcn-ui/ui/issues/410#issuecomment-1676316957 */}
+                    <Input
+                      {...field}
+                      autoCapitalize="none"
+                      autoComplete="username"
+                      autoCorrect="off"
+                      disabled={isPending}
+                      placeholder={t('fields.username.placeholder')}
+                      value={field.value ?? ''}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
               name="password"
               render={({ field }) => (
                 <FormItem>
@@ -83,18 +103,11 @@ export function LoginForm() {
               {/* {isLoading && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 )} */}
-              {t('loginButton')}
+              {t('signupButton')}
             </Button>
           </div>
         </form>
       </Form>
-
-      <div>
-        {t('signupPrompt')}{' '}
-        <Link className="font-medium text-blue-500 hover:underline" href={ROUTES.signup}>
-          {t('signupNow')}
-        </Link>
-      </div>
     </div>
   );
 }

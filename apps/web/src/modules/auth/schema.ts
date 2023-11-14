@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-import { loginRequestDTOSchema } from '@movies/shared/communication';
+import { loginRequestDTOSchema, signupRequestDTOSchema } from '@movies/shared/communication';
 
-export const LoginFormSchema = loginRequestDTOSchema;
-export type LoginFormData = z.infer<typeof LoginFormSchema>;
+export const loginFormSchema = loginRequestDTOSchema;
+export type LoginFormData = z.infer<typeof loginFormSchema>;
+
+export const signupFormSchema = signupRequestDTOSchema;
+export type SignupFormData = z.infer<typeof signupFormSchema>;

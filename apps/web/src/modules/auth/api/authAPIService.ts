@@ -1,4 +1,9 @@
-import { LoginRequestDTO, loginResponseDTOSchema } from '@movies/shared/communication';
+import {
+  LoginRequestDTO,
+  SignupRequestDTO,
+  loginResponseDTOSchema,
+  signupResponseDTOSchema,
+} from '@movies/shared/communication';
 import { HttpService } from '@movies/shared/services';
 
 import { appConfig } from '@/config/appConfig';
@@ -11,6 +16,12 @@ export function AuthAPI(http: HttpService) {
       http.post(`${baseUrl}/login`, {
         body: payload,
         responseSchema: loginResponseDTOSchema,
+      }),
+
+    signup: (payload: SignupRequestDTO) =>
+      http.post(`${baseUrl}/signup`, {
+        body: payload,
+        responseSchema: signupResponseDTOSchema,
       }),
   };
 }
