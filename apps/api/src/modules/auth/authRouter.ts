@@ -25,7 +25,7 @@ const validators = {
   signup: validator({ body: signupRequestDTOSchema }),
 };
 
-export function createAuthRouter({ authService }: RootService): Router {
+export function createAuthRouter({ authMiddleware, authService }: RootService): Router {
   const router = Router();
 
   const refreshTokenCookieOptions: CookieOptions = {
@@ -148,7 +148,7 @@ export function createAuthRouter({ authService }: RootService): Router {
 
   // express v4 quirk
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  router.post('/logout', async (req, res, next) => {
+  router.post('/logout', authMiddleware, async (req, res, next) => {
     try {
       // To be investigated
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -158,11 +158,7 @@ export function createAuthRouter({ authService }: RootService): Router {
 
       res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, refreshTokenCookieOptions);
 
-      const user = await authService.getUserByRefreshToken(refreshToken);
-
-      if (!user) {
-        return res.sendStatus(StatusCodes.NO_CONTENT);
-      }
+      const user = req.user;
 
       await authService.removeRefreshToken(user.id, refreshToken);
 

@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { initApp } from '@/app';
 import { MoviesSearchEngineServiceMock } from '@/common/infrastructure/moviesSearchEngine/MoviesSearchEngineService.mock';
 import { DatabaseSchema } from '@/config/database/connectJSONDb';
-import { AuthService, createAuthMiddleware } from '@/modules/auth';
+import { AuthService, authMiddleware } from '@/modules/auth';
 import { MockAuthRepository } from '@/modules/auth/services/authRepository/authRepository.mock';
 import { MoviesService } from '@/modules/movies';
 import { MockMoviesRepository } from '@/modules/movies/services/moviesRepository/moviesRepository.mock';
@@ -40,7 +40,6 @@ export function createTestingApp(testSpecificData?: Partial<DatabaseSchema>) {
 
   const authRepository = MockAuthRepository(dbData.users);
   const authService = AuthService(authRepository);
-  const authMiddleware = createAuthMiddleware(authService);
 
   return {
     app: initApp({
