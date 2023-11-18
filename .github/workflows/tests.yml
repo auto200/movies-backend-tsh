@@ -11,6 +11,7 @@ jobs:
     environment: testing
     env:
       NODE_ENV: ${{vars.NODE_ENV}}
+      BASE_DOMAIN: ${{vars.BASE_DOMAIN}}
 
       PORT: ${{vars.PORT}}
       DB_JSON_FILE_PATH: ${{vars.DB_JSON_FILE_PATH}}

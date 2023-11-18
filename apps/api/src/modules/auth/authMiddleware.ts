@@ -2,13 +2,13 @@ import { RequestHandler } from 'express';
 
 import { jwtConfig } from '@/config/jwtConfig';
 
+import { COOKIE_NAME } from './consts';
 import { InvalidCredentialsError } from './errors/invalidCredentialsError';
 import { tokenizer } from './services/tokenizer';
 
 export const authMiddleware: RequestHandler = (req, _res, next) => {
-  const authorization = req.get('authorization') ?? '';
-
-  const accessToken = authorization.split(' ')[1];
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const accessToken = req.cookies[COOKIE_NAME.accessToken] as string | undefined;
 
   if (!accessToken) {
     return next(new InvalidCredentialsError('Missing bearer token'));

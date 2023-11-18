@@ -1,1 +1,4 @@
-export const REFRESH_TOKEN_COOKIE_NAME = 'refreshToken';
+export const COOKIE_NAME = {
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+} as const;
