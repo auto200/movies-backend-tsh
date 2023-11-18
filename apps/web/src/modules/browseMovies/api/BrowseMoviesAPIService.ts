@@ -16,6 +16,7 @@ export function BrowseMoviesAPI(http: HttpService) {
       http.get(`${baseUrl}/filters-metadata`, {
         responseSchema: getFiltersMetadataResponseDTOSchema,
       }),
+
     getMovies: (payload: GetMovieFiltersDTO) =>
       http.get(baseUrl, {
         query: stripOptionalValues(payload),

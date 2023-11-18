@@ -12,18 +12,19 @@ import { useSignup } from './api/mutations/useSignup';
 import { SignupFormData, signupFormSchema } from './schema';
 
 export function SignupForm() {
+  const { t } = useTranslation('signup');
+
+  const { mutate: signup } = useSignup();
+
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupFormSchema),
   });
 
-  const { isPending, mutate: login } = useSignup();
-
-  const { t } = useTranslation('signup');
-
   const { control, handleSubmit } = form;
+  const isPending = false;
 
   function onSubmit(data: SignupFormData) {
-    login(data);
+    signup(data);
   }
 
   return (

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
@@ -8,22 +10,23 @@ import { FormField, FormItem, FormLabel, FormControl, Form } from '@/components/
 import { Input } from '@/components/ui/Input';
 import { ROUTES } from '@/constants/routes';
 
-import { useLogin } from './api/mutations/useLogin';
 import { LoginFormData, loginFormSchema } from './schema';
 
 export function LoginForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
   });
-
-  const { isPending, mutate: login } = useLogin();
 
   const { t } = useTranslation('login');
 
   const { control, handleSubmit } = form;
 
-  function onSubmit(data: LoginFormData) {
-    login(data);
+  function onSubmit(_data: LoginFormData) {
+    setIsSubmitting(true);
+
+    setIsSubmitting(false);
   }
 
   return (
@@ -46,7 +49,7 @@ export function LoginForm() {
                       autoCapitalize="none"
                       autoComplete="email"
                       autoCorrect="off"
-                      disabled={isPending}
+                      disabled={isSubmitting}
                       placeholder={t('fields.email.placeholder')}
                       type="email"
                       value={field.value ?? ''}
@@ -69,7 +72,7 @@ export function LoginForm() {
                       autoCapitalize="none"
                       autoComplete="new-password"
                       autoCorrect="off"
-                      disabled={isPending}
+                      disabled={isSubmitting}
                       placeholder={t('fields.password.placeholder')}
                       type="password"
                       value={field.value ?? ''}
@@ -79,7 +82,7 @@ export function LoginForm() {
               )}
             />
 
-            <Button disabled={isPending}>
+            <Button disabled={isSubmitting}>
               {/* {isLoading && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 )} */}

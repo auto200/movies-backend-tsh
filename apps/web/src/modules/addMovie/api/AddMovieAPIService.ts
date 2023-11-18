@@ -16,6 +16,7 @@ export function AddMovieAPI(http: HttpService) {
         body: payload,
         responseSchema: addMovieResponseDTOSchema,
       }),
+
     getGenres: () =>
       http.get(`${baseUrl}/genres`, {
         responseSchema: getGenresResponseDTOSchema,
