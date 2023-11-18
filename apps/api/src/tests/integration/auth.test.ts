@@ -12,7 +12,7 @@ import {
   signupResponseDTOSchema,
 } from '@movies/shared/communication';
 
-import { REFRESH_TOKEN_COOKIE_NAME } from '@/modules/auth/consts';
+import { COOKIE_NAME } from '@/modules/auth/consts';
 import { createTestingApp } from '@/tests/utils';
 
 describe('auth module', () => {
@@ -27,14 +27,17 @@ describe('auth module', () => {
     user: SignupRequestDTO = testUser
   ) => {
     const res = await supertest(app).post('/v1/auth/signup').send(user).expect(StatusCodes.CREATED);
-
     const refreshTokenCookie = res.get('Set-Cookie')[0]!;
-    expect(REFRESH_TOKEN_COOKIE_NAME in cookie.parse(refreshTokenCookie)).toBeTruthy();
+    const accessTokenCookie = res.get('Set-Cookie')[1]!;
+
+    expect(COOKIE_NAME.refreshToken in cookie.parse(refreshTokenCookie)).toBeTruthy();
+    expect(COOKIE_NAME.accessToken in cookie.parse(accessTokenCookie)).toBeTruthy();
 
     expect(() => signupResponseDTOSchema.strict().parse(res.body)).not.toThrow();
 
     return {
       ...signupResponseDTOSchema.parse(res.body),
+      accessTokenCookie,
       refreshTokenCookie,
       res,
     };
@@ -44,11 +47,19 @@ describe('auth module', () => {
     const res = await supertest(app).post('/v1/auth/login').send(user).expect(StatusCodes.OK);
 
     const refreshTokenCookie = res.get('Set-Cookie')[0]!;
-    expect(REFRESH_TOKEN_COOKIE_NAME in cookie.parse(refreshTokenCookie)).toBeTruthy();
+    const accessTokenCookie = res.get('Set-Cookie')[1]!;
+
+    expect(COOKIE_NAME.refreshToken in cookie.parse(refreshTokenCookie)).toBeTruthy();
+    expect(COOKIE_NAME.accessToken in cookie.parse(accessTokenCookie)).toBeTruthy();
 
     expect(() => loginResponseDTOSchema.parse(res.body)).not.toThrow();
 
-    return { ...loginResponseDTOSchema.parse(res.body), refreshTokenCookie, res };
+    return {
+      ...loginResponseDTOSchema.parse(res.body),
+      accessTokenCookie,
+      refreshTokenCookie,
+      res,
+    };
   };
 
   describe('POST /v1/auth/signup - signup user', () => {
@@ -68,7 +79,7 @@ describe('auth module', () => {
         .expect(StatusCodes.BAD_REQUEST);
     });
 
-    test('creates user providing correct data and sets token in cookie', async () => {
+    test('creates user providing correct data and sets access and refresh token cookies', async () => {
       const { app } = createTestingApp();
 
       await signUpSuccessfully(app);
@@ -143,7 +154,10 @@ describe('auth module', () => {
 
       await supertest(app)
         .get('/v1/auth/refresh-token')
-        .set('Cookie', [`${REFRESH_TOKEN_COOKIE_NAME}=gibberish`])
+        .set('Cookie', [
+          `${COOKIE_NAME.accessToken}=gibberish`,
+          `${COOKIE_NAME.refreshToken}=gibberish`,
+        ])
         .expect(StatusCodes.FORBIDDEN);
     });
 
@@ -189,24 +203,28 @@ describe('auth module', () => {
 
       await supertest(app)
         .post('/v1/auth/logout')
-        .set('Cookie', [`${REFRESH_TOKEN_COOKIE_NAME}=gibberish`])
+        .set('Cookie', [
+          `${COOKIE_NAME.refreshToken}=gibberish`,
+          `${COOKIE_NAME.accessToken}=gibberish`,
+        ])
         .expect(StatusCodes.UNAUTHORIZED);
     });
 
     test('clears valid cookie', async () => {
       const { app } = createTestingApp();
 
-      const { accessToken, refreshTokenCookie } = await signUpSuccessfully(app);
+      const { accessTokenCookie, refreshTokenCookie } = await signUpSuccessfully(app);
 
       const logoutRes = await supertest(app)
         .post('/v1/auth/logout')
-        .set('Cookie', [refreshTokenCookie])
-        .set('Authorization', `Bearer ${accessToken}`)
+        .set('Cookie', [refreshTokenCookie, accessTokenCookie])
         .expect(StatusCodes.OK);
 
-      const authCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[0]!);
+      const refreshCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[0]!);
+      const accessCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[1]!);
 
-      expect(authCookieAfterLogout[REFRESH_TOKEN_COOKIE_NAME]).toBe('');
+      expect(refreshCookieAfterLogout[COOKIE_NAME.refreshToken]).toBe('');
+      expect(accessCookieAfterLogout[COOKIE_NAME.accessToken]).toBe('');
     });
   });
 });

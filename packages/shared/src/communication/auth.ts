@@ -17,7 +17,6 @@ export const signupRequestDTOSchema = z.object({
 export type SignupRequestDTO = z.infer<typeof signupRequestDTOSchema>;
 
 export const signupResponseDTOSchema = z.object({
-  accessToken: z.string(),
   user: basicUserInfoSchema,
 });
 export type SignupResponseDTO = z.infer<typeof signupResponseDTOSchema>;
@@ -30,7 +29,6 @@ export const loginRequestDTOSchema = signupRequestDTOSchema.pick({
 export type LoginRequestDTO = z.infer<typeof loginRequestDTOSchema>;
 
 export const loginResponseDTOSchema = z.object({
-  accessToken: z.string(),
   user: basicUserInfoSchema,
 });
 export type LoginResponseDTO = z.infer<typeof loginResponseDTOSchema>;
@@ -39,7 +37,5 @@ export type LoginResponseDTO = z.infer<typeof loginResponseDTOSchema>;
 export const getRefreshTokenRequestDTOSchema = z.never();
 export type GetRefreshTokenRequestDTO = z.infer<typeof getRefreshTokenRequestDTOSchema>;
 
-export const getRefreshTokenResponseDTOSchema = z.object({
-  accessToken: z.string(),
-});
+export const getRefreshTokenResponseDTOSchema = z.literal('OK');
 export type GetRefreshTokenResponseDTO = z.infer<typeof getRefreshTokenResponseDTOSchema>;
