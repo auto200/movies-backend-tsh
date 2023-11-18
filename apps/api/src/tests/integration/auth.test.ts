@@ -28,23 +28,27 @@ describe('auth module', () => {
   ) => {
     const res = await supertest(app).post('/v1/auth/signup').send(user).expect(StatusCodes.CREATED);
 
-    const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
-    expect(REFRESH_TOKEN_COOKIE_NAME in authCookie).toBeTruthy();
+    const refreshTokenCookie = res.get('Set-Cookie')[0]!;
+    expect(REFRESH_TOKEN_COOKIE_NAME in cookie.parse(refreshTokenCookie)).toBeTruthy();
 
     expect(() => signupResponseDTOSchema.strict().parse(res.body)).not.toThrow();
 
-    return res;
+    return {
+      ...signupResponseDTOSchema.parse(res.body),
+      refreshTokenCookie,
+      res,
+    };
   };
 
   const loginSuccessfully = async (app: Express.Application, user: LoginRequestDTO = testUser) => {
     const res = await supertest(app).post('/v1/auth/login').send(user).expect(StatusCodes.OK);
 
-    const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
-    expect(REFRESH_TOKEN_COOKIE_NAME in authCookie).toBeTruthy();
+    const refreshTokenCookie = res.get('Set-Cookie')[0]!;
+    expect(REFRESH_TOKEN_COOKIE_NAME in cookie.parse(refreshTokenCookie)).toBeTruthy();
 
     expect(() => loginResponseDTOSchema.parse(res.body)).not.toThrow();
 
-    return res;
+    return { ...loginResponseDTOSchema.parse(res.body), refreshTokenCookie, res };
   };
 
   describe('POST /v1/auth/signup - signup user', () => {
@@ -118,14 +122,12 @@ describe('auth module', () => {
     test('multi device support', async () => {
       const { app } = createTestingApp();
 
-      const res = await signUpSuccessfully(app);
-      const accessToken = res.get('Set-Cookie');
+      const { refreshTokenCookie } = await signUpSuccessfully(app);
 
-      const res2 = await loginSuccessfully(app);
-      const accessToken2 = res2.get('Set-Cookie');
+      const { refreshTokenCookie: refreshTokenCookie2 } = await loginSuccessfully(app);
 
-      await supertest(app).post('/v1/auth/logout').set('Cookie', accessToken);
-      await supertest(app).post('/v1/auth/logout').set('Cookie', accessToken2);
+      await supertest(app).post('/v1/auth/logout').set('Cookie', refreshTokenCookie);
+      await supertest(app).post('/v1/auth/logout').set('Cookie', refreshTokenCookie2);
     });
   });
 
@@ -148,66 +150,58 @@ describe('auth module', () => {
     test('returns new access token', async () => {
       const { app } = createTestingApp();
 
-      const res = await signUpSuccessfully(app);
-
-      const authCookie = res.get('Set-Cookie')[0]!;
+      const { refreshTokenCookie } = await signUpSuccessfully(app);
 
       await supertest(app)
         .get('/v1/auth/refresh-token')
-        .set('Cookie', [authCookie])
+        .set('Cookie', [refreshTokenCookie])
         .expect(StatusCodes.OK);
     });
 
     test('does not allow old token reuse', async () => {
       const { app } = createTestingApp();
 
-      const res = await signUpSuccessfully(app);
-
-      const authCookie = res.get('Set-Cookie')[0]!;
+      const { refreshTokenCookie } = await signUpSuccessfully(app);
 
       await supertest(app)
         .get('/v1/auth/refresh-token')
-        .set('Cookie', [authCookie])
+        .set('Cookie', [refreshTokenCookie])
         .expect(StatusCodes.OK);
 
-      const invalidatedAuthCookie = authCookie;
+      const invalidatedRefreshTokenCookie = refreshTokenCookie;
 
       await supertest(app)
         .get('/v1/auth/refresh-token')
-        .set('Cookie', [invalidatedAuthCookie])
+        .set('Cookie', [invalidatedRefreshTokenCookie])
         .expect(StatusCodes.FORBIDDEN);
     });
   });
 
   describe('POST /v1/auth/logout', () => {
-    test('does nothing when no cookie provided', async () => {
+    test('does not allow to proceed when no cookie provided', async () => {
       const { app } = createTestingApp();
 
-      await supertest(app).post('/v1/auth/logout').expect(StatusCodes.NO_CONTENT);
+      await supertest(app).post('/v1/auth/logout').expect(StatusCodes.UNAUTHORIZED);
     });
 
-    test('clears cookie if invalid cookie provided', async () => {
+    test('does not allow to proceed if invalid cookie provided', async () => {
       const { app } = createTestingApp();
 
-      const res = await supertest(app)
+      await supertest(app)
         .post('/v1/auth/logout')
         .set('Cookie', [`${REFRESH_TOKEN_COOKIE_NAME}=gibberish`])
-        .expect(StatusCodes.NO_CONTENT);
-      const authCookie = cookie.parse(res.get('Set-Cookie')[0]!);
-
-      expect(authCookie[REFRESH_TOKEN_COOKIE_NAME]).toBe('');
+        .expect(StatusCodes.UNAUTHORIZED);
     });
 
     test('clears valid cookie', async () => {
       const { app } = createTestingApp();
 
-      const loginRes = await signUpSuccessfully(app);
-
-      const authCookie = loginRes.get('Set-Cookie')[0]!;
+      const { accessToken, refreshTokenCookie } = await signUpSuccessfully(app);
 
       const logoutRes = await supertest(app)
         .post('/v1/auth/logout')
-        .set('Cookie', [authCookie])
+        .set('Cookie', [refreshTokenCookie])
+        .set('Authorization', `Bearer ${accessToken}`)
         .expect(StatusCodes.OK);
 
       const authCookieAfterLogout = cookie.parse(logoutRes.get('Set-Cookie')[0]!);
