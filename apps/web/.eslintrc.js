@@ -41,6 +41,10 @@ module.exports = {
             message: 'Please use next-i18next module instead',
             name: 'react-i18next',
           },
+          {
+            message: 'Please use `getServerTranslations` from @/utils/server instead',
+            name: 'next-i18next/serverSideTranslations',
+          },
         ],
         patterns: [
           {
