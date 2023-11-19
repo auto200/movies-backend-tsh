@@ -8,6 +8,7 @@ import { describe, expect, test } from 'vitest';
 import {
   LoginRequestDTO,
   SignupRequestDTO,
+  getUserResponseSchema,
   loginResponseDTOSchema,
   signupResponseDTOSchema,
 } from '@movies/shared/communication';
@@ -225,6 +226,27 @@ describe('auth module', () => {
 
       expect(refreshCookieAfterLogout[COOKIE_NAME.refreshToken]).toBe('');
       expect(accessCookieAfterLogout[COOKIE_NAME.accessToken]).toBe('');
+    });
+  });
+
+  describe('POST /v1/auth/me', () => {
+    test('errors if no tokens provided', async () => {
+      const { app } = createTestingApp();
+
+      await supertest(app).get('/v1/auth/me').expect(StatusCodes.UNAUTHORIZED);
+    });
+
+    test('returns user data', async () => {
+      const { app } = createTestingApp();
+
+      const { accessTokenCookie, refreshTokenCookie } = await signUpSuccessfully(app);
+
+      const res = await supertest(app)
+        .get('/v1/auth/me')
+        .set('Cookie', [refreshTokenCookie, accessTokenCookie])
+        .expect(StatusCodes.OK);
+
+      expect(() => getUserResponseSchema.parse(res.body)).not.toThrow();
     });
   });
 });

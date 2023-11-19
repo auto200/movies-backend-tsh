@@ -8,6 +8,13 @@ export const basicUserInfoSchema = z.object({
 
 export type BasicUserInfo = z.infer<typeof basicUserInfoSchema>;
 
+// get logged in user
+export const getUserRequestSchema = z.never();
+export type GetUserRequestDTO = z.infer<typeof getUserRequestSchema>;
+
+export const getUserResponseSchema = basicUserInfoSchema;
+export type GetUserResponseDTO = z.infer<typeof getUserResponseSchema>;
+
 // signup
 export const signupRequestDTOSchema = z.object({
   email: z.string().email(),

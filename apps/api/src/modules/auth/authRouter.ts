@@ -10,6 +10,7 @@ import {
   signupRequestDTOSchema,
   SignupResponseDTO,
   BasicUserInfo,
+  GetUserResponseDTO,
 } from '@movies/shared/communication';
 
 import { type RootService } from '@/common/infrastructure/rootService';
@@ -127,9 +128,9 @@ export function createAuthRouter({ authMiddleware, authService }: RootService): 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const refreshToken = req.cookies[COOKIE_NAME.refreshToken] as string | undefined;
 
-      if (!refreshToken) return res.sendStatus(StatusCodes.UNAUTHORIZED);
-
       clearTokenCookies(res);
+
+      if (!refreshToken) return res.sendStatus(StatusCodes.UNAUTHORIZED);
 
       const tokenPayload = tokenizer.verifyJwt(refreshToken, jwtConfig.JWT_REFRESH_TOKEN_SECRET);
 
@@ -184,6 +185,16 @@ export function createAuthRouter({ authMiddleware, authService }: RootService): 
       return res.sendStatus(StatusCodes.OK);
     } catch (err) {
       return next(err);
+    }
+  });
+
+  router.get('/me', authMiddleware, (req, res, next) => {
+    try {
+      const response: GetUserResponseDTO = req.user;
+
+      res.send(response);
+    } catch (err) {
+      next(err);
     }
   });
 
