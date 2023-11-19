@@ -13,9 +13,9 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { browseMoviesAPI } from '@/modules/browseMovies/api/BrowseMoviesAPIService';
 import { useBrowseMovies } from '@/modules/browseMovies/api/queries/useBrowseMovies';
 import { useFiltersMetadata } from '@/modules/browseMovies/api/queries/useFiltersMetadata';
+import { queryKeys } from '@/modules/browseMovies/api/queryKeys';
 import { Filters } from '@/modules/browseMovies/components/Filters';
 import { MovieCard } from '@/modules/browseMovies/components/MovieCard';
-import { METADATA_QUERY_KEY } from '@/modules/browseMovies/consts';
 import { useFilters } from '@/modules/browseMovies/hooks/useFilters';
 import { NextPageWithLayout } from '@/typings/NextPageWithLayout';
 import { getServerTranslations } from '@/utils/server';
@@ -87,7 +87,7 @@ export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
 
   await queryClient.prefetchQuery({
     queryFn: browseMoviesAPI.getFiltersMetadata,
-    queryKey: METADATA_QUERY_KEY,
+    queryKey: queryKeys.filtersMetadata,
   });
 
   return {
