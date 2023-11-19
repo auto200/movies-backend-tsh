@@ -45,6 +45,11 @@ module.exports = {
             message: 'Please use `getServerTranslations` from @/utils/server instead',
             name: 'next-i18next/serverSideTranslations',
           },
+          {
+            importNames: ['useLayoutEffect'],
+            message: "Please use 'useIsomorphicLayoutEffect' from usehooks-ts",
+            name: 'react',
+          },
         ],
         patterns: [
           {

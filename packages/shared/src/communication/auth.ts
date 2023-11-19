@@ -8,13 +8,6 @@ export const basicUserInfoSchema = z.object({
 
 export type BasicUserInfo = z.infer<typeof basicUserInfoSchema>;
 
-// get logged in user
-export const getUserRequestSchema = z.never();
-export type GetUserRequestDTO = z.infer<typeof getUserRequestSchema>;
-
-export const getUserResponseSchema = basicUserInfoSchema;
-export type GetUserResponseDTO = z.infer<typeof getUserResponseSchema>;
-
 // signup
 export const signupRequestDTOSchema = z.object({
   email: z.string().email(),
@@ -46,3 +39,17 @@ export type GetRefreshTokenRequestDTO = z.infer<typeof getRefreshTokenRequestDTO
 
 export const getRefreshTokenResponseDTOSchema = z.literal('OK');
 export type GetRefreshTokenResponseDTO = z.infer<typeof getRefreshTokenResponseDTOSchema>;
+
+// get logged in user
+export const getUserRequestSchema = z.never();
+export type GetUserRequestDTO = z.infer<typeof getUserRequestSchema>;
+
+export const getUserResponseSchema = basicUserInfoSchema;
+export type GetUserResponseDTO = z.infer<typeof getUserResponseSchema>;
+
+// logout user
+export const logoutRequestSchema = z.never();
+export type LogoutRequestDTO = z.infer<typeof logoutRequestSchema>;
+
+export const logoutResponseSchema = z.literal('OK');
+export type logoutResponseDTO = z.infer<typeof logoutResponseSchema>;

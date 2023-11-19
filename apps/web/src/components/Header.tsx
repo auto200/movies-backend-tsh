@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import { ROUTES } from '@/constants/routes';
+import { useUser } from '@/modules/auth/api/queries/useUser';
+import { UserMenu } from '@/modules/auth/components/UserMenu';
 import { cn } from '@/utils';
 
 import { Button } from './ui/Button';
@@ -12,6 +14,8 @@ import { Button } from './ui/Button';
 export function Header() {
   const router = useRouter();
   const { t } = useTranslation('common');
+
+  const { data: user } = useUser();
 
   return (
     <div className="container flex items-center">
@@ -35,11 +39,15 @@ export function Header() {
       </div>
 
       <div className="ml-auto mr-3 flex gap-5 text-2xl">
-        <div>
-          <Link href={ROUTES.login}>
-            <Button>Login</Button>
-          </Link>
-        </div>
+        {!user && (
+          <div>
+            <Link href={ROUTES.login}>
+              <Button>Login</Button>
+            </Link>
+          </div>
+        )}
+
+        {user && <UserMenu user={user} />}
 
         <div>
           <Link

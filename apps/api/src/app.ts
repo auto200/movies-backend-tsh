@@ -7,6 +7,7 @@ import { RootService } from '@/common/infrastructure/rootService';
 import { errorHandlerMiddleware } from '@/common/middlewares/errorHandlerMiddleware';
 import { createMoviesRouter } from '@/modules/movies';
 
+import { appConfig } from './config/appConfig';
 import { createAuthRouter } from './modules/auth';
 
 export const initApp = (rootService: RootService): Express => {
@@ -15,11 +16,7 @@ export const initApp = (rootService: RootService): Express => {
   app.use(json());
   app.use(cookieParser());
   app.use(helmet());
-  app.use(
-    cors()
-    // to be investigated if it's needed during frontend integration
-    // { credentials: true }
-  );
+  app.use(cors({ credentials: true, origin: appConfig.CLIENT_URL }));
 
   app.use('/v1/movies', createMoviesRouter(rootService));
   app.use('/v1/auth', createAuthRouter(rootService));
