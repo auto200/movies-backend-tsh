@@ -8,5 +8,7 @@
     "details": "Szczegóły",
     "tryAgain": "Spróbuj ponownie"
   },
-  "auth": {}
+  "userMenu": {
+    "logout": "Wyloguj"
+  }
 }

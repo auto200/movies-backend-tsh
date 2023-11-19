@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTranslation } from 'next-i18next';
+
 import { BasicUserInfo } from '@movies/shared/communication';
 
 import { Button } from '@/components/ui/Button';
@@ -18,14 +20,17 @@ type UserMenuProps = {
 
 export function UserMenu({ user }: UserMenuProps) {
   const { mutate: logout } = useLogout();
+  const { t } = useTranslation();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{user.username}</Button>
+        <Button className="min-w-[100px] px-4" variant="outline">
+          {user.username}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => logout()}>Logout</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => logout()}>{t('userMenu.logout')}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

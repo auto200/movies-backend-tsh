@@ -8,5 +8,7 @@
     "details": "Details",
     "tryAgain": "Try again"
   },
-  "auth": {}
+  "userMenu": {
+    "logout": "Logout"
+  }
 }
