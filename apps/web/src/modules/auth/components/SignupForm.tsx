@@ -8,8 +8,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Input } from '@/components/ui/Input';
 import { ROUTES } from '@/constants/routes';
 
-import { useSignup } from './api/mutations/useSignup';
-import { SignupFormData, signupFormSchema } from './schema';
+import { useSignup } from '../api/mutations/useSignup';
+import { SignupFormData, signupFormSchema } from '../schema';
 
 export function SignupForm() {
   const { t } = useTranslation('signup');

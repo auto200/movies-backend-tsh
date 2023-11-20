@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 
+import { LoginForm } from '@/modules/auth/components/LoginForm';
 import { useRedirectLoggedUser } from '@/modules/auth/hooks/useRedirectLoggedUser';
-import { LoginForm } from '@/modules/auth/LoginForm';
 import { getServerTranslations } from '@/utils/server';
 
 function LoginPage() {

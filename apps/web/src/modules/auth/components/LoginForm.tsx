@@ -8,8 +8,8 @@ import { FormField, FormItem, FormLabel, FormControl, Form } from '@/components/
 import { Input } from '@/components/ui/Input';
 import { ROUTES } from '@/constants/routes';
 
-import { useLogin } from './api/mutations/useLogin';
-import { LoginFormData, loginFormSchema } from './schema';
+import { useLogin } from '../api/mutations/useLogin';
+import { LoginFormData, loginFormSchema } from '../schema';
 
 export function LoginForm() {
   const form = useForm<LoginFormData>({
