@@ -1,11 +1,11 @@
 import { GetStaticProps } from 'next';
-
-import { AddMovieForm } from '@/modules/addMovie/components/AddMovieForm';
-import { getServerTranslations } from '@/utils/server';
-import { useUser } from '@/modules/auth/api/queries/useUser';
-import { ROUTES } from '@/constants/routes';
 import { useTranslation } from 'next-i18next';
+
 import { BaseLink } from '@/components/BaseLink';
+import { ROUTES } from '@/constants/routes';
+import { AddMovieForm } from '@/modules/addMovie/components/AddMovieForm';
+import { useUser } from '@/modules/auth/api/queries/useUser';
+import { getServerTranslations } from '@/utils/server';
 
 export default function AddMoviePage() {
   const { t } = useTranslation('add-movie');

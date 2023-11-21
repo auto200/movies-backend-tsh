@@ -1,6 +1,8 @@
-import { cn } from '@/utils';
-import Link from 'next/link';
 import React, { ComponentProps } from 'react';
+
+import Link from 'next/link';
+
+import { cn } from '@/utils';
 
 type BaseLinkProps = ComponentProps<typeof Link>;
 

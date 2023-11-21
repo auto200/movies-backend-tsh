@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 
+import { BaseLink } from '@/components/BaseLink';
 import { Button } from '@/components/ui/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
@@ -9,7 +10,6 @@ import { ROUTES } from '@/constants/routes';
 
 import { useSignup } from '../api/mutations/useSignup';
 import { SignupFormData, signupFormSchema } from '../schema';
-import { BaseLink } from '@/components/BaseLink';
 
 export function SignupForm() {
   const { t } = useTranslation('signup');
