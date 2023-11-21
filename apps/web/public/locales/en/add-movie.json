@@ -11,5 +11,11 @@
       "title": { "label": "Title", "error": "Provide movie title" },
       "year": { "label": "Year", "error": "Provide move release year" }
     }
+  },
+  "nonLoggedIn": {
+    "prompt": "You have to be logged in to add a movie",
+    "or": "or",
+    "login": "Login",
+    "register": "Register now"
   }
 }

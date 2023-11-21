@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 
@@ -10,6 +9,7 @@ import { ROUTES } from '@/constants/routes';
 
 import { useLogin } from '../api/mutations/useLogin';
 import { LoginFormData, loginFormSchema } from '../schema';
+import { BaseLink } from '@/components/BaseLink';
 
 export function LoginForm() {
   const form = useForm<LoginFormData>({
@@ -90,10 +90,7 @@ export function LoginForm() {
       </Form>
 
       <div>
-        {t('signupPrompt')}{' '}
-        <Link className="font-medium text-blue-500 hover:underline" href={ROUTES.signup}>
-          {t('signupNow')}
-        </Link>
+        {t('signupPrompt')} <BaseLink href={ROUTES.signup}>{t('signupNow')}</BaseLink>
       </div>
     </div>
   );

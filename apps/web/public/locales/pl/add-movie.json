@@ -11,5 +11,11 @@
       "title": { "label": "Tytuł", "error": "Podaj tytuł filmu" },
       "year": { "label": "Rok", "error": "Podaj rok powstania filmu" }
     }
+  },
+  "nonLoggedIn": {
+    "prompt": "Aby dodać film musisz być zalogowany",
+    "or": "lub",
+    "login": "Zaloguj",
+    "register": "Zarejestruj się teraz"
   }
 }
