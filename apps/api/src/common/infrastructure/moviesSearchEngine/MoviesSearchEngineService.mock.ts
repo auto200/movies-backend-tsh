@@ -4,7 +4,7 @@ import { Movie_SearchableModel } from '@movies/shared/searchEngine';
 
 import { MoviesSearchEngineService } from './MoviesSearchEngineService';
 
-export const MoviesSearchEngineServiceMock = (): MoviesSearchEngineService => {
+export const MockMoviesSearchEngineService = (): MoviesSearchEngineService => {
   const index: Movie_SearchableModel[] = [];
 
   return {
