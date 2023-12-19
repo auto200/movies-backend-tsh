@@ -2,10 +2,10 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "css.lint.unknownAtRules": "ignore",
-  // convert all eslint errors into warnings. This makes it easy to destinct
+  // convert all eslint errors into warnings. This makes it easy to distinct
   // between (yellow) eslint warnings and (red) typescript errors
   "eslint.rules.customizations": [
     {
