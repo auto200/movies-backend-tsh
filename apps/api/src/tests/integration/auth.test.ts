@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import cookie from 'cookie';
+import { Express } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import supertest from 'supertest';
 import { describe, expect, test } from 'vitest';
@@ -23,10 +24,7 @@ describe('auth module', () => {
     username: 'user123',
   };
 
-  const signUpSuccessfully = async (
-    app: Express.Application,
-    user: SignupRequestDTO = testUser
-  ) => {
+  const signUpSuccessfully = async (app: Express, user: SignupRequestDTO = testUser) => {
     const res = await supertest(app).post('/v1/auth/signup').send(user).expect(StatusCodes.CREATED);
     const refreshTokenCookie = res.get('Set-Cookie')[0]!;
     const accessTokenCookie = res.get('Set-Cookie')[1]!;
@@ -44,7 +42,7 @@ describe('auth module', () => {
     };
   };
 
-  const loginSuccessfully = async (app: Express.Application, user: LoginRequestDTO = testUser) => {
+  const loginSuccessfully = async (app: Express, user: LoginRequestDTO = testUser) => {
     const res = await supertest(app).post('/v1/auth/login').send(user).expect(StatusCodes.OK);
 
     const refreshTokenCookie = res.get('Set-Cookie')[0]!;
