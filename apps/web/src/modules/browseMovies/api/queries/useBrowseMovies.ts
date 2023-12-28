@@ -12,21 +12,23 @@ import { browseMoviesAPI } from '../BrowseMoviesAPIService';
 import { queryKeys } from '../queryKeys';
 import { moviesSearchEngine } from '../SearchEngineMoviesApiService';
 
-export function useBrowseMovies(filters: GetMovieSearchFilters, isUsingSearchEngine = true) {
+export function useBrowseMovies(filters: GetMovieSearchFilters, isUsingSearchEngine: boolean) {
   const memoFilters = useDeepCompareMemoize(filters);
 
   return useDebouncedQuery(
     useMemo(
-      () => ({
-        queryFn: async () =>
-          isUsingSearchEngine
-            ? moviesSearchEngine.getMovies(memoFilters)
-            : browseMoviesAPI.getMovies(memoFilters),
-        queryKey: queryKeys.movies(memoFilters, isUsingSearchEngine),
-        select: isUsingSearchEngine
-          ? (a: MovieDTO[]) => MoviesRelevance.sortMoviesByGenresRelevance(a, memoFilters.genres)
-          : undefined,
-      }),
+      () =>
+        isUsingSearchEngine
+          ? {
+              queryFn: async () => moviesSearchEngine.getMovies(memoFilters),
+              queryKey: queryKeys.movies(memoFilters, 'searchEngine'),
+              select: (a: MovieDTO[]) =>
+                MoviesRelevance.sortMoviesByGenresRelevance(a, memoFilters.genres),
+            }
+          : {
+              queryFn: async () => browseMoviesAPI.getMovies(memoFilters),
+              queryKey: queryKeys.movies(memoFilters, 'api'),
+            },
       [memoFilters, isUsingSearchEngine]
     )
   );
