@@ -60,22 +60,22 @@ export function useFilters(): UseFiltersResult {
   const reset = () => {
     const newSearchParams = new URLSearchParams(searchParams);
 
+    // delete only these params that we manage
     for (const param of Object.values(PARAM_NAMES)) {
       newSearchParams.delete(param);
     }
 
     setUrlState(newSearchParams);
   };
-
-  const filters = useMemo(() => ({ duration, genres }), [duration, genres]);
+  // We stringify objects to get stable reference and not trigger infinite loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const filters = useMemo(() => ({ duration, genres }), [duration, JSON.stringify(genres)]);
 
   return { filters, isAnyFilterActive, reset, setDuration, setGenres };
 }
 
 function decodeDuration(duration: string | null): number | undefined {
-  if (!duration) return undefined;
-
-  const durationAsNumber = Number.parseInt(duration);
+  const durationAsNumber = Number.parseInt(String(duration));
 
   return Number.isNaN(durationAsNumber) ? undefined : durationAsNumber;
 }

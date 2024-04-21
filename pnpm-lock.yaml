@@ -210,9 +210,6 @@ importers:
       tailwindcss-animate:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@3.4.0)
-      use-deep-compare-effect:
-        specifier: 1.8.1
-        version: 1.8.1(react@18.2.0)
       usehooks-ts:
         specifier: 2.9.1
         version: 2.9.1(react-dom@18.2.0)(react@18.2.0)
@@ -6988,6 +6985,7 @@ packages:
       '@babel/runtime': 7.22.15
       dequal: 2.0.3
       react: 18.2.0
+    dev: true
 
   /use-sidecar@1.1.2(@types/react@18.2.46)(react@18.2.0):
     resolution: {integrity: sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==}
