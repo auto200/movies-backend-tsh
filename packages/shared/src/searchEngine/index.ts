@@ -1,4 +1,4 @@
-export const MoviesSearchIndex = 'movies' as const;
+export const MoviesSearchIndex = 'movies';
 
 export type Movie_SearchableModel = {
   actors?: string;
