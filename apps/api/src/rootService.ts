@@ -4,7 +4,7 @@ import { DbConnection } from '@/config/database/connectJSONDb';
 import { AuthRepository, AuthService, authMiddleware } from '@/modules/auth';
 import { MoviesRepository, MoviesService } from '@/modules/movies';
 
-import { MoviesSearchEngineService } from './moviesSearchEngine/MoviesSearchEngineService';
+import { MoviesSearchEngineService } from './common/infrastructure/moviesSearchEngine/MoviesSearchEngineService';
 
 export type RootService = {
   authMiddleware: RequestHandler;

@@ -13,10 +13,10 @@ import {
   GetUserResponseDTO,
 } from '@movies/shared/communication';
 
-import { type RootService } from '@/common/infrastructure/rootService';
 import { validator } from '@/common/payloadValidation';
 import { appConfig } from '@/config/appConfig';
 import { jwtConfig } from '@/config/jwtConfig';
+import { type RootService } from '@/rootService';
 
 import { COOKIE_NAME } from './consts';
 import { tokenizer } from './services/tokenizer';

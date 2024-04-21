@@ -1,8 +1,8 @@
 import 'dotenv/config';
 
-import { createRootService } from '@/common/infrastructure/rootService';
 import { appConfig } from '@/config/appConfig';
 import { connectJSONDb } from '@/config/database/connectJSONDb';
+import { createRootService } from '@/rootService';
 
 import { initApp } from './app';
 
