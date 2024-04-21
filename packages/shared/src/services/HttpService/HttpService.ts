@@ -65,7 +65,7 @@ export function HttpService(fetcher: typeof fetch = fetch) {
 export type HttpService = ReturnType<typeof HttpService>;
 
 function attachQueryToUrl(url: string, query?: QueryParams): string {
-  if (!query || !Object.keys(query).length) return url;
+  if (!query || Object.keys(query).length === 0) return url;
 
   const searchParams = new URLSearchParams();
   for (const [key, value] of Object.entries(query)) {
@@ -106,7 +106,7 @@ function isPlainObject(value: unknown): value is object {
   );
 }
 
-// NOTE: add other object like schemas, like enums if needed
+// NOTE: add other object-like schemas, like enums if needed
 const JSON_SERIALIZABLE_SCHEMAS = [ZodFirstPartyTypeKind.ZodObject, ZodFirstPartyTypeKind.ZodArray];
 
 function inferResponseTypeFromResponseSchema<T extends z.ZodTypeAny>(
