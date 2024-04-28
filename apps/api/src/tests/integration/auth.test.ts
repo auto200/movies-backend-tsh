@@ -12,38 +12,13 @@ import {
   SignupRequestDTO,
   getUserResponseSchema,
   loginResponseDTOSchema,
-  signupResponseDTOSchema,
 } from '@movies/shared/communication';
 
 import { jwtConfig } from '@/config/jwtConfig';
 import { COOKIE_NAME } from '@/modules/auth/consts';
-import { createTestingApp } from '@/tests/utils';
+import { createTestingApp, signUpSuccessfully, testUser } from '@/tests/utils';
 
 describe('auth module', () => {
-  const testUser: SignupRequestDTO = {
-    email: 'test@example.com',
-    password: 'test-password',
-    username: 'user123',
-  };
-
-  const signUpSuccessfully = async (app: Express, user: SignupRequestDTO = testUser) => {
-    const res = await supertest(app).post('/v1/auth/signup').send(user).expect(StatusCodes.CREATED);
-    const refreshTokenCookie = res.get('Set-Cookie')[0]!;
-    const accessTokenCookie = res.get('Set-Cookie')[1]!;
-
-    expect(COOKIE_NAME.refreshToken in cookie.parse(refreshTokenCookie)).toBeTruthy();
-    expect(COOKIE_NAME.accessToken in cookie.parse(accessTokenCookie)).toBeTruthy();
-
-    expect(() => signupResponseDTOSchema.strict().parse(res.body)).not.toThrow();
-
-    return {
-      ...signupResponseDTOSchema.parse(res.body),
-      accessTokenCookie,
-      refreshTokenCookie,
-      res,
-    };
-  };
-
   const loginSuccessfully = async (app: Express, user: LoginRequestDTO = testUser) => {
     const res = await supertest(app).post('/v1/auth/login').send(user).expect(StatusCodes.OK);
 
@@ -132,6 +107,8 @@ describe('auth module', () => {
     });
 
     test('multi device support', async () => {
+      // TODO: check what the hell is this and test properly. I'm guessing that we wanna check if we
+      // can be logged in and make requests from the same account on two separate devices
       const { app } = createTestingApp();
 
       const { refreshTokenCookie } = await signUpSuccessfully(app);
@@ -174,9 +151,15 @@ describe('auth module', () => {
     });
 
     test('does not allow old token reuse', async () => {
-      const { app } = createTestingApp();
+      vi.useFakeTimers({ shouldAdvanceTime: true });
 
+      const { app } = createTestingApp();
       const { refreshTokenCookie } = await signUpSuccessfully(app);
+
+      // we need to advance time, if we didn't the payload of a token would not change and newly
+      // generated token would be exactly the same as the invalidated one, thus "invalidated" token
+      // would still be valid in this test case
+      vi.setSystemTime(Date.now() + 10000);
 
       await supertest(app)
         .get('/v1/auth/refresh-token')
@@ -189,6 +172,8 @@ describe('auth module', () => {
         .get('/v1/auth/refresh-token')
         .set('Cookie', [invalidatedRefreshTokenCookie])
         .expect(StatusCodes.FORBIDDEN);
+
+      vi.useRealTimers();
     });
   });
 

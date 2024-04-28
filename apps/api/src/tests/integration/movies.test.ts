@@ -11,15 +11,27 @@ import {
   getMoviesDTOSchema,
 } from '@movies/shared/communication';
 
-import { createTestingApp } from '@/tests/utils';
+import { createTestingApp, signUpSuccessfully } from '@/tests/utils';
 
 describe('movies module', () => {
   describe('POST /v1/movies - add movie', () => {
-    test('fails when providing invalid data', async () => {
+    test('fails when not logged in', async () => {
       const { app } = createTestingApp();
 
       await supertest(app)
         .post('/v1/movies')
+        .send({ title: 'test' })
+        .expect(StatusCodes.UNAUTHORIZED);
+    });
+
+    test('fails when providing invalid data', async () => {
+      const { app } = createTestingApp();
+
+      const { accessTokenCookie, refreshTokenCookie } = await signUpSuccessfully(app);
+
+      await supertest(app)
+        .post('/v1/movies')
+        .set('Cookie', [refreshTokenCookie, accessTokenCookie])
         .send({ title: 'test' })
         .expect('Content-Type', /json/)
         .expect(StatusCodes.BAD_REQUEST);
@@ -28,6 +40,8 @@ describe('movies module', () => {
     test('adds movie to database', async () => {
       const { app } = createTestingApp();
 
+      const { accessTokenCookie, refreshTokenCookie } = await signUpSuccessfully(app);
+
       const movie: AddMovieRequestDTO = {
         director: 'adam',
         genres: ['Action', 'Crime'],
@@ -35,8 +49,10 @@ describe('movies module', () => {
         title: 'The Goat',
         year: 1999,
       };
+
       const res = await supertest(app)
         .post('/v1/movies')
+        .set('Cookie', [refreshTokenCookie, accessTokenCookie])
         .send(movie)
         .expect('Content-Type', /text/)
         .expect(StatusCodes.CREATED);
