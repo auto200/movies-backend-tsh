@@ -249,7 +249,7 @@ describe('auth module', () => {
       expect(() => getUserResponseSchema.parse(res.body)).not.toThrow();
     });
 
-    test.only('returns error if access token expired', async () => {
+    test('returns error if access token expired', async () => {
       // https://github.com/nock/nock/issues/2200#issuecomment-1699838032
       vi.useFakeTimers({ shouldAdvanceTime: true });
       const { app } = createTestingApp();

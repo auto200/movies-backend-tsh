@@ -9,32 +9,33 @@ import {
 import { HttpService } from '@movies/shared/services';
 
 import { appConfig } from '@/config/appConfig';
+import { authFetch } from '@/utils/authFetch';
 
-export function AuthAPI(http: HttpService) {
+export function AuthAPI(authHttp: HttpService) {
   const baseUrl = `${appConfig.NEXT_PUBLIC_API_URL}/v1/auth`;
 
   return {
     getUser: () =>
-      http.get(`${baseUrl}/me`, {
+      authHttp.get(`${baseUrl}/me`, {
         credentials: 'include',
         responseSchema: getUserResponseSchema,
       }),
 
     login: (payload: LoginRequestDTO) =>
-      http.post(`${baseUrl}/login`, {
+      authHttp.post(`${baseUrl}/login`, {
         body: payload,
         credentials: 'include',
         responseSchema: loginResponseDTOSchema,
       }),
 
     logout: () =>
-      http.post(`${baseUrl}/logout`, {
+      authHttp.post(`${baseUrl}/logout`, {
         credentials: 'include',
         responseSchema: logoutResponseSchema,
       }),
 
     signup: (payload: SignupRequestDTO) =>
-      http.post(`${baseUrl}/signup`, {
+      authHttp.post(`${baseUrl}/signup`, {
         body: payload,
         credentials: 'include',
         responseSchema: signupResponseDTOSchema,
@@ -42,4 +43,4 @@ export function AuthAPI(http: HttpService) {
   };
 }
 
-export const authAPI = AuthAPI(HttpService());
+export const authAPI = AuthAPI(HttpService(authFetch()));
