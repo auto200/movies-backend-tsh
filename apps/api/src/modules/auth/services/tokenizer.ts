@@ -3,14 +3,11 @@ import { z } from 'zod';
 
 import { BasicUserInfo, basicUserInfoSchema } from '@movies/shared/communication';
 
-const jwtPayloadSchema = basicUserInfoSchema.extend({ iat: z.number() });
-type JwtPayload = z.infer<typeof jwtPayloadSchema>;
+const jwtPayloadSchema = basicUserInfoSchema.extend({ exp: z.number(), iat: z.number() });
 
 export const tokenizer = {
   signJwt: (userInfo: BasicUserInfo, secret: string, options?: SignOptions): string => {
-    const payload: JwtPayload = { ...userInfo, iat: Date.now() };
-
-    return sign(payload, secret, {
+    return sign(userInfo, secret, {
       ...options,
     });
   },

@@ -3,8 +3,9 @@
 import cookie from 'cookie';
 import { Express } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import ms from 'ms';
 import supertest from 'supertest';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import {
   LoginRequestDTO,
@@ -14,6 +15,7 @@ import {
   signupResponseDTOSchema,
 } from '@movies/shared/communication';
 
+import { jwtConfig } from '@/config/jwtConfig';
 import { COOKIE_NAME } from '@/modules/auth/consts';
 import { createTestingApp } from '@/tests/utils';
 
@@ -245,6 +247,23 @@ describe('auth module', () => {
         .expect(StatusCodes.OK);
 
       expect(() => getUserResponseSchema.parse(res.body)).not.toThrow();
+    });
+
+    test.only('returns error if access token expired', async () => {
+      // https://github.com/nock/nock/issues/2200#issuecomment-1699838032
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      const { app } = createTestingApp();
+
+      const { accessTokenCookie, refreshTokenCookie } = await signUpSuccessfully(app);
+
+      vi.setSystemTime(Date.now() + ms(jwtConfig.JWT_ACCESS_TOKEN_TTL));
+
+      await supertest(app)
+        .get('/v1/auth/me')
+        .set('Cookie', [refreshTokenCookie, accessTokenCookie])
+        .expect(StatusCodes.UNAUTHORIZED);
+
+      vi.useRealTimers();
     });
   });
 });

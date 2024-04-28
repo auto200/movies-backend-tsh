@@ -150,7 +150,8 @@ export function createAuthRouter({ authMiddleware, authService }: RootService): 
 
       await authService.removeRefreshToken(user.id, refreshToken);
 
-      if (!tokenPayload || !isEqual(user, omit(tokenPayload, ['iat']))) {
+      // TODO: look into it again and see if it's even needed
+      if (!tokenPayload || !isEqual(user, omit(tokenPayload, ['iat', 'exp']))) {
         return res.sendStatus(StatusCodes.UNAUTHORIZED);
       }
 
