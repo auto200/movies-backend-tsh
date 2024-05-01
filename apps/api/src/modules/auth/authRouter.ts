@@ -94,7 +94,7 @@ export function createAuthRouter({ authMiddleware, authService }: RootService): 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   router.post('/login', validators.login, async (req, res, next) => {
     try {
-      const user = await authService.validatePassword(req.body.email, req.body.password);
+      const user = await authService.validateCredentials(req.body.email, req.body.password);
 
       // To be investigated
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -133,8 +133,9 @@ export function createAuthRouter({ authMiddleware, authService }: RootService): 
       if (!refreshToken) return res.sendStatus(StatusCodes.UNAUTHORIZED);
 
       const tokenPayload = tokenizer.verifyJwt(refreshToken, jwtConfig.JWT_REFRESH_TOKEN_SECRET);
+      if (!tokenPayload) return res.sendStatus(StatusCodes.UNAUTHORIZED);
 
-      const user = await authService.getUserByRefreshToken(refreshToken);
+      const user = await authService.getUserIfHasRefreshToken(tokenPayload.id, refreshToken);
 
       // this happens when someone tries to use refresh token that has been already
       // invalidated/removed. we wanna logout user
@@ -142,7 +143,7 @@ export function createAuthRouter({ authMiddleware, authService }: RootService): 
         if (!tokenPayload) {
           return res.send(StatusCodes.FORBIDDEN);
         }
-
+        // logout user from all devices
         await authService.removeAllRefreshTokens(tokenPayload.id);
 
         return res.sendStatus(StatusCodes.FORBIDDEN);

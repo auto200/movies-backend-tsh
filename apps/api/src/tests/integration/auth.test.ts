@@ -136,7 +136,7 @@ describe('auth module', () => {
           `${COOKIE_NAME.accessToken}=gibberish`,
           `${COOKIE_NAME.refreshToken}=gibberish`,
         ])
-        .expect(StatusCodes.FORBIDDEN);
+        .expect(StatusCodes.UNAUTHORIZED);
     });
 
     test('returns new access token', async () => {

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { ZodSchema } from 'zod';
 
-import { PayloadError, PayloadValidationError } from '.././errors/PayloadValidationError';
+import { PayloadError, PayloadValidationError } from '../errors/PayloadValidationError';
 
 type PayloadSchema<TParams, TQuery, TBody> = Partial<{
   body: ZodSchema<TBody>;

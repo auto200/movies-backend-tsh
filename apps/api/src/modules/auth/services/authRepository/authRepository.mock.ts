@@ -28,7 +28,24 @@ export function MockAuthRepository(initialUsers: DbUser[] = []): AuthRepository 
     doesUserWithUsernameExist: (username) =>
       Promise.resolve(!!users.find((user) => user.username === username)),
 
-    getByEmail: (email) => {
+    getUserAndHashedRefreshTokens: (userId) => {
+      const user = users.find((user) => user.id === userId);
+
+      if (!user) return Promise.resolve(null);
+
+      const toReturn = {
+        hashedRefreshTokens: user.refreshTokens,
+        user: {
+          email: user.email,
+          id: user.id,
+          username: user.username,
+        },
+      };
+
+      return Promise.resolve(toReturn);
+    },
+
+    getUserByEmail: (email) => {
       const user = users.find((user) => user.email === email) ?? null;
 
       if (!user) return Promise.resolve(null);
@@ -42,17 +59,10 @@ export function MockAuthRepository(initialUsers: DbUser[] = []): AuthRepository 
       return Promise.resolve({ password: user.password, user: userData });
     },
 
-    getUserByRefreshToken: (refreshToken) => {
-      const user = users.find((user) => user.refreshTokens.includes(refreshToken));
-      if (!user) return Promise.resolve(null);
+    getUserHashedRefreshTokens: (userId) => {
+      const hashedRefreshTokens = users.find((user) => user.id === userId)?.refreshTokens;
 
-      const toReturn: BasicUserInfo = {
-        email: user.email,
-        id: user.id,
-        username: user.username,
-      };
-
-      return Promise.resolve(toReturn);
+      return Promise.resolve(hashedRefreshTokens ?? null);
     },
 
     removeAllRefreshTokens: (userId) => {

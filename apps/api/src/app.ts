@@ -4,11 +4,10 @@ import express, { Express, json } from 'express';
 import helmet from 'helmet';
 
 import { errorHandlerMiddleware } from '@/common/middlewares/errorHandlerMiddleware';
+import { appConfig } from '@/config/appConfig';
+import { createAuthRouter } from '@/modules/auth';
 import { createMoviesRouter } from '@/modules/movies';
 import { RootService } from '@/rootService';
-
-import { appConfig } from './config/appConfig';
-import { createAuthRouter } from './modules/auth';
 
 export const initApp = (rootService: RootService): Express => {
   const app = express();

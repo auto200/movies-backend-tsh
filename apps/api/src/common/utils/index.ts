@@ -13,3 +13,16 @@ export function isNumberInTolerance(number: number, middlePoint: number, toleran
 export function toArray<T>(val: T | T[]): T[] {
   return Array.isArray(val) ? val : [val];
 }
+
+export async function findAsync<T>(
+  array: T[],
+  predicate: (t: T) => Promise<boolean>
+): Promise<T | undefined> {
+  for (const t of array) {
+    if (await predicate(t)) {
+      return t;
+    }
+  }
+
+  return undefined;
+}

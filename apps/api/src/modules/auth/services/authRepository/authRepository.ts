@@ -10,8 +10,11 @@ export type AuthRepository = {
   addRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
   doesUserWithEmailExist: (email: string) => Promise<boolean>;
   doesUserWithUsernameExist: (username: string) => Promise<boolean>;
-  getByEmail: (email: string) => Promise<{ password: string; user: BasicUserInfo } | null>;
-  getUserByRefreshToken: (refreshToken: string) => Promise<BasicUserInfo | null>;
+  getUserAndHashedRefreshTokens: (
+    userId: string
+  ) => Promise<{ hashedRefreshTokens: string[]; user: BasicUserInfo } | null>;
+  getUserByEmail: (email: string) => Promise<{ password: string; user: BasicUserInfo } | null>;
+  getUserHashedRefreshTokens: (userId: string) => Promise<string[] | null>;
   removeAllRefreshTokens: (userId: string) => Promise<void>;
   removeRefreshToken: (userId: string, refreshToken: string) => Promise<void>;
   signup: (user: SignupRequestDTO) => Promise<BasicUserInfo>;
@@ -35,7 +38,24 @@ export function AuthRepository(db: DbConnection): AuthRepository {
     doesUserWithUsernameExist: (username) =>
       Promise.resolve(!!db.data.users.find((user) => user.username === username)),
 
-    getByEmail: (email) => {
+    getUserAndHashedRefreshTokens: (userId) => {
+      const user = db.data.users.find((user) => user.id === userId);
+
+      if (!user) return Promise.resolve(null);
+
+      const toReturn = {
+        hashedRefreshTokens: user.refreshTokens,
+        user: {
+          email: user.email,
+          id: user.id,
+          username: user.username,
+        },
+      };
+
+      return Promise.resolve(toReturn);
+    },
+
+    getUserByEmail: (email) => {
       const user = db.data.users.find((user) => user.email === email) ?? null;
 
       if (!user) return Promise.resolve(null);
@@ -49,17 +69,10 @@ export function AuthRepository(db: DbConnection): AuthRepository {
       return Promise.resolve({ password: user.password, user: userData });
     },
 
-    getUserByRefreshToken: (refreshToken) => {
-      const user = db.data.users.find((user) => user.refreshTokens.includes(refreshToken));
-      if (!user) return Promise.resolve(null);
+    getUserHashedRefreshTokens: (userId) => {
+      const hashedRefreshTokens = db.data.users.find((user) => user.id === userId)?.refreshTokens;
 
-      const toReturn: BasicUserInfo = {
-        email: user.email,
-        id: user.id,
-        username: user.username,
-      };
-
-      return Promise.resolve(toReturn);
+      return Promise.resolve(hashedRefreshTokens ?? null);
     },
 
     removeAllRefreshTokens: async (userId) => {
